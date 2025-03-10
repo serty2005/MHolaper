@@ -1,6 +1,6 @@
 import logging
 from request_module import ReqModule
-from utils import load_templates, render_template
+from utils import *
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -14,8 +14,10 @@ if __name__ == '__main__':
 
     try:
         if reqs.login():
+            
+            generate_templates(reqs.take_presets())
 
-            report_id = "e57ca944-85d7-4db5-8b9a-fe4da55b6fef"
+            report_id = "fdcc7e23-377a-42a1-84de-9a68315d0e66"
             template = templates.get(report_id)
             if not template:
                 raise ValueError("Шаблон не найден в файле templates.json")

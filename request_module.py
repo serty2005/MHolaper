@@ -66,8 +66,27 @@ class ReqModule:
             if response.status_code == 200:
                 return response.json()
             else:
-                logger.error(f'Не удалось получить кастомный OLAP. Status code: {response.status_code}')
+                logger.error(f'Не удалось получить кастомный OLAP. Status code: {response.status_code} \nText: {response.text}')
                 raise Exception('Request failed')
         except Exception as e:
             logger.error(f'Error in send_olap_request: {str(e)}')
+            raise
+
+    def take_presets(self):
+        """Функция генерации шаблонов OLAP-запросов"""
+        try:
+            cookies = {'key': self.token}
+            response = self.session.get(
+                f'{API_SERVER_URL}/api/v2/reports/olap/presets',
+                cookies = cookies
+            )
+            if response.status_code == 200:
+                presets = response.json()
+                logger.info('Пресеты переданы в генератор шаблонов')
+                return presets
+            else:
+                logger.error(f"Не удалось получить пресеты. {response.text}")
+                raise Exception('Take presets failed')
+        except Exception as e:
+            logger.error(f'Ошибка получения пресетов: {str(e)}')
             raise
