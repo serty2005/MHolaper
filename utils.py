@@ -1,10 +1,12 @@
 import json
 import logging
 from jinja2 import Template
+import gspread
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 def load_templates(file_path='templates.json'):
     """Загружает шаблоны запросов из JSON-файла."""
@@ -18,7 +20,7 @@ def load_templates(file_path='templates.json'):
         raise
 
 def generate_templates(presets, file_path='templates.json'):
-    """Генерация шаблона из полученных OLAP-пресетов"""
+    """Генерация шаблонов из полученных OLAP-пресетов"""
     try:
         templates = {}
         for preset in presets:
