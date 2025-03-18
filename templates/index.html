@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка приложения</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            margin-top: 5px;
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .flash-success {
+            border-color: #4CAF50;
+            background-color: #e8f5e9;
+        }
+        .flash-error {
+            border-color: #f44336;
+            background-color: #ffebee;
+        }
+        .collapsible {
+            background-color: #f1f1f1;
+            color: #333;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+        }
+        .collapsible:hover {
+            background-color: #ddd;
+        }
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Настройка приложения</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Секция RMS-сервера -->
+    <button type="button" class="collapsible">Connection to RMS-server</button>
+    <div class="content">
+        <form action="{{ url_for('configure_rms') }}" method="post">
+            <label for="host">RMS-host:</label>
+            <input type="text" id="host" name="host" value="{{ rms_config.get('host', '') }}" required><br>
+            
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" value="{{ rms_config.get('login', '') }}" required><br>
+            
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" value="{{ rms_config.get('password', '') }}" required><br>
+            
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    
+    <!-- Секция Google-таблиц -->
+    <button type="button" class="collapsible">Секция Google-таблиц</button>
+    <div class="content">
+        <form action="{{ url_for('configure_google') }}" method="post" enctype="multipart/form-data">
+            <label for="cred_file">Загрузите JSON-файл service-аккаунта Google:</label>
+            <input type="file" id="cred_file" name="cred_file" required><br>
+            
+            <label for="sheet_url">URL таблицы:</label>
+            <input type="text" id="sheet_url" name="sheet_url" value="{{ google_config.get('sheet_url', '') }}" required><br>
+            
+            <button type="submit">Подключиться к Google</button>
+        </form>
+    </div>
+    
+<!-- Секция сопоставления листов-отчетов -->
+<button type="button" class="collapsible">Mapping sheets to OLAP-reports</button>
+<div class="content">
+    <form action="{{ url_for('mapping_set') }}" method="post">
+        <label for="start_date">From:</label>
+        <input type="date" id="start_date" name="start_date" required><br>
+
+        <label for="end_date">To:</label>
+        <input type="date" id="end_date" name="end_date" required><br>
+        <table>
+            <tr>
+                <th>Лист</th>
+                <th>Отчет</th>
+            </tr>
+            {% for sheet in sheets %}
+            <tr>
+                <td>{{ sheet.title }}</td>
+                <td>
+                    <select name="preset_{{ sheet.id }}">
+                        <option value="">-- Выберите отчет --</option>
+                        {% for preset in presets %}
+                        <option value="{{ preset['id'] }}">{{ preset['name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <button type="submit">Применить</button>
+    </form>
+</div>
+    
+
+    <script>
+        // JavaScript для сворачивания/разворачивания секций
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

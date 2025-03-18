@@ -1,14 +1,13 @@
-import json
+import json, os
 import logging
 from jinja2 import Template
-import gspread
+import time
 
 # Настройка логирования
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
-
-def load_templates(file_path='templates.json'):
+def load_temps(file_path='templates.json'):
     """Загружает шаблоны запросов из JSON-файла."""
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -19,7 +18,7 @@ def load_templates(file_path='templates.json'):
         logger.error(f'Ошибка загрузки шаблонов: {str(e)}')
         raise
 
-def generate_templates(presets, file_path='templates.json'):
+def generate_temps(presets, file_path='templates.json'):
     """Генерация шаблонов из полученных OLAP-пресетов"""
     try:
         templates = {}
@@ -47,7 +46,7 @@ def generate_templates(presets, file_path='templates.json'):
                     "from": "{{ from_date }}",
                     "to": "{{ to_date }}",
                     "includeLow": True,
-                    "includeHigh": False
+                    "includeHigh": True
                 }
             else:
                 # Для остальных отчетов обрабатываем существующие фильтры по дате
@@ -66,7 +65,7 @@ def generate_templates(presets, file_path='templates.json'):
         logger.error(f"Ошибка генерации шаблонов: {str(e)}")
         raise
 
-def render_template(template, context):
+def render_temps(template, context):
     """Рендерит шаблон с использованием Jinja2."""
     try:
         if isinstance(template, dict):

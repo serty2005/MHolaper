@@ -1,30 +1,25 @@
-import os
 import requests
 import logging
 import hashlib
 
 # Настройка логирования
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Глобальные переменные окружения
-APP_LOGIN = os.getenv('APP_LOGIN')
-app_pass = os.getenv("APP_PASS")
-APP_PASSWORD = hashlib.sha1(app_pass.encode('utf-8')).hexdigest()
-API_SERVER_URL = os.getenv('SERVER_URL')
+logger.setLevel(logging.DEBUG)
 
 class ReqModule:
-    def __init__(self):
+    def __init__(self, host, rmsLogin, password):
+        self.host = host
+        self.rmsLogin = rmsLogin
+        self.password = hashlib.sha1(password.encode('utf-8')).hexdigest()
         self.token = None
         self.session = requests.Session()
 
     def login(self):
-        """Функция для получения токена авторизации.
-        Занимает слот лицензии входа в бэкофис"""
+        logger.info(f"Вызов метода login с логином: {self.rmsLogin}")
         try:
             response = self.session.post(
-                f'{API_SERVER_URL}/api/auth',
-                data={'login': APP_LOGIN, 'pass': APP_PASSWORD},
+                f'{self.host}/api/auth',
+                data={'login': self.rmsLogin, 'pass': self.password},
                 headers={'Content-Type': 'application/x-www-form-urlencoded'}
             )
             if response.status_code == 200:
@@ -42,7 +37,7 @@ class ReqModule:
         """Функция для освобождения токена авторизации."""
         try:
             response = self.session.post(
-                f'{API_SERVER_URL}/api/logout',
+                f'{self.host}/api/logout',
                 data={'key': self.token},
                 headers={'Content-Type': 'application/x-www-form-urlencoded'}
             )
@@ -59,7 +54,7 @@ class ReqModule:
         try:
             cookies = {'key': self.token}
             response = self.session.post(
-                f'{API_SERVER_URL}/api/v2/reports/olap',
+                f'{self.host}/api/v2/reports/olap',
                 json=params,
                 cookies=cookies
             )
@@ -77,8 +72,8 @@ class ReqModule:
         try:
             cookies = {'key': self.token}
             response = self.session.get(
-                f'{API_SERVER_URL}/api/v2/reports/olap/presets',
-                cookies = cookies
+                f'{self.host}/api/v2/reports/olap/presets',
+                cookies=cookies
             )
             if response.status_code == 200:
                 presets = response.json()
