@@ -117,22 +117,18 @@
 <button type="button" class="collapsible">Mapping sheets to OLAP-reports</button>
 <div class="content">
     <form action="{{ url_for('mapping_set') }}" method="post">
-        <label for="start_date">From:</label>
-        <input type="date" id="start_date" name="start_date" required><br>
-
-        <label for="end_date">To:</label>
-        <input type="date" id="end_date" name="end_date" required><br>
+        
         <table>
             <tr>
                 <th>Лист</th>
                 <th>Отчет</th>
             </tr>
-            {% for sheet in sheets %}
+            {% for sheet in g.sheets %}
             <tr>
                 <td>{{ sheet.title }}</td>
                 <td>
-                    <select name="preset_{{ sheet.id }}">
-                        <option value="">-- Выберите отчет --</option>
+                    <select name="sheet_{{ sheet.id }}">
+                        <option value="">--</option>
                         {% for preset in presets %}
                         <option value="{{ preset['id'] }}">{{ preset['name'] }}</option>
                         {% endfor %}
@@ -145,7 +141,37 @@
         <button type="submit">Применить</button>
     </form>
 </div>
-    
+
+<!-- Секция сопоставления отрисовки отчетов на листах -->
+<button type="button" class="collapsible">Mapping OLAP-reports to sheets</button>
+<div class="content">
+    <form action="{{ url_for('render_olap') }}" method="post">
+        <label for="start_date">From:</label>
+        <input type="date" id="start_date" name="start_date" required><br>
+
+        <label for="end_date">To:</label>
+        <input type="date" id="end_date" name="end_date" required><br>
+
+        <table>
+            <tr>
+                <th>Лист</th>
+                <th>Отчет</th>
+            </tr>
+            {% for sheet_title, report_id in g.mappings.items() %}
+                {% if report_id != '' %}
+                    <tr>
+                        <td>{{ sheet_title }} </td>
+                        <td>{% for preset in g.presets %}
+                                {% if preset['id'] == report_id %}
+                                    {{ preset['name'] }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td><button type="submit" name="render_{{ sheet_title }}">Render</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+</div>
 
     <script>
         // JavaScript для сворачивания/разворачивания секций

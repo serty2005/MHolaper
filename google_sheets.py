@@ -1,6 +1,3 @@
-import datetime
-from datetime import datetime,timedelta
-from gspread.utils import ValidationConditionType
 import gspread
 import logging
 
@@ -49,31 +46,10 @@ class GoogleSheets:
         logger.info(f"Ячейка {cell} обновлена. Старое: {old_value}, Новое: {new_value}")
 
     @log_exceptions
-    def get_date_from_cell(self, sheet_name, cell):
-        """Получает дату из ячейки и преобразует её в ISO-формат."""
-        sheet = self.get_sheet(sheet_name)
-        date_value = sheet.acell(cell).value
-        if not date_value:
-            raise ValueError(f"Ячейка {cell} пуста")
-        
-        for fmt in ("%d.%m.%Y", "%Y-%m-%d", "%Y/%m/%d"):
-            try:
-                date_obj = datetime.strptime(date_value, fmt)
-                break
-            except ValueError:
-                continue
-        else:
-            try:
-                date_obj = datetime(1899, 12, 30) + timedelta(days=float(date_value))
-            except ValueError:
-                raise ValueError(f"Неизвестный формат даты: {date_value}")
-
-        return date_obj.strftime("%Y-%m-%dT00:00:00")
-
-    @log_exceptions
     def write_range(self, sheet_name, range, values):
         """Запись значений в диапазон."""
         sheet = self.get_sheet(sheet_name)
+        sheet.clear()
         sheet.batch_update([{"range": range, "values": values}])
         logger.info(f"Записаны значения в диапазон {range}")
 
@@ -85,11 +61,3 @@ class GoogleSheets:
         logger.debug(f"Значения из диапазона {range}: {values}")
         return values
 
-    @log_exceptions
-    def clear_range(self, sheet_name, ranges):
-        """Очищает несколько диапазонов за один запрос."""
-        sheet = self.get_sheet(sheet_name)
-        if isinstance(ranges, str):
-            ranges = [ranges]
-        sheet.batch_clear(ranges)
-        logger.info(f"Диапазоны {ranges} очищены")
