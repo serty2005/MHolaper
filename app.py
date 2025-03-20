@@ -59,7 +59,8 @@ def index():
         google_config=g.google_config,
         presets=g.get('presets', []),  # Передача пресетов через g
         sheets=g.get('sheets', []),  # Передача листов через g
-        mappings=g.get('mappings', {})
+        mappings=g.get('mappings', {}),
+        client_email=g.client_email
     )
 
 @app.route('/configure_rms', methods=['POST'])
@@ -120,7 +121,7 @@ def configure_google():
         if cred_file.filename == '':
             flash('Файл не был выбран', 'error')
             return redirect(url_for('index'))
-            
+
         # Сохраняем новый файл
         cred_file_path = os.path.join("uploads", cred_file.filename)
         cred_file.save(cred_file_path)
