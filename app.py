@@ -29,12 +29,23 @@ def load_config():
             config = json.load(file)
             g.rms_config = config.get('rms', {})
             g.google_config = config.get('google', {})
+            cred_path = g.google_config.get('cred_file')
+            g.client_email = None
+            if cred_path and os.path.isfile(cred_path):
+                try:
+                    with open(cred_path, 'r', encoding='utf-8') as cred_file:
+                        cred_data = json.load(cred_file)
+                        g.client_email = cred_data.get('client_email')
+                except Exception as e:
+                    logger.error(f"Ошибка при чтении Google credentials: {str(e)}")
+                    g.client_email = None
             g.mappings = config.get('mappings', {})
             g.presets = config.get('presets', [])  # Загружаем пресеты
             g.sheets = config.get('sheets', [])  # Загружаем листы
     except FileNotFoundError:
         g.rms_config = {}
         g.google_config = {}
+        g.client_email = None
         g.mappings = {}
         g.presets = []
         g.sheets = []
