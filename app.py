@@ -106,42 +106,51 @@ def configure_rms():
 
     return redirect(url_for('index'))
 
+@app.route('/upload_credentials', methods=['POST'])
+def upload_credentials():
+    """Обработчик для загрузки файла credentials."""
+    if 'cred_file' in request.files:
+        cred_file = request.files['cred_file']
+        if cred_file.filename != '':
+            cred_file_path = os.path.join("uploads", cred_file.filename)
+            cred_file.save(cred_file_path)
+            g.google_config['cred_file'] = cred_file_path
+
+            # Извлекаем client_email из JSON-файла
+            try:
+                with open(cred_file_path, 'r', encoding='utf-8') as cred_file:
+                    cred_data = json.load(cred_file)
+                    g.client_email = cred_data.get('client_email')
+            except Exception as e:
+                logger.error(f"Ошибка при извлечении client_email из JSON-файла: {str(e)}")
+                flash(f'Ошибка при чтении Google credentials: {str(e)}', 'error')
+                return redirect(url_for('index'))
+
+            # Сохраняем обновленный конфиг
+            with open('uploads/config.json', 'w', encoding='utf-8') as file:
+                json.dump({
+                    'rms': g.rms_config,
+                    'google': g.google_config,
+                    'client_email': g.client_email,
+                    'sheets': g.sheets,
+                    'mappings': g.mappings,
+                    'presets': g.presets
+                }, file, ensure_ascii=False, indent=4)
+
+            flash('Файл credentials успешно загружен', 'success')
+        else:
+            flash('Файл не был выбран', 'error')
+    else:
+        flash('Ошибка при загрузке файла', 'error')
+    return redirect(url_for('index'))
+
 @app.route('/configure_google', methods=['POST'])
 def configure_google():
     """Настройка параметров Google Sheets."""
     try:
         # Логируем вызов функции и параметры
         logger.info(f"Вызов configure_google с параметрами: {request.form}")
-
-        # Получаем путь к файлу credentials 
-        cred_file_path = g.google_config.get('cred_file') 
-
-        # Проверяем, был ли файл загружен через форму
-        if 'cred_file' in request.files:
-            cred_file = request.files['cred_file']
-            if cred_file.filename != '':
-                cred_file_path = os.path.join("uploads", cred_file.filename)
-                cred_file.save(cred_file_path)
-                g.google_config['cred_file'] = cred_file_path
-            else:
-                flash('Файл не был выбран', 'error')
-                return redirect(url_for('index'))
         
-        # Проверяем наличие файла по указанному пути
-        if not os.path.isfile(cred_file_path): 
-            flash(f'Файл не найден по пути: {cred_file_path}', 'error')
-            return redirect(url_for('index'))
-
-        # Извлекаем client_email из JSON-файла
-        try:
-            with open(cred_file_path, 'r', encoding='utf-8') as cred_file:
-                cred_data = json.load(cred_file)
-                g.client_email = cred_data.get('client_email')
-        except Exception as e:
-            logger.error(f"Ошибка при извлечении client_email из JSON-файла: {str(e)}")
-            flash(f'Ошибка при чтении Google credentials: {str(e)}', 'error')
-            return redirect(url_for('index'))
-
         # Проверяем, что URL таблицы был введен
         sheet_url = request.form.get('sheet_url', '').strip()
         if not sheet_url:
@@ -151,22 +160,25 @@ def configure_google():
         # Обновляем конфиг
         g.google_config['sheet_url'] = sheet_url
 
-        # Подключение к Google Sheets
-        gs_client = GoogleSheets(g.google_config['cred_file'], g.google_config['sheet_url'])
-        g.sheets = gs_client.get_sheets()  # Сохраняем листы в g
-        
-        # Сохраняем обновленный конфиг
-        with open('uploads/config.json', 'w', encoding='utf-8') as file:
-            json.dump({
-                'rms': g.rms_config, 
-                'google': g.google_config,
-                'client_email': g.client_email,
-                'sheets': g.sheets,
-                'mappings': g.mappings,
-                'presets': g.presets
+        # Подключение к Google Sheets (только если уже есть client_email)
+        if g.client_email: 
+            gs_client = GoogleSheets(g.google_config['cred_file'], g.google_config['sheet_url'])
+            g.sheets = gs_client.get_sheets()  # Сохраняем листы в g
+
+            # Сохраняем обновленный конфиг
+            with open('uploads/config.json', 'w', encoding='utf-8') as file:
+                json.dump({
+                    'rms': g.rms_config,
+                    'google': g.google_config,
+                    'client_email': g.client_email,
+                    'sheets': g.sheets,
+                    'mappings': g.mappings,
+                    'presets': g.presets
                 }, file, ensure_ascii=False, indent=4)
 
-        flash('Успешное подключение к Google Sheets', 'success')
+            flash('Успешное подключение к Google Sheets', 'success')
+        else:
+            flash('Сначала загрузите файл credentials.', 'warning') 
 
     except Exception as e:
         logger.error(f"Ошибка при настройке Google Sheets: {str(e)}")

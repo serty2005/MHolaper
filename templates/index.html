@@ -1,198 +1,275 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Настройка приложения</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select, button {
-            margin-top: 5px;
-            padding: 8px;
-            width: 100%;
-            max-width: 400px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .flash-message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        .flash-success {
-            border-color: #4CAF50;
-            background-color: #e8f5e9;
-        }
-        .flash-error {
-            border-color: #f44336;
-            background-color: #ffebee;
-        }
-        .collapsible {
-            background-color: #f1f1f1;
-            color: #333;
-            cursor: pointer;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 16px;
-        }
-        .collapsible:hover {
-            background-color: #ddd;
-        }
-        .content {
-            padding: 0 18px;
-            display: none;
-            overflow: hidden;
-            background-color: #f9f9f9;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      h1,
+      h2 {
+        color: #333;
+        text-align: center;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+
+      input,
+      select,
+      button {
+        margin-top: 5px;
+        padding: 8px;
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .flash-message {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        color: #333;
+        text-align: center;
+      }
+
+      .flash-success {
+        border-color: #4caf50;
+        background-color: #e8f5e9;
+      }
+
+      .flash-error {
+        border-color: #f44336;
+        background-color: #ffebee;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .collapsible {
+        background-color: #f1f1f1;
+        color: #333;
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        text-align: center; /* Кнопки будут центрированы */
+        outline: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .collapsible:hover {
+        background-color: #ddd;
+      }
+
+      .collapsible.active {
+        background-color: #ccc;
+      }
+
+      .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f9f9f9;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Настройка приложения</h1>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="flash-message flash-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    
-    <!-- Секция RMS-сервера -->
-    <button type="button" class="collapsible">Connection to RMS-server</button>
-    <div class="content">
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+    {% endfor %} {% endif %} {% endwith %}
+
+    <div class="container">
+      <!-- Секция RMS-сервера -->
+      <button type="button" class="collapsible">
+        Connection to RMS-server
+      </button>
+      <div class="content">
         <form action="{{ url_for('configure_rms') }}" method="post">
-            <label for="host">RMS-host:</label>
-            <input type="text" id="host" name="host" value="{{ rms_config.get('host', '') }}" required><br>
-            
-            <label for="login">Логин:</label>
-            <input type="text" id="login" name="login" value="{{ rms_config.get('login', '') }}" required><br>
-            
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" value="{{ rms_config.get('password', '') }}" required><br>
-            
-            <button type="submit">Login</button>
+          <label for="host">RMS-host:</label>
+          <input
+            type="text"
+            id="host"
+            name="host"
+            value="{{ rms_config.get('host', '') }}"
+            required
+          /><br />
+
+          <label for="login">Логин:</label>
+          <input
+            type="text"
+            id="login"
+            name="login"
+            value="{{ rms_config.get('login', '') }}"
+            required
+          /><br />
+
+          <label for="password">Пароль:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="{{ rms_config.get('password', '') }}"
+            required
+          /><br />
+
+          <button type="submit">Login</button>
         </form>
-    </div>
-    
-    <!-- Секция Google-таблиц -->
-    <button type="button" class="collapsible">Секция Google-таблиц</button>
-    <div class="content">
+      </div>
+
+      <!-- Секция Google-таблиц -->
+      <button type="button" class="collapsible">Секция Google-таблиц</button>
+      <div class="content">
         {% if not client_email %}
-        <form action="{{ url_for('configure_google') }}" method="post" enctype="multipart/form-data">
-            <label for="cred_file">Загрузите JSON-файл service-аккаунта Google:</label>
-            <input type="file" id="cred_file" name="cred_file" required><br>
-            <button type="submit">Загрузить</button>
+        <form
+          action="{{ url_for('upload_credentials') }}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <label for="cred_file"
+            >Загрузите JSON-файл service-аккаунта Google:</label
+          >
+          <input type="file" id="cred_file" name="cred_file" required /><br />
+          <button type="submit">Загрузить</button>
         </form>
         {% else %}
         <p><strong>Service Account Email:</strong> {{ client_email }}</p>
         {% endif %}
 
-        <form action="{{ url_for('configure_google') }}" method="post" enctype="multipart/form-data">  
-            <label for="sheet_url">URL таблицы:</label>
-            <input type="text" id="sheet_url" name="sheet_url" value="{{ google_config.get('sheet_url', '') }}" required><br>
-            <button type="submit">Подключиться к Google</button>
+        <form
+          action="{{ url_for('configure_google') }}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <label for="sheet_url">URL таблицы:</label>
+          <input
+            type="text"
+            id="sheet_url"
+            name="sheet_url"
+            value="{{ google_config.get('sheet_url', '') }}"
+            required
+          /><br />
+          <button type="submit">Подключиться к Google</button>
         </form>
-    </div>
-    
-<!-- Секция сопоставления листов-отчетов -->
-<button type="button" class="collapsible">Mapping sheets to OLAP-reports</button>
-<div class="content">
-    <form action="{{ url_for('mapping_set') }}" method="post">
-        
-        <table>
+      </div>
+
+      <!-- Секция сопоставления листов-отчетов -->
+      <button type="button" class="collapsible">
+        Mapping sheets to OLAP-reports
+      </button>
+      <div class="content">
+        <form action="{{ url_for('mapping_set') }}" method="post">
+          <table>
             <tr>
-                <th>Лист</th>
-                <th>Отчет</th>
+              <th>Лист</th>
+              <th>Отчет</th>
             </tr>
             {% for sheet in g.sheets %}
             <tr>
-                <td>{{ sheet.title }}</td>
-                <td>
-                    <select name="sheet_{{ sheet.id }}">
-                        <option value="">--</option>
-                        {% for preset in presets %}
-                        <option value="{{ preset['id'] }}">{{ preset['name'] }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
+              <td>{{ sheet.title }}</td>
+              <td>
+                <select name="sheet_{{ sheet.id }}">
+                  <option value="">--</option>
+                  {% for preset in presets %}
+                  <option value="{{ preset['id'] }}">
+                    {{ preset['name'] }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </td>
             </tr>
             {% endfor %}
-        </table>
-        
-        <button type="submit">Применить</button>
-    </form>
-</div>
+          </table>
 
-<!-- Секция сопоставления отрисовки отчетов на листах -->
-<button type="button" class="collapsible">Mapping OLAP-reports to sheets</button>
-<div class="content">
-    <form action="{{ url_for('render_olap') }}" method="post">
-        <label for="start_date">From:</label>
-        <input type="date" id="start_date" name="start_date" required><br>
+          <button type="submit">Применить</button>
+        </form>
+      </div>
 
-        <label for="end_date">To:</label>
-        <input type="date" id="end_date" name="end_date" required><br>
+      <!-- Секция сопоставления отрисовки отчетов на листах -->
+      <button type="button" class="collapsible">
+        Mapping OLAP-reports to sheets
+      </button>
+      <div class="content">
+        <form action="{{ url_for('render_olap') }}" method="post">
+          <label for="start_date">From:</label>
+          <input type="date" id="start_date" name="start_date" required /><br />
 
-        <table>
+          <label for="end_date">To:</label>
+          <input type="date" id="end_date" name="end_date" required /><br />
+
+          <table>
             <tr>
-                <th>Лист</th>
-                <th>Отчет</th>
+              <th>Лист</th>
+              <th>Отчет</th>
             </tr>
-            {% for sheet_title, report_id in g.mappings.items() %}
-                {% if report_id != '' %}
-                    <tr>
-                        <td>{{ sheet_title }} </td>
-                        <td>{% for preset in g.presets %}
-                                {% if preset['id'] == report_id %}
-                                    {{ preset['name'] }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td><button type="submit" name="render_{{ sheet_title }}">Render</button></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-</div>
+            {% for sheet_title, report_id in g.mappings.items() %} {% if
+            report_id != '' %}
+            <tr>
+              <td>{{ sheet_title }}</td>
+              <td>
+                {% for preset in g.presets %} {% if preset['id'] == report_id %}
+                {{ preset['name'] }} {% endif %} {% endfor %}
+              </td>
+              <td>
+                <button type="submit" name="render_{{ sheet_title }}">
+                  Render
+                </button>
+              </td>
+            </tr>
+            {% endif %} {% endfor %}
+          </table>
+        </form>
+      </div>
+    </div>
 
     <script>
-        // JavaScript для сворачивания/разворачивания секций
-        var coll = document.getElementsByClassName("collapsible");
-        for (var i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
+      // JavaScript для сворачивания/разворачивания секций
+      var coll = document.getElementsByClassName("collapsible");
+      for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
