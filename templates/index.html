@@ -1,229 +1,132 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Настройка приложения</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
+    <title>MyHoreca OLAPer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-      h1,
-      h2 {
-        color: #333;
-        text-align: center;
-      }
+    <h1>MyHoreca OLAP-to-GoogleSheets</h1>
 
-      form {
-        margin-bottom: 20px;
-      }
+    {% if current_user.is_authenticated %}
+      <div class="user-info">
+        Logged in as: <strong>{{ current_user.username }}</strong> |
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    {% else %}
+      <div class="user-info">
+        <a href="{{ url_for('login') }}">Login</a> |
+        <a href="{{ url_for('register') }}">Register</a>
+      </div>
+    {% endif %}
 
-      label {
-        display: block;
-        margin-top: 10px;
-      }
 
-      input,
-      select,
-      button {
-        margin-top: 5px;
-        padding: 8px;
-        width: 100%;
-        max-width: 400px;
-        box-sizing: border-box;
-      }
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-      button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-
-      button:hover {
-        background-color: #45a049;
-      }
-
-      .flash-message {
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
-        color: #333;
-        text-align: center;
-      }
-
-      .flash-success {
-        border-color: #4caf50;
-        background-color: #e8f5e9;
-      }
-
-      .flash-error {
-        border-color: #f44336;
-        background-color: #ffebee;
-      }
-
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .collapsible {
-        background-color: #f1f1f1;
-        color: #333;
-        cursor: pointer;
-        padding: 10px;
-        width: 100%;
-        border: none;
-        text-align: center; /* Кнопки будут центрированы */
-        outline: none;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-      }
-
-      .collapsible:hover {
-        background-color: #ddd;
-      }
-
-      .collapsible.active {
-        background-color: #ccc;
-      }
-
-      .content {
-        padding: 0 18px;
-        display: none;
-        overflow: hidden;
-        background-color: #f9f9f9;
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-        box-sizing: border-box;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Настройка приложения</h1>
-
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %}
-    <div class="flash-message flash-{{ category }}">{{ message }}</div>
-    {% endfor %} {% endif %} {% endwith %}
-
+    {% if current_user.is_authenticated %}
     <div class="container">
       <!-- Секция RMS-сервера -->
-      <button type="button" class="collapsible">
-        Connection to RMS-server
-      </button>
+      <button type="button" class="collapsible">1. Connection to RMS-server</button>
       <div class="content">
         <form action="{{ url_for('configure_rms') }}" method="post">
           <label for="host">RMS-host:</label>
-          <input
-            type="text"
-            id="host"
-            name="host"
-            value="{{ rms_config.get('host', '') }}"
-            required
-          /><br />
+          <input type="text" id="host" name="host" value="{{ rms_config.get('host', '') }}" required /><br />
 
-          <label for="login">Логин:</label>
-          <input
-            type="text"
-            id="login"
-            name="login"
-            value="{{ rms_config.get('login', '') }}"
-            required
-          /><br />
+          <label for="login">Login:</label>
+          <input type="text" id="login" name="login" value="{{ rms_config.get('login', '') }}" required /><br />
 
-          <label for="password">Пароль:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value="{{ rms_config.get('password', '') }}"
-            required
-          /><br />
+          <label for="password">Password (enter if you want to change):</label>
+          <input type="password" id="password" name="password" value="" {% if not rms_config.get('password') %}required{% endif %} /><br />
+          {% if rms_config.get('password') %}
+             <small>Password will be hidden.</small><br/>
+          {% endif %}
 
-          <button type="submit">Login</button>
+          <button type="submit">Check and Save RMS-config</button>
+          <p><small>Will be used to connect and fetch OLAP presets.</small></p>
         </form>
       </div>
 
       <!-- Секция Google-таблиц -->
-      <button type="button" class="collapsible">Секция Google-таблиц</button>
+      <button type="button" class="collapsible">2. Google Sheets Configuration</button>
       <div class="content">
-        {% if not client_email %}
-        <form
-          action="{{ url_for('upload_credentials') }}"
-          method="post"
-          enctype="multipart/form-data"
-        >
-          <label for="cred_file"
-            >Загрузите JSON-файл service-аккаунта Google:</label
-          >
-          <input type="file" id="cred_file" name="cred_file" required /><br />
-          <button type="submit">Загрузить</button>
+        <form action="{{ url_for('upload_credentials') }}" method="post" enctype="multipart/form-data">
+          <label for="cred_file">Service Account Credentials (JSON):</label>
+          <input type="file" id="cred_file" name="cred_file" accept=".json" {% if not google_config.get('cred_file') %}required{% endif %} /><br />
+           {% if client_email %}
+             <p><strong>Service Account Email:</strong> {{ client_email }}</p>
+             <small>Upload if you want to change.</small><br/>
+           {% else %}
+             <small>Upload JSON, from Google Cloud Console.</small><br/>
+           {% endif %}
+          <button type="submit">Upload Credentials</button>
         </form>
-        {% else %}
-        <p><strong>Service Account Email:</strong> {{ client_email }}</p>
-        {% endif %}
-
-        <form
-          action="{{ url_for('configure_google') }}"
-          method="post"
-          enctype="multipart/form-data"
-        >
-          <label for="sheet_url">URL таблицы:</label>
-          <input
-            type="text"
-            id="sheet_url"
-            name="sheet_url"
-            value="{{ google_config.get('sheet_url', '') }}"
-            required
-          /><br />
-          <button type="submit">Подключиться к Google</button>
+        <hr>
+        <form action="{{ url_for('configure_google') }}" method="post">
+            <label for="sheet_url">URL Google Sheet:</label>
+            <input type="text" id="sheet_url" name="sheet_url" value="{{ google_config.get('sheet_url', '') }}" required placeholder="https://docs.google.com/spreadsheets/d/..."/><br />
+            <button type="submit" {% if not client_email %}disabled title="Upload Service Account Credentials"{% endif %}>
+              Connect Google
+            </button>
+             <p><small>Will be used to fetch Google Sheets.</small></p>
         </form>
       </div>
 
       <!-- Секция сопоставления листов-отчетов -->
-      <button type="button" class="collapsible">
-        Mapping sheets to OLAP-reports
+      <button type="button" class="collapsible" {% if not sheets %}disabled title="Сначала настройте Google Sheets"{% endif %}>
+          3. Mapping Sheets to OLAP Reports
       </button>
       <div class="content">
-        <form action="{{ url_for('mapping_set') }}" method="post">
-          <table>
-            <tr>
-              <th>Лист</th>
-              <th>Отчет</th>
-            </tr>
-            {% for sheet in g.sheets %}
-            <tr>
-              <td>{{ sheet.title }}</td>
-              <td>
-                <select name="sheet_{{ sheet.id }}">
-                  <option value="">--</option>
-                  {% for preset in presets %}
-                  <option value="{{ preset['id'] }}">
-                    {{ preset['name'] }}
-                  </option>
-                  {% endfor %}
-                </select>
-              </td>
-            </tr>
-            {% endfor %}
-          </table>
-
-          <button type="submit">Применить</button>
-        </form>
+        {% if sheets and presets %}
+          <form action="{{ url_for('mapping_set') }}" method="post">
+            <table>
+              <thead>
+                <tr>
+                  <th>Worksheet (Google Sheets)</th>
+                  <th>OLAP-report (RMS)</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for sheet in sheets %}
+              <tr>
+                <td>{{ sheet.title }}</td>
+                <td>
+                  <!-- Use sheet.id for unique name -->
+                  <select name="sheet_{{ sheet.id }}">
+                    <option value="">-- Not set --</option>
+                    {% for preset in presets %}
+                      <option value="{{ preset['id'] }}" {% if mappings.get(sheet.title) == preset['id'] %}selected{% endif %}>
+                        {{ preset['name'] }} ({{ preset['id'] }})
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            <button type="submit">Save Mappings</button>
+          </form>
+        {% elif not sheets %}
+            <p>Worksheets are not loaded. Check Google Sheets configuration.</p>
+        {% elif not presets %}
+             <p>OLAP presets are not loaded. Check RMS configuration.</p>
+        {% endif %}
       </div>
 
-      <!-- Секция сопоставления отрисовки отчетов на листах -->
-      <button type="button" class="collapsible">
-        Mapping OLAP-reports to sheets
+      <!-- Секция отрисовки отчетов на листах -->
+       <button type="button" class="collapsible" {% if not mappings %}disabled title="Сначала настройте сопоставления Лист-Отчет"{% endif %}>
+          4. Render Reports to Sheets
       </button>
       <div class="content">
+       {% if mappings %}
         <form action="{{ url_for('render_olap') }}" method="post">
           <label for="start_date">From:</label>
           <input type="date" id="start_date" name="start_date" required /><br />
@@ -232,35 +135,48 @@
           <input type="date" id="end_date" name="end_date" required /><br />
 
           <table>
-            <tr>
-              <th>Лист</th>
-              <th>Отчет</th>
-            </tr>
-            {% for sheet_title, report_id in g.mappings.items() %} {% if
-            report_id != '' %}
-            <tr>
-              <td>{{ sheet_title }}</td>
-              <td>
-                {% for preset in g.presets %} {% if preset['id'] == report_id %}
-                {{ preset['name'] }} {% endif %} {% endfor %}
-              </td>
-              <td>
-                <button type="submit" name="render_{{ sheet_title }}">
-                  Render
-                </button>
-              </td>
-            </tr>
-            {% endif %} {% endfor %}
+             <thead>
+                <tr>
+                  <th>Worksheet</th>
+                  <th>Mapping OLAP</th>
+                  <th>Go</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sheet_title, report_id in mappings.items() %}
+                  {% set preset_name = '' %}
+                  {% for p in presets %}{% if p['id'] == report_id %}{% set preset_name = p['name'] %}{% endif %}{% endfor %}
+                  {% if report_id %} {# Only display rows with a valid mapping #}
+                  <tr>
+                    <td>{{ sheet_title }}</td>
+                    <td>{{ preset_name or 'ID: ' + report_id }}</td>
+                    <td>
+                      <button type="submit" name="render_{{ sheet_title }}">
+                        Render to sheet
+                      </button>
+                    </td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+             </tbody>
           </table>
         </form>
+       {% else %}
+        <p>Config mappings first.</p>
+        <p><small>Check mapping section.</small></p>
+       {% endif %}
       </div>
-    </div>
+
+    </div> <!-- End Container -->
 
     <script>
       // JavaScript для сворачивания/разворачивания секций
       var coll = document.getElementsByClassName("collapsible");
       for (var i = 0; i < coll.length; i++) {
         coll[i].addEventListener("click", function () {
+          // Не переключать, если кнопка отключена
+          if (this.disabled) return;
+
           this.classList.toggle("active");
           var content = this.nextElementSibling;
           if (content.style.display === "block") {
@@ -270,6 +186,17 @@
           }
         });
       }
+
+      // Optional: Auto-expand sections based on config state?
+      // Example: Expand Google section if RMS is configured but Google creds are not
+      window.addEventListener('load', () => {
+          if (rmsIsConfigured && !googleCredsExist) {
+             document.getElementById('google-collapsible-button').click();
+          } // Add more logic here based on passed config state
+       });
     </script>
-  </body>
+    {% else %}
+      <p style="text-align: center; margin-top: 50px;">Please, <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a></p>
+    {% endif %}
+</body>
 </html>
