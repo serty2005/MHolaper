@@ -66,6 +66,9 @@ class UserConfig(db.Model):
     presets_json = db.Column(db.Text, default='[]')
     sheets_json = db.Column(db.Text, default='[]')
 
+    # Calculations
+    calculated_cells_json = db.Column(db.Text, default='[]')    
+
     # --- Helper properties for easy access ---
 
     @property
@@ -107,6 +110,22 @@ class UserConfig(db.Model):
     @sheets.setter
     def sheets(self, value):
         self.sheets_json = json.dumps(value or [], ensure_ascii=False)
+
+    # Calculations
+    @property
+    def calculated_cells(self):
+        """Возвращает список определений вычисляемых ячеек."""
+        try:
+            return json.loads(self.calculated_cells_json or '[]')
+        except json.JSONDecodeError:
+            return []
+        
+    @calculated_cells.setter
+    def calculated_cells(self, value):
+        """Сохраняет список определений вычисляемых ячеек."""
+        if not isinstance(value, list):
+            raise ValueError("Значение должно быть списком")
+        self.calculated_cells_json = json.dumps(value, ensure_ascii=False, indent=2)
 
     # Convenience getter for template display
     def get_rms_dict(self):

@@ -1,3 +1,4 @@
+from collections import defaultdict
 import gspread
 import logging
 from gspread.utils import rowcol_to_a1
@@ -129,3 +130,52 @@ class GoogleSheets:
         logger.debug(f"Read {len(values)} rows from sheet '{sheet_name}', range {range_a1}.")
         # logger.debug(f"Значения из диапазона {range_a1}: {values}") # Может быть слишком много данных для лога
         return values
+    
+    @log_exceptions
+    def write_cells(self, cell_updates):
+        """
+        Записывает значения в указанные ячейки.
+
+        Args:
+            cell_updates (list): Список кортежей [(cell_address, value), ...].
+                                cell_address в формате 'SheetName!A1' или 'A1' (для первого листа).
+        """
+        if not cell_updates:
+            logger.info("Нет данных для записи в ячейки.")
+            return
+
+        # Группируем обновления по листам для batch_update
+        updates_by_sheet = defaultdict(list)
+        for cell_address, value in cell_updates:
+            try:
+                # Пытаемся определить имя листа из адреса
+                if '!' in cell_address:
+                    sheet_name, cell = cell_address.split('!', 1)
+                else:
+                    # Если имя листа не указано, используем первый лист
+                    sheet = self.spreadsheet.get_worksheet(0) # Получаем первый лист
+                    sheet_name = sheet.title
+                    cell = cell_address
+                
+                # Добавляем в список обновлений для данного листа
+                updates_by_sheet[sheet_name].append({
+                    'range': cell,
+                    'values': [[value]], # gspread ожидает список списков
+                })
+            except Exception as e:
+                logger.error(f"Ошибка обработки адреса ячейки '{cell_address}': {e}. Пропуск.")
+                continue # Пропускаем некорректный адрес
+
+        # Выполняем batch_update для каждого листа
+        for sheet_name, updates in updates_by_sheet.items():
+            try:
+                worksheet = self.spreadsheet.worksheet(sheet_name)
+                worksheet.batch_update(updates, value_input_option='USER_ENTERED')
+                logger.info(f"Успешно записано {len(updates)} значений в лист '{sheet_name}'.")
+            except gspread.exceptions.WorksheetNotFound:
+                logger.error(f"Лист '{sheet_name}' не найден в таблице. Запись пропущена.")
+                # Можно добавить flash сообщение об этом
+            except Exception as e:
+                logger.error(f"Ошибка записи batch_update в лист '{sheet_name}': {e}", exc_info=True)
+                raise # Перевыбрасываем ошибку, чтобы она была поймана выше
+

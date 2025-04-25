@@ -165,6 +165,99 @@
         <p>Config mappings first.</p>
         <p><small>Check mapping section.</small></p>
        {% endif %}
+       <details id="calculated-cells-section">
+        <summary>Конструктор вычисляемых ячеек</summary>
+        <div class="config-section">
+            <h4>Настройка вычислений</h4>
+            <p>Определите расчеты, которые будут выполняться на основе данных из OLAP-отчетов. Результат каждого расчета будет записан в указанную ячейку Google Таблицы.</p>
+    
+            <!-- Форма для сохранения определений -->
+            <form id="save-calculations-form" action="{{ url_for('save_calculations') }}" method="POST">
+                 <!-- Скрытое поле для JSON данных -->
+                 <input type="hidden" name="calculations_json" id="calculations-json-input">
+    
+                 <div id="calculation-rows-container">
+                     <!-- Сюда JS будет добавлять строки конструктора -->
+                 </div>
+    
+                 <button type="button" id="add-calculation-row" class="btn btn-sm btn-outline-secondary mt-2">Добавить строку расчета</button>
+                 <hr>
+                 <button type="submit" class="btn btn-primary">Сохранить определения</button>
+            </form>
+    
+            <hr>
+    
+            <h4>Выполнение расчетов</h4>
+            <!-- Форма для запуска расчетов -->
+            <form id="execute-calculations-form" action="{{ url_for('execute_calculations') }}" method="POST" class="mt-3">
+                <div class="row mb-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="start_date_calc" class="form-label">Дата начала:</label>
+                        <input type="date" id="start_date_calc" name="start_date_calc" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="end_date_calc" class="form-label">Дата окончания:</label>
+                        <input type="date" id="end_date_calc" name="end_date_calc" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success w-100">Выполнить расчеты и записать</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </details>
+    
+    <!-- Шаблон для строки конструктора (скрыт) -->
+    <template id="calculation-row-template">
+        <div class="row calculation-row mb-2 align-items-center border p-2 rounded">
+            <!-- Уникальный ID строки (скрыт) -->
+            <input type="hidden" class="calc-id" value="">
+    
+            <!-- Операнд 1 -->
+            <div class="col-md-3">
+                <select class="form-select form-select-sm calc-report-select operand1-report">
+                    <option value="" selected disabled>Выберите отчет 1...</option>
+                    <!-- Опции отчетов добавятся JS -->
+                </select>
+                <select class="form-select form-select-sm mt-1 calc-field-select operand1-field" disabled>
+                    <option value="" selected disabled>Выберите поле 1...</option>
+                    <!-- Опции полей добавятся JS -->
+                </select>
+            </div>
+    
+            <!-- Операция -->
+            <div class="col-md-1 text-center">
+                <select class="form-select form-select-sm calc-operation">
+                    <option value="+" selected>+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                </select>
+            </div>
+    
+            <!-- Операнд 2 -->
+            <div class="col-md-3">
+                <select class="form-select form-select-sm calc-report-select operand2-report">
+                    <option value="" selected disabled>Выберите отчет 2...</option>
+                    <!-- Опции отчетов добавятся JS -->
+                </select>
+                <select class="form-select form-select-sm mt-1 calc-field-select operand2-field" disabled>
+                    <option value="" selected disabled>Выберите поле 2...</option>
+                    <!-- Опции полей добавятся JS -->
+                </select>
+            </div>
+    
+            <!-- Целевая ячейка -->
+            <div class="col-md-3">
+                <input type="text" class="form-control form-control-sm calc-target-cell" placeholder="Лист!Ячейка (напр. Sheet1!A1)" required>
+            </div>
+    
+            <!-- Кнопка удаления -->
+            <div class="col-md-1 text-end">
+                <button type="button" class="btn btn-sm btn-outline-danger remove-calc-row" title="Удалить строку">X</button>
+            </div>
+        </div>
+    </template>
       </div>
 
     </div> <!-- End Container -->
@@ -194,7 +287,10 @@
              document.getElementById('google-collapsible-button').click();
           } // Add more logic here based on passed config state
        });
+       const olapPresets = "{{presets | tojson | safe}}";
+       const savedCalculations = "{{ calculated_cells | tojson | safe }}";
     </script>
+    <script src="{{ url_for('static', filename='js/calculations.js') }}"></script>
     {% else %}
       <p style="text-align: center; margin-top: 50px;">Please, <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a></p>
     {% endif %}

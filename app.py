@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, g, 
 import gspread
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_migrate import Migrate
-import os
+from collections import defaultdict
+import os, uuid
 import logging
 from werkzeug.utils import secure_filename
 import shutil
@@ -158,7 +159,8 @@ def index():
         presets=config.presets,
         sheets=config.sheets,
         mappings=config.mappings,
-        client_email=config.google_client_email
+        client_email=config.google_client_email,
+        calculated_cells=config.calculated_cells
     )
 
 @app.route('/configure_rms', methods=['POST'])
@@ -516,6 +518,257 @@ def render_olap():
 # Run 'flask db init' first time
 # Run 'flask db migrate -m "Some description"' after changing models
 # Run 'flask db upgrade' to apply migrations
+
+@app.route('/save_calculations', methods=['POST'])
+@login_required
+def save_calculations():
+    """Сохраняет определения вычисляемых ячеек для пользователя."""
+    config = g.user_config
+    try:
+        # Получаем данные из скрытого поля формы, отправленные JS
+        calculations_data_str = request.form.get('calculations_json')
+        if not calculations_data_str:
+            flash('Нет данных для сохранения.', 'warning')
+            return redirect(url_for('index', _anchor='calculated-cells-section')) # Возврат к секции
+
+        # Парсим JSON
+        calculations_list = json.loads(calculations_data_str)
+
+        # Простая валидация (можно добавить более строгую)
+        if not isinstance(calculations_list, list):
+            raise ValueError("Некорректный формат данных.")
+
+        # Присваиваем ID, если их нет (для новых строк)
+        for calc in calculations_list:
+            if 'id' not in calc or not calc['id']:
+                 calc['id'] = f"calc_{uuid.uuid4()}" # Генерируем уникальный ID
+            # Доп. проверки: наличие ключей, корректность target_cell и т.д.
+            if not all(k in calc for k in ['operand1_report_id', 'operand1_field_name', 'operation', 'operand2_report_id', 'operand2_field_name', 'target_cell']):
+                 raise ValueError(f"Неполные данные в строке расчета: {calc}")
+            if not calc['target_cell']:
+                 raise ValueError(f"Не указана целевая ячейка для расчета: {calc}")
+
+
+        # Сохраняем в UserConfig
+        config.calculated_cells = calculations_list
+        db.session.commit()
+        flash('Определения вычислений успешно сохранены.', 'success')
+        logger.info(f"User {current_user.id}: Сохранены определения вычисляемых ячеек ({len(calculations_list)} шт).")
+
+    except json.JSONDecodeError:
+        flash('Ошибка: Некорректный формат данных вычислений.', 'error')
+        logger.error(f"User {current_user.id}: Ошибка парсинга JSON при сохранении вычислений.", exc_info=True)
+    except ValueError as ve:
+        flash(f'Ошибка валидации данных: {ve}', 'error')
+        logger.error(f"User {current_user.id}: Ошибка валидации при сохранении вычислений: {ve}", exc_info=True)
+    except Exception as e:
+        flash(f'Произошла непредвиденная ошибка при сохранении: {e}', 'error')
+        logger.error(f"User {current_user.id}: Ошибка при сохранении вычислений: {e}", exc_info=True)
+        db.session.rollback() # Откатываем изменения в случае общей ошибки
+
+    # Редирект обратно к секции калькулятора
+    return redirect(url_for('index', _anchor='calculated-cells-section'))
+
+
+@app.route('/execute_calculations', methods=['POST'])
+@login_required
+def execute_calculations():
+    """Выполняет расчеты и записывает результаты в Google Sheets."""
+    config = g.user_config
+    req_module = None
+    gs_client = None
+    calculation_definitions = config.calculated_cells
+
+    if not calculation_definitions:
+        flash('Нет сохраненных определений для выполнения расчетов.', 'warning')
+        return redirect(url_for('index', _anchor='calculated-cells-section'))
+
+    try:
+        # 1. Получаем даты
+        from_date, to_date = get_dates(request.form.get('start_date_calc'), request.form.get('end_date_calc'))
+        context = {"from_date": from_date, "to_date": to_date}
+
+        # 2. Проверяем конфигурацию RMS и Google
+        rms_host = config.rms_host
+        rms_login = config.rms_login
+        rms_password = config.rms_password
+        cred_path = config.google_cred_file_path
+        sheet_url = config.google_sheet_url
+        all_presets = {p['id']: p for p in config.presets} # Словарь для быстрого доступа
+
+        if not all([rms_host, rms_login, rms_password]):
+             flash('Ошибка: Конфигурация RMS не завершена.', 'error')
+             return redirect(url_for('index', _anchor='calculated-cells-section'))
+        if not cred_path or not sheet_url or not os.path.isfile(cred_path):
+             flash('Ошибка: Конфигурация Google Sheets не завершена или файл credentials недоступен.', 'error')
+             return redirect(url_for('index', _anchor='calculated-cells-section'))
+
+        # 3. Определяем уникальные отчеты, которые нужно запросить
+        unique_report_ids = set()
+        for calc in calculation_definitions:
+            unique_report_ids.add(calc['operand1_report_id'])
+            unique_report_ids.add(calc['operand2_report_id'])
+
+        logger.info(f"User {current_user.id}: Запуск вычислений. Требуется {len(unique_report_ids)} отчетов за период {from_date} - {to_date}.")
+
+        # 4. Инициализируем ReqModule и логинимся
+        req_module = ReqModule(rms_host, rms_login, rms_password)
+        if not req_module.login():
+            flash('Ошибка авторизации на сервере RMS.', 'error')
+            return redirect(url_for('index', _anchor='calculated-cells-section'))
+
+        # 5. Запрашиваем данные для каждого уникального отчета
+        report_results = {} # Словарь для хранения результатов {report_id: data}
+        fetched_data_sums = {} # Словарь для хранения суммы нужного поля {report_id: {field_name: sum}}
+
+        for report_id in unique_report_ids:
+            preset = all_presets.get(report_id)
+            if not preset:
+                flash(f"Ошибка: Пресет с ID '{report_id}', необходимый для расчета, не найден.", 'error')
+                logger.warning(f"User {current_user.id}: Пресет ID '{report_id}' для расчета не найден.")
+                # Можно либо прервать, либо пропустить расчеты с этим отчетом
+                continue # Пропускаем этот отчет
+
+            try:
+                template = generate_template_from_preset(preset)
+                json_body = render_template(template, context)
+                logger.info(f"User {current_user.id}: Запрос данных для отчета {report_id} ('{preset.get('name', '')}')")
+                result = req_module.take_olap(json_body)
+
+                if 'data' in result and isinstance(result['data'], list):
+                    report_results[report_id] = result['data']
+                    logger.debug(f"User {current_user.id}: Получено {len(result['data'])} строк для отчета {report_id}.")
+                else:
+                    report_results[report_id] = [] # Сохраняем пустой список, если данных нет
+                    logger.warning(f"User {current_user.id}: Отчет {report_id} не вернул данных или вернул некорректный формат.")
+
+            except Exception as report_err:
+                logger.error(f"User {current_user.id}: Ошибка при получении данных отчета {report_id}: {report_err}", exc_info=True)
+                flash(f"Ошибка при получении данных для отчета '{preset.get('name', report_id)}'. Расчеты могут быть неполными.", 'error')
+                report_results[report_id] = None # Отмечаем, что отчет не удалось получить
+
+        # 6. Агрегируем данные (суммируем нужные поля)
+        # Нам нужно заранее знать, какие поля суммировать для каждого отчета
+        fields_to_sum_by_report = defaultdict(set)
+        for calc in calculation_definitions:
+            fields_to_sum_by_report[calc['operand1_report_id']].add(calc['operand1_field_name'])
+            fields_to_sum_by_report[calc['operand2_report_id']].add(calc['operand2_field_name'])
+
+        for report_id, fields in fields_to_sum_by_report.items():
+            data = report_results.get(report_id)
+            if data is None: # Ошибка при получении отчета
+                 fetched_data_sums[report_id] = {field: None for field in fields} # Помечаем все поля как недоступные
+                 continue
+            if not data: # Пустой отчет
+                 fetched_data_sums[report_id] = {field: 0 for field in fields} # Сумма по пустому отчету = 0
+                 continue
+
+            # Инициализируем суммы для этого отчета
+            fetched_data_sums[report_id] = {field: 0 for field in fields}
+            for row in data:
+                for field in fields:
+                    try:
+                        # Пытаемся получить значение и привести к float
+                        value = row.get(field)
+                        if value is not None:
+                             # Обработка числовых строк с запятой как разделителем
+                             if isinstance(value, str):
+                                 value = value.replace(',', '.')
+                             numeric_value = float(value)
+                             fetched_data_sums[report_id][field] += numeric_value
+                        # Если value is None, ничего не добавляем (или можно считать 0)
+                    except (ValueError, TypeError):
+                        # Логируем ошибку, но продолжаем суммирование остальных строк/полей
+                        logger.warning(f"User {current_user.id}: Не удалось преобразовать значение '{row.get(field)}' поля '{field}' отчета {report_id} в число. Пропускается.")
+                        # Можно пометить поле как None, если одна ошибка делает всю сумму невалидной
+                        # fetched_data_sums[report_id][field] = None
+                        pass # Продолжаем суммировать другие значения
+
+        # 7. Выполняем расчеты
+        results_to_write = [] # Список кортежей (cell_address, value)
+        calculation_errors = 0
+        for calc in calculation_definitions:
+            try:
+                op1_report_id = calc['operand1_report_id']
+                op1_field = calc['operand1_field_name']
+                op2_report_id = calc['operand2_report_id']
+                op2_field = calc['operand2_field_name']
+                operation = calc['operation']
+                target_cell = calc['target_cell']
+
+                # Получаем предрасчитанные суммы
+                val1 = fetched_data_sums.get(op1_report_id, {}).get(op1_field)
+                val2 = fetched_data_sums.get(op2_report_id, {}).get(op2_field)
+
+                # Проверяем, что значения были получены и являются числами
+                if val1 is None or val2 is None:
+                    logger.error(f"User {current_user.id}: Не удалось получить значение для расчета {calc['id']}. Пропуск. val1={val1}, val2={val2}")
+                    calculation_errors += 1
+                    continue # Пропускаем этот расчет
+
+                # Выполняем операцию
+                result_value = None
+                if operation == '+':
+                    result_value = val1 + val2
+                elif operation == '-':
+                    result_value = val1 - val2
+                elif operation == '*':
+                    result_value = val1 * val2
+                elif operation == '/':
+                    if val2 == 0:
+                        logger.warning(f"User {current_user.id}: Обнаружено деление на ноль в расчете {calc['id']} ({val1} / {val2}). Результат будет 0.")
+                        result_value = 0 # Или можно записать ошибку/пустую строку
+                    else:
+                        result_value = val1 / val2
+                else:
+                    logger.error(f"User {current_user.id}: Неизвестная операция '{operation}' в расчете {calc['id']}.")
+                    calculation_errors += 1
+                    continue
+
+                # Добавляем результат в список для записи
+                results_to_write.append((target_cell, result_value))
+                logger.info(f"User {current_user.id}: Расчет {calc['id']}: {val1} {operation} {val2} = {result_value} -> {target_cell}")
+
+            except Exception as calc_err:
+                logger.error(f"User {current_user.id}: Ошибка при выполнении расчета {calc.get('id', 'N/A')}: {calc_err}", exc_info=True)
+                calculation_errors += 1
+                continue # Пропускаем ошибочный расчет
+
+        # 8. Записываем результаты в Google Sheets
+        if results_to_write:
+            try:
+                gs_client = GoogleSheets(cred_path, sheet_url)
+                gs_client.write_cells(results_to_write) # Используем новый метод для записи по ячейкам
+                flash(f"Расчеты выполнены. {len(results_to_write)} значений записано в Google Таблицу.", 'success')
+                if calculation_errors > 0:
+                     flash(f"{calculation_errors} расчетов не удалось выполнить из-за ошибок (см. логи).", 'warning')
+
+            except Exception as gs_error:
+                logger.error(f"User {current_user.id}: Не удалось записать результаты расчетов в Google Sheet. Ошибка: {gs_error}", exc_info=True)
+                flash(f"Не удалось записать результаты расчетов в Google Sheet. Детали в логах.", 'error')
+        else:
+            flash("Нет результатов для записи в Google Таблицу.", 'warning')
+            if calculation_errors > 0:
+                 flash(f"{calculation_errors} расчетов не удалось выполнить из-за ошибок (см. логи).", 'warning')
+
+
+    except ValueError as ve: # Ошибка валидации дат
+        flash(f'Ошибка данных: {str(ve)}', 'error')
+    except gspread.exceptions.APIError as api_err: # Ловим ошибки Google API
+         logger.error(f"User {current_user.id}: Ошибка Google API при выполнении расчетов: {api_err}", exc_info=True)
+         flash("Ошибка Google API при доступе к таблице. Проверьте права доступа сервисного аккаунта.", 'error')
+    except Exception as e:
+        logger.error(f"User {current_user.id}: Общая ошибка при выполнении расчетов: {str(e)}", exc_info=True)
+        flash(f"Произошла непредвиденная ошибка при выполнении расчетов: {str(e)}", 'error')
+    finally:
+        # Logout из RMS
+        if req_module and req_module.token:
+            try:
+                req_module.logout()
+            except Exception as logout_err:
+                logger.warning(f"User {current_user.id}: Ошибка при logout из RMS после расчетов: {logout_err}")
+
+    return redirect(url_for('index', _anchor='calculated-cells-section'))
 
 @app.cli.command('init-db')
 def init_db_command():
