@@ -4,19 +4,31 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from cryptography.fernet import Fernet
 import os
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 db = SQLAlchemy()
 
 # Generate a key for encryption. STORE THIS SECURELY in production (e.g., env variable)
 # For development, we can generate/load it from a file.
-key_file = 'secret.key'
-if os.path.exists(key_file):
-    with open(key_file, 'rb') as f:
-        ENCRYPTION_KEY = f.read()
-else:
+encryption_key_str = os.environ.get('ENCRYPTION_KEY')
+if not encryption_key_str:
+    logger.error("ENCRYPTION_KEY environment variable not set! RMS password encryption will fail.")
+    # Можно либо упасть с ошибкой, либо использовать временный ключ (НЕ РЕКОМЕНДУЕТСЯ для продакшена)
+    # raise ValueError("ENCRYPTION_KEY environment variable is required.")
+    # Для локального запуска без установки переменной, можно временно сгенерировать:
+    logger.warning("Generating temporary encryption key. SET ENCRYPTION_KEY ENV VAR FOR PRODUCTION!")
     ENCRYPTION_KEY = Fernet.generate_key()
-    with open(key_file, 'wb') as f:
-        f.write(ENCRYPTION_KEY)
+else:
+    try:
+        ENCRYPTION_KEY = encryption_key_str.encode('utf-8')
+        # Простая проверка, что ключ валидный для Fernet
+        Fernet(ENCRYPTION_KEY)
+        logger.info("Successfully loaded ENCRYPTION_KEY from environment variable.")
+    except Exception as e:
+         logger.error(f"Invalid ENCRYPTION_KEY format in environment variable: {e}")
+         raise ValueError("Invalid ENCRYPTION_KEY format.") from e
 
 fernet = Fernet(ENCRYPTION_KEY)
 

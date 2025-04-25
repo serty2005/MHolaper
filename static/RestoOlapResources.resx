@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+  Этот файл является исходником при локализации сервера.
+  Все остальные локали конвертируются из csv в resx с помощью ant resgen.
+
+  Для проверки при локальном запуске можно запустить из папки BuildScripts/resgen скрипт gen.bat
+  ПАПКА ДОЛЖНА БЫТЬ РАБОЧЕЙ ПРИ ЗАПУСКЕ, Т.К. ИСПОЛЬЗУЮТСЯ ОТНОСИТЕЛЬНЫЕ ПУТИ
+  gen.bat - для генерации английских ресурсов
+  gen.bat culturename (например, gen.bat de-DE) для генерации ресурсов другого языка
+
+  TODO После добавления нового ключа не забываем запускать ResxToJavaTool и коммитить перегенерированные классы!
+  -->
+  <xsd:schema id="root"
+              xmlns=""
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+              xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+    <data name="salesOlapConfig_AuthUser.Id" xml:space="preserve"> <value>ID авторизовавшего</value> </data>
+    <data name="salesOlapConfig_AuthUser" xml:space="preserve"> <value>Авторизовал</value> </data>
+    <data name="salesOlapConfig_Banquet" xml:space="preserve"> <value>Банкет</value> </data>
+    <data name="salesOlapConfig_Bonus.CardNumber" xml:space="preserve"> <value>Номер бонусной карты</value> </data>
+    <data name="salesOlapConfig_Bonus.Sum" xml:space="preserve"> <value>Сумма бонуса</value> </data>
+    <data name="salesOlapConfig_Bonus.Type" xml:space="preserve"> <value>Тип бонуса</value> </data>
+    <data name="salesOlapConfig_Card" xml:space="preserve"> <value>Карта авторизации</value> </data>
+    <data name="salesOlapConfig_CardNumber" xml:space="preserve"> <value>Номер карты оплаты</value> </data>
+    <data name="salesOlapConfig_CardOwner" xml:space="preserve"> <value>Владелец карты гостя</value> </data>
+    <data name="salesOlapConfig_CardType" xml:space="preserve"> <value>Кредитная карта</value> </data>
+    <data name="salesOlapConfig_CardTypeName" xml:space="preserve"> <value>Тип карты</value> </data>
+    <data name="salesOlapConfig_CashLocation" xml:space="preserve"> <value>Расположение кассы</value> </data>
+    <data name="salesOlapConfig_CashRegisterName" xml:space="preserve"> <value>Касса</value> </data>
+    <data name="salesOlapConfig_CashRegisterName.Number" xml:space="preserve"> <value>Номер кассы</value> </data>
+    <data name="salesOlapConfig_CashRegisterName.CashRegisterSerialNumber" xml:space="preserve"> <value>Серийный номер ФР</value> </data>
+    <data name="salesOlapConfig_Cashier.Id" xml:space="preserve"> <value>ID кассира</value> </data>
+    <data name="salesOlapConfig_Cashier" xml:space="preserve"> <value>Кассир</value> </data>
+    <data name="salesOlapConfig_Cashier.Code" xml:space="preserve"> <value>Табельный номер кассира</value> </data>
+    <data name="salesOlapConfig_CloseTime" xml:space="preserve"> <value>Время закрытия</value> </data>
+    <data name="salesOlapConfig_CloseTime.Minutes15" xml:space="preserve"> <value>15-минутный интервал закрытия</value> </data>
+    <data name="salesOlapConfig_Conception" xml:space="preserve"> <value>Концепция</value> </data>
+    <data name="salesOlapConfig_Conception.Code" xml:space="preserve"> <value>Код концепции</value> </data>
+    <data name="salesOlapConfig_CookingPlace" xml:space="preserve"> <value>Место приготовления</value> </data>
+    <data name="salesOlapConfig_CookingPlace.Id" xml:space="preserve"> <value>ID места приготовления</value> </data>
+    <data name="salesOlapConfig_CookingPlaceType" xml:space="preserve"> <value>Тип места приготовления</value> </data>
+    <data name="salesOlapConfig_Counteragent.Name" xml:space="preserve"> <value>Контрагент</value> </data>
+    <data name="salesOlapConfig_CreditUser" xml:space="preserve"> <value>В кредит на...</value> </data>
+    <data name="salesOlapConfig_CreditUser.Company" xml:space="preserve"> <value>Компания-контрагент</value> </data>
+    <data name="salesOlapConfig_Currencies.Currency" xml:space="preserve"> <value>Валюта оплаты</value> </data>
+    <data name="salesOlapConfig_Currencies.CurrencyRate" xml:space="preserve"> <value>Курс валюты оплаты</value> </data>
+    <data name="salesOlapConfig_Currencies.SumInCurrency" xml:space="preserve"> <value>Сумма в валюте оплаты / заказ</value> </data>
+    <data name="salesOlapConfig_DayOfWeekOpen" xml:space="preserve"> <value>День недели</value> </data>
+    <data name="salesOlapConfig_DeletedWithWriteoff" xml:space="preserve"> <value>Блюдо удалено</value> </data>
+    <data name="salesOlapConfig_Department" xml:space="preserve"> <value>Торговое предприятие</value> </data>
+    <data name="salesOlapConfig_Department.Code" xml:space="preserve"> <value>Код подразделения</value> </data>
+    <data name="salesOlapConfig_Department.Id" xml:space="preserve"> <value>ID подразделения</value> </data>
+    <data name="salesOlapConfig_Department.Category1" xml:space="preserve"> <value>Категория 1</value> </data>
+    <data name="salesOlapConfig_Department.Category2" xml:space="preserve"> <value>Категория 2</value> </data>
+    <data name="salesOlapConfig_Department.Category3" xml:space="preserve"> <value>Категория 3</value> </data>
+    <data name="salesOlapConfig_Department.Category4" xml:space="preserve"> <value>Категория 4</value> </data>
+    <data name="salesOlapConfig_Department.Category5" xml:space="preserve"> <value>Категория 5</value> </data>
+    <data name="salesOlapConfig_DishTaxCategory.Name" xml:space="preserve"> <value>Налоговая категория</value> </data>
+    <data name="salesOlapConfig_DishTaxCategory.Id" xml:space="preserve"> <value>ID налоговой категории</value> </data>
+    <data name="salesOlapConfig_Department.JurPerson" xml:space="preserve"> <value>Юридическое лицо</value> </data>
+    <data name="salesOlapConfig_DiscountPercent" xml:space="preserve"> <value>Процент скидки</value> </data>
+    <data name="salesOlapConfig_DiscountPercent.DiscountType" xml:space="preserve"> <value>Процент скидки</value> </data>
+    <data name="salesOlapConfig_DiscountSum" xml:space="preserve"> <value>Сумма скидки</value> </data>
+    <data name="salesOlapConfig_discountWithoutVAT" xml:space="preserve"> <value>Сумма скидки без НДС не включенного в стоимость</value> </data>
+    <data name="salesOlapConfig_fullSum" xml:space="preserve"> <value>Сумма без НДС не включенного в стоимость</value> </data>
+    <data name="salesOlapConfig_sumAfterDiscountWithoutVAT" xml:space="preserve"> <value>Сумма со скидкой без НДС не включенного в стоимость</value> </data>
+    <data name="salesOlapConfig_DishAmountInt" xml:space="preserve"> <value>Количество блюд</value> </data>
+    <data name="salesOlapConfig_DishAmountInt.PerOrder" xml:space="preserve"> <value>Ср. количество блюд на чек</value> </data>
+    <data name="salesOlapConfig_DishCategory" xml:space="preserve"> <value>Категория блюда</value> </data>
+    <data name="salesOlapConfig_DishCategory.Id" xml:space="preserve"> <value>ID категории блюда</value> </data>
+    <data name="salesOlapConfig_DishCategory.Accounting" xml:space="preserve"> <value>Бухгалтерская категория блюда</value> </data>
+    <data name="salesOlapConfig_DishCategory.Accounting.Id" xml:space="preserve"> <value>ID бухгалтерской категории блюда</value> </data>
+    <data name="salesOlapConfig_DishCode" xml:space="preserve"> <value>Код блюда</value> </data>
+    <data name="salesOlapConfig_DishCode.Quick" xml:space="preserve"> <value>Код быстрого набора блюда</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt" xml:space="preserve"> <value>Сумма со скидкой</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt.average" xml:space="preserve"> <value>Средняя сумма заказа</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt.averageWithoutVAT" xml:space="preserve"> <value>Средняя сумма заказа без НДС</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt.averageByGuest" xml:space="preserve"> <value>Средняя выручка с гостя</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt.averagePrice" xml:space="preserve"> <value>Средняя цена без НДС</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt.averagePriceWithVAT" xml:space="preserve"> <value>Средняя цена</value> </data>
+    <data name="salesOlapConfig_DishDiscountSumInt.withoutVAT" xml:space="preserve"> <value>Сумма со скидкой без НДС</value> </data>
+    <data name="salesOlapConfig_DishGroup" xml:space="preserve"> <value>Группа блюда</value> </data>
+    <data name="salesOlapConfig_DishGroup.Id" xml:space="preserve"> <value>ID группы блюда</value> </data>
+    <data name="salesOlapConfig_DishGroup.Num" xml:space="preserve"> <value>Код группы блюда</value> </data>
+    <data name="salesOlapConfig_DishGroup.Hierarchy" xml:space="preserve"> <value>Иерархия блюда</value> </data>
+    <data name="salesOlapConfig_DishGroup.SecondParent" xml:space="preserve"> <value>Группа блюда 2-го уровня</value> </data>
+    <data name="salesOlapConfig_DishGroup.ThirdParent" xml:space="preserve"> <value>Группа блюда 3-го уровня</value> </data>
+    <data name="salesOlapConfig_DishGroup.TopParent" xml:space="preserve"> <value>Группа блюда 1-го уровня</value> </data>
+    <data name="salesOlapConfig_DishId" xml:space="preserve"> <value>ID блюда</value> </data>
+    <data name="salesOlapConfig_DishMeasureUnit" xml:space="preserve"> <value>Единица измерения</value> </data>
+    <data name="salesOlapConfig_DishName" xml:space="preserve"> <value>Блюдо</value> </data>
+    <data name="salesOlapConfig_DishForeignName" xml:space="preserve"> <value>Наименование блюда на иностранном языке</value> </data>
+    <data name="salesOlapConfig_DishFullName" xml:space="preserve"> <value>Полное наименование блюда</value> </data>
+    <data name="salesOlapConfig_DishSize.Id" xml:space="preserve"> <value>ID размера блюда</value> </data>
+    <data name="salesOlapConfig_DishSize.Name" xml:space="preserve"> <value>Размер блюда</value> </data>
+    <data name="salesOlapConfig_DishSize.ShortName" xml:space="preserve"> <value>Код размера блюда</value> </data>
+    <data name="salesOlapConfig_DishSize.Priority" xml:space="preserve"> <value>Порядковый номер размера блюда</value> </data>
+    <data name="salesOlapConfig_DishSize.Scale.Id" xml:space="preserve"> <value>ID шкалы размеров блюда</value> </data>
+    <data name="salesOlapConfig_DishSize.Scale.Name" xml:space="preserve"> <value>Шкала размеров блюда</value> </data>
+    <data name="salesOlapConfig_SoldWithDish" xml:space="preserve"> <value>Продано с блюдом</value> </data>
+    <data name="salesOlapConfig_SoldWithDish.Id" xml:space="preserve"> <value>ID основного блюда</value> </data>
+    <data name="salesOlapConfig_SoldWithItem.Id" xml:space="preserve"> <value>ID позиции заказа основного блюда</value> </data>
+    <data name="salesOlapConfig_DishTags.NamesCombo" xml:space="preserve"> <value>Свойства (комб.)</value> </data>
+    <data name="salesOlapConfig_DishTags.IdsCombo" xml:space="preserve"> <value>ID свойств (комб.)</value> </data>
+    <data name="salesOlapConfig_DishType" xml:space="preserve"> <value>Тип товара</value> </data>
+    <data name="salesOlapConfig_DishReturnSum" xml:space="preserve"> <value>Сумма возврата</value> </data>
+    <data name="salesOlapConfig_DishReturnSum.withoutVAT" xml:space="preserve"> <value>Сумма возврата без НДС</value> </data>
+    <data name="salesOlapConfig_DishSumInt" xml:space="preserve"> <value>Сумма без скидки</value> </data>
+    <data name="salesOlapConfig_DishSumInt.averagePriceWithVAT" xml:space="preserve"> <value>Средняя цена без скидки</value> </data>
+    <data name="salesOlapConfig_OrderDiscount.GuestCard" xml:space="preserve"> <value>Гостевая карта</value> </data>
+    <data name="salesOlapConfig_OrderDiscount.Type" xml:space="preserve"> <value>Тип скидки</value> </data>
+    <data name="salesOlapConfig_OrderDiscount.Type.IDs" xml:space="preserve"> <value>ID типов скидок</value> </data>
+    <data name="salesOlapConfig_OrderIncrease.Type" xml:space="preserve"> <value>Тип надбавки</value> </data>
+    <data name="salesOlapConfig_OrderIncrease.Type.IDs" xml:space="preserve"> <value>ID типов надбавок</value> </data>
+    <data name="salesOlapConfig_GuestNum" xml:space="preserve"> <value>Количество гостей</value> </data>
+    <data name="salesOlapConfig_GuestNum.Avg" xml:space="preserve"> <value>Ср.кол-во гостей на чек</value> </data>
+    <data name="salesOlapConfig_HourClose" xml:space="preserve"> <value>Час закрытия</value> </data>
+    <data name="salesOlapConfig_HourOpen" xml:space="preserve"> <value>Час открытия</value> </data>
+    <data name="salesOlapConfig_IncreasePercent" xml:space="preserve"> <value>Процент надбавки</value> </data>
+    <data name="salesOlapConfig_IncreaseSum" xml:space="preserve"> <value>Сумма надбавки</value> </data>
+    <data name="salesOlapConfig_IncentiveSumBase.Sum" xml:space="preserve"> <value>Мотивационный бонус</value> </data>
+    <data name="salesOlapConfig_ItemDiscountOrIncrease.Detalization.ById" xml:space="preserve"> <value>Детализация скидок и надбавок по id</value> </data>
+    <data name="salesOlapConfig_ItemSaleEvent.Id" xml:space="preserve"> <value>ID позиции заказа</value> </data>
+    <data name="salesOlapConfig_ItemSaleEventDiscountType" xml:space="preserve"> <value>Наименование скидки, надбавки</value> </data>
+    <data name="salesOlapConfig_ItemSaleEventDiscountType.ComboAmount" xml:space="preserve"> <value>Количество комбо-скидок</value> </data>
+    <data name="salesOlapConfig_ItemSaleEventDiscountType.DiscountAmount" xml:space="preserve"> <value>Колич. блюд со скидкой</value> </data>
+    <data name="salesOlapConfig_JurName" xml:space="preserve"> <value>Юридическое лицо</value> </data>
+    <data name="salesOlapConfig_Mounth" xml:space="preserve"> <value>Месяц</value> </data>
+    <data name="salesOlapConfig_NonCashPaymentType" xml:space="preserve"> <value>Безналичный тип оплаты</value> </data>
+    <data name="salesOlapConfig_NonCashPaymentType.DocumentType" xml:space="preserve"> <value>Тип документа списания</value> </data>
+    <data name="salesOlapConfig_SessionID" xml:space="preserve"> <value>ID кассовой смены</value> </data>
+    <data name="salesOlapConfig_OpenDate" xml:space="preserve"> <value>Учетный день</value> </data>
+    <data name="salesOlapConfig_OpenDate.Typed" xml:space="preserve"> <value>Учетный день</value> </data>
+    <data name="salesOlapConfig_OpenTime" xml:space="preserve"> <value>Время открытия</value> </data>
+    <data name="salesOlapConfig_OpenTime.Minutes15" xml:space="preserve"> <value>15-минутный интервал открытия</value> </data>
+    <data name="salesOlapConfig_OperationType" xml:space="preserve"> <value>Операция</value> </data>
+    <data name="salesOlapConfig_OrderItems" xml:space="preserve"> <value>Позиций чека</value> </data>
+    <data name="salesOlapConfig_OrderNum" xml:space="preserve"> <value>Номер чека</value> </data>
+    <data name="salesOlapConfig_FiscalChequeNumber" xml:space="preserve"> <value>Номер фиск. чека</value> </data>
+    <data name="salesOlapConfig_OrderTime.AverageOrderTime" xml:space="preserve"> <value>Ср.время обсл.(мин)</value> </data>
+    <data name="salesOlapConfig_OrderTime.AveragePrechequeTime" xml:space="preserve"> <value>Ср.время в пречеке (мин)</value> </data>
+    <data name="salesOlapConfig_OrderTime.OrderLength" xml:space="preserve"> <value>Время обслуживания (мин)</value> </data>
+    <data name="salesOlapConfig_OrderTime.OrderLengthSum" xml:space="preserve"> <value>Время обсл.сумм.(мин)</value> </data>
+    <data name="salesOlapConfig_OrderTime.PrechequeLength" xml:space="preserve"> <value>Время в пречеке (мин)</value> </data>
+    <data name="salesOlapConfig_ExternalNumber" xml:space="preserve"> <value>Внешний номер заказа</value> </data>
+    <data name="salesOlapConfig_OrderType" xml:space="preserve"> <value>Тип заказа</value> </data>
+    <data name="salesOlapConfig_OrderType.Id" xml:space="preserve"> <value>ID типа заказа</value> </data>
+    <data name="salesOlapConfig_OrderServiceType" xml:space="preserve"> <value>Режим обслуживания</value> </data>
+    <data name="salesOlapConfig_OriginName" xml:space="preserve"> <value>Источник заказа</value> </data>
+    <data name="salesOlapConfig_OrderComment" xml:space="preserve"> <value>Комментарий заказа</value> </data>
+    <data name="salesOlapConfig_PaymentTransaction.Id" xml:space="preserve"> <value>ID проводки оплаты</value> </data>
+    <data name="salesOlapConfig_PaymentTransaction.Ids" xml:space="preserve"> <value>ID проводок оплат (комб.)</value> </data>
+    <data name="salesOlapConfig_PayTypes" xml:space="preserve"> <value>Тип оплаты</value> </data>
+    <data name="salesOlapConfig_PayTypes.Combo" xml:space="preserve"> <value>Тип оплаты (комб.)</value> </data>
+    <data name="salesOlapConfig_PayTypes.Group" xml:space="preserve"> <value>Группа оплаты</value> </data>
+    <data name="salesOlapConfig_PayTypes.GUID" xml:space="preserve"> <value>ID типа оплаты</value> </data>
+    <data name="salesOlapConfig_PayTypes.IsPrintCheque" xml:space="preserve"> <value>Фиск. тип оплаты</value> </data>
+    <data name="salesOlapConfig_PayTypes.VoucherNum" xml:space="preserve"> <value>Количество ваучеров</value> </data>
+    <data name="salesOlapConfig_PercentOfSummary.ByCol" xml:space="preserve"> <value>% по столбцу</value> </data>
+    <data name="salesOlapConfig_PercentOfSummary.ByRow" xml:space="preserve"> <value>% по строке</value> </data>
+    <data name="salesOlapConfig_PriceCategory" xml:space="preserve"> <value>Ценовая категория клиента</value> </data>
+    <data name="salesOlapConfig_PriceCategoryCard" xml:space="preserve"> <value>ЦК номер карты</value> </data>
+    <data name="salesOlapConfig_PriceCategoryDiscountCardOwner" xml:space="preserve"> <value>ЦК владелец карты</value> </data>
+    <data name="salesOlapConfig_PriceCategoryUserCardOwner" xml:space="preserve"> <value>ЦК контрагент</value> </data>
+    <data name="salesOlapConfig_PrechequeTime" xml:space="preserve"> <value>Время пречека</value> </data>
+    <data name="salesOlapConfig_ProductCostBase.ProductCost" xml:space="preserve"> <value>Себестоимость</value> </data>
+    <data name="salesOlapConfig_ProductCostBase.MarkUp" xml:space="preserve"> <value>Наценка(%)</value> </data>
+    <data name="salesOlapConfig_ProductCostBase.OneItem" xml:space="preserve"> <value>Себестоимость единицы</value> </data>
+    <data name="salesOlapConfig_ProductCostBase.Percent" xml:space="preserve"> <value>Себестоимость(%)</value> </data>
+    <data name="salesOlapConfig_ProductCostBase.PercentWithoutVAT" xml:space="preserve"> <value>Себестоимость без НДС(%)</value> </data>
+    <data name="salesOlapConfig_ProductCostBase.Profit" xml:space="preserve"> <value>Наценка</value> </data>
+    <data name="salesOlapConfig_PublicExternalData" xml:space="preserve"> <value>Публичные данные плагинов</value> </data>
+    <data name="salesOlapConfig_PublicExternalData.Xml" xml:space="preserve"> <value>Публичные данные плагинов (xml)</value> </data>
+    <data name="salesOlapConfig_QuarterOpen" xml:space="preserve"> <value>Квартал</value> </data>
+    <data name="salesOlapConfig_RemovalType" xml:space="preserve"> <value>Причина удаления блюда</value> </data>
+    <data name="salesOlapConfig_RestaurantSection" xml:space="preserve"> <value>Отделение</value> </data>
+    <data name="salesOlapConfig_RestaurantSection.Id" xml:space="preserve"> <value>ID отделения</value> </data>
+    <data name="salesOlapConfig_RestorauntGroup" xml:space="preserve"> <value>Группа</value> </data>
+    <data name="salesOlapConfig_RestorauntGroup.Id" xml:space="preserve"> <value>ID группы</value> </data>
+    <data name="salesOlapConfig_SessionNum" xml:space="preserve"> <value>Номер смены</value> </data>
+    <data name="salesOlapConfig_Store" xml:space="preserve"> <value>Склад списания</value> </data>
+    <data name="salesOlapConfig_Store.Id" xml:space="preserve"> <value>ID склада</value> </data>
+    <data name="salesOlapConfig_Store.Name" xml:space="preserve"> <value>Со склада</value> </data>
+    <data name="salesOlapConfig_StoreTo" xml:space="preserve"> <value>На склад</value> </data>
+    <data name="salesOlapConfig_Storned" xml:space="preserve"> <value>Возврат чека</value> </data>
+    <data name="salesOlapConfig_OrderDeleted" xml:space="preserve"> <value>Заказ удален</value> </data>
+    <data name="salesOlapConfig_TableNumInt" xml:space="preserve"> <value>Номер стола</value> </data>
+    <data name="salesOlapConfig_TableNum" xml:space="preserve"> <value>Номер стола</value> </data>
+    <data name="salesOlapConfig_UniqOrderId" xml:space="preserve"> <value>Чеков</value> </data>
+    <data name="salesOlapConfig_UniqOrderId.Id" xml:space="preserve"> <value>ID заказа</value> </data>
+    <data name="salesOlapConfig_UniqOrderId.OrdersCount" xml:space="preserve"> <value>Заказов</value> </data>
+    <data name="salesOlapConfig_VAT.Percent" xml:space="preserve"> <value>НДС(%)</value> </data>
+    <data name="salesOlapConfig_VAT.Sum" xml:space="preserve"> <value>НДС по чекам(Сумма)</value> </data>
+    <data name="salesOlapConfig_WaiterName" xml:space="preserve"> <value>Официант блюда</value> </data>
+    <data name="salesOlapConfig_WaiterName.ID" xml:space="preserve"> <value>ID официанта блюда</value> </data>
+    <data name="salesOlapConfig_OrderWaiter.Id" xml:space="preserve"> <value>ID официанта заказа</value> </data>
+    <data name="salesOlapConfig_OrderWaiter.Name" xml:space="preserve"> <value>Официант заказа</value> </data>
+    <data name="salesOlapConfig_WaiterTeam.Id" xml:space="preserve"> <value>ID бригады официантов</value> </data>
+    <data name="salesOlapConfig_WaiterTeam.Name" xml:space="preserve"> <value>Бригада официантов</value> </data>
+    <data name="salesOlapConfig_WeekInYearOpen" xml:space="preserve"> <value>Неделя года</value> </data>
+    <data name="salesOlapConfig_WeekInMonthOpen" xml:space="preserve"> <value>Неделя месяца</value> </data>
+    <data name="salesOlapConfig_WriteoffReason" xml:space="preserve"> <value>Причина списания</value> </data>
+    <data name="salesOlapConfig_WriteoffUser" xml:space="preserve"> <value>Списано на сотрудника</value> </data>
+    <data name="salesOlapConfig_DeletionComment" xml:space="preserve"> <value>Комментарий к удалению блюда</value> </data>
+    <data name="salesOlapConfig_YearOpen" xml:space="preserve"> <value>Год</value> </data>
+    <data name="salesOlapConfig_DishServicePrintTime" xml:space="preserve"> <value>Сервисная печать блюда</value> </data>
+    <data name="salesOlapConfig_DishServicePrintTime.Max" xml:space="preserve"> <value>Сервисная печать последнего блюда</value> </data>
+    <data name="salesOlapConfig_DishServicePrintTime.OpenToLastPrintDuration" xml:space="preserve"> <value>Длит: откр.-посл.серв.печать</value> </data>
+    <data name="salesOlapConfig_Comment" xml:space="preserve"> <value>Комментарий к блюду</value> </data>
+    <!-- KDS -->
+    <data name="salesOlapConfig_Cooking.ServeNumber" xml:space="preserve"> <value>Номер подачи</value> </data>
+    <data name="salesOlapConfig_Cooking.GuestWaitTime.Avg" xml:space="preserve"> <value>Продолжительность ожидания гостя (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.KitchenTime.Avg" xml:space="preserve"> <value>Продолжительность работы кухни (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.StartDelayTime.Avg" xml:space="preserve"> <value>Задержка начала приготовления (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.CookingDuration.Avg" xml:space="preserve"> <value>Продолжительность приготовления (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.Cooking1Duration.Avg" xml:space="preserve"> <value>Продолжительность приготовления 1 (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.Cooking2Duration.Avg" xml:space="preserve"> <value>Продолжительность приготовления 2 (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.Cooking3Duration.Avg" xml:space="preserve"> <value>Продолжительность приготовления 3 (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.Cooking4Duration.Avg" xml:space="preserve"> <value>Продолжительность приготовления 4 (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.ServeTime.Avg" xml:space="preserve"> <value>Продолжительность подачи гостю (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.CookingLateTime.Avg" xml:space="preserve"> <value>Опоздание приготовления (средняя)</value> </data>
+    <data name="salesOlapConfig_Cooking.FeedLateTime.Avg" xml:space="preserve"> <value>Опоздание подачи (средняя)</value> </data>
+
+    <!--Доставка-->
+    <data name="salesOlapConfig_Delivery.Id" xml:space="preserve"> <value>ID доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.IsDelivery" xml:space="preserve"> <value>Доставка</value> </data>
+    <data name="salesOlapConfig_Delivery.Number" xml:space="preserve"> <value>Номер доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.Address" xml:space="preserve"> <value>Адрес</value> </data>
+    <data name="salesOlapConfig_Delivery.City" xml:space="preserve"> <value>Город</value> </data>
+    <data name="salesOlapConfig_Delivery.Street" xml:space="preserve"> <value>Улица</value> </data>
+    <data name="salesOlapConfig_Delivery.Index" xml:space="preserve"> <value>Индекс адреса</value> </data>
+    <data name="salesOlapConfig_Delivery.House" xml:space="preserve"> <value>Дом</value> </data>
+    <data name="salesOlapConfig_Delivery.Building" xml:space="preserve"> <value>Корпус</value> </data>
+    <data name="salesOlapConfig_Delivery.Flat" xml:space="preserve"> <value>Квартира</value> </data>
+    <data name="salesOlapConfig_Delivery.Entrance" xml:space="preserve"> <value>Подъезд</value> </data>
+    <data name="salesOlapConfig_Delivery.Floor" xml:space="preserve"> <value>Этаж</value> </data>
+    <data name="salesOlapConfig_Delivery.Doorphone" xml:space="preserve"> <value>Домофон</value> </data>
+    <data name="salesOlapConfig_Delivery.ExternalCartographyId" xml:space="preserve"> <value>Идентификатор адреса</value> </data>
+    <data name="salesOlapConfig_Delivery.Region" xml:space="preserve"> <value>Район</value> </data>
+    <data name="salesOlapConfig_Delivery.Zone" xml:space="preserve"> <value>Зона доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.MarketingSource" xml:space="preserve"> <value>Реклама</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerMarketingSource" xml:space="preserve"> <value>Реклама клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerPhone" xml:space="preserve"> <value>Телефон клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.AddressAdditionalInfo" xml:space="preserve"> <value>Примечание адреса</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerName" xml:space="preserve"> <value>ФИО клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerNick" xml:space="preserve"> <value>Ник клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerCreatedDate" xml:space="preserve"> <value>Дата создания клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerCreatedDateTyped" xml:space="preserve"> <value>Дата создания клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.Phone" xml:space="preserve"> <value>Телефон доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.Email" xml:space="preserve"> <value>e-mail доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerCardNumber" xml:space="preserve"> <value>Номер карты клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerCardType" xml:space="preserve"> <value>Тип карты клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.Courier" xml:space="preserve"> <value>Курьер</value> </data>
+    <data name="salesOlapConfig_Delivery.Courier.Id" xml:space="preserve"> <value>ID курьера</value> </data>
+    <data name="salesOlapConfig_Delivery.EcsCourierName" xml:space="preserve"> <value>Имя курьера курьерской службы</value> </data>
+    <data name="salesOlapConfig_Delivery.EcsService" xml:space="preserve"> <value>Курьерская служба</value> </data>
+    <data name="salesOlapConfig_Delivery.ExpectedTime" xml:space="preserve"> <value>Планируемое время доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.PrintTime" xml:space="preserve"> <value>Время печати доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.BillTime" xml:space="preserve"> <value>Время печати накладной</value> </data>
+    <data name="salesOlapConfig_Delivery.SendTime" xml:space="preserve"> <value>Время отправки доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.ActualTime" xml:space="preserve"> <value>Фактическое время доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.CloseTime" xml:space="preserve"> <value>Время закрытия доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.WayDuration" xml:space="preserve"> <value>Время в пути(мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.WayDurationSum" xml:space="preserve"> <value>Сумм.время в пути(мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.WayDurationAvg" xml:space="preserve"> <value>Ср.время в пути(мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.Delay" xml:space="preserve"> <value>Опоздание доставки(мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.DelaySum" xml:space="preserve"> <value>Сумм.опоздание доставки(мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.DelayAvg" xml:space="preserve"> <value>Ср.опоздание доставки(мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.CancelCause" xml:space="preserve"> <value>Причина отмены доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.CancelComment" xml:space="preserve"> <value>Комментарий к отмене доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.CookingToSendDuration" xml:space="preserve"> <value>Длит: посл.серв.печать-отправка</value> </data>
+    <data name="salesOlapConfig_Delivery.SourceKey" xml:space="preserve"> <value>Источник доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.DeliveryOperator" xml:space="preserve"> <value>Оператор доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.DeliveryOperator.Id" xml:space="preserve"> <value>ID оператора доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.ServiceType" xml:space="preserve"> <value>Тип доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.ServiceTypeSelf" xml:space="preserve"> <value>Самовывоз</value> </data>
+    <data name="salesOlapConfig_Delivery.ServiceTypeCourier" xml:space="preserve"> <value>Курьером</value> </data>
+    <data name="salesOlapConfig_Delivery.DeliveryComment" xml:space="preserve"> <value>Комментарий к доставке</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerComment" xml:space="preserve"> <value>Комментарий к клиенту</value> </data>
+    <data name="salesOlapConfig_Delivery.CustomerOpinionComment" xml:space="preserve"> <value>Отзыв клиента</value> </data>
+    <data name="salesOlapConfig_Delivery.AvgMark" xml:space="preserve"> <value>Оценка доставки, %</value> </data>
+    <data name="salesOlapConfig_Delivery.AvgCourierMark" xml:space="preserve"> <value>Оценка курьера, %</value> </data>
+    <data name="salesOlapConfig_Delivery.AvgOperatorMark" xml:space="preserve"> <value>Оценка оператора, %</value> </data>
+    <data name="salesOlapConfig_Delivery.AvgFoodMark" xml:space="preserve"> <value>Оценка кухни, %</value> </data>
+    <data name="salesOlapConfig_Delivery.AggregatedAvgMark" xml:space="preserve"> <value>Средняя оценка доставки, %</value> </data>
+    <data name="salesOlapConfig_Delivery.AggregatedAvgOperatorMark" xml:space="preserve"> <value>Средняя оценка оператора, %</value> </data>
+    <data name="salesOlapConfig_Delivery.AggregatedAvgCourierMark" xml:space="preserve"> <value>Средняя оценка курьера, %</value> </data>
+    <data name="salesOlapConfig_Delivery.PredictedDeliveryTime" xml:space="preserve"> <value>Прогнозируемое время доставки</value> </data>
+    <data name="salesOlapConfig_Delivery.PredictedCookingCompleteTime" xml:space="preserve"> <value>Прогнозируемое время окончания готовки заказа</value> </data>
+    <data name="salesOlapConfig_Delivery.DiffBetweenActualDeliveryTimeAndPredictedDeliveryTime" xml:space="preserve"> <value>Отклонение от сроков доставки, фактическое от прогнозируемого (мин)</value> </data>
+    <data name="salesOlapConfig_Delivery.AggregatedAvgFoodMark" xml:space="preserve"> <value>Средняя оценка кухни, %</value> </data>
+    <data name="salesOlapConfig_Delivery.CookingFinishTime" xml:space="preserve"> <value>Время окончания приготовления</value> </data>
+    <data name="transactionsOlapConfig_Account.AccountHierarchyFull" xml:space="preserve"> <value>Иерархия счета</value> </data>
+    <data name="transactionsOlapConfig_Account.AccountHierarchySecond" xml:space="preserve"> <value>Счет 2-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Account.AccountHierarchyThird" xml:space="preserve"> <value>Счет 3-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Account.AccountHierarchyTop" xml:space="preserve"> <value>Счет 1-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Account.Code" xml:space="preserve"> <value>Код счета</value> </data>
+    <data name="transactionsOlapConfig_Account.CounteragentType" xml:space="preserve"> <value>Тип контрагента</value> </data>
+    <data name="transactionsOlapConfig_Account.Group" xml:space="preserve"> <value>Группа счета</value> </data>
+    <data name="transactionsOlapConfig_Account.Id" xml:space="preserve"> <value>ID счета</value> </data>
+    <data name="transactionsOlapConfig_Account.IsCashFlowAccount" xml:space="preserve"> <value>Участвует ли счет в ДДС</value> </data>
+    <data name="transactionsOlapConfig_Account.Name" xml:space="preserve"> <value>Счет</value> </data>
+    <data name="transactionsOlapConfig_Account.StoreOrAccount" xml:space="preserve"> <value>Склад/счет</value> </data>
+    <data name="transactionsOlapConfig_Account.Type" xml:space="preserve"> <value>Тип счета</value> </data>
+    <data name="transactionsOlapConfig_Amount.StoreInOut" xml:space="preserve"> <value>Оборот эл.номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Amount.StoreInOutTyped" xml:space="preserve"> <value>Оборот эл.номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Amount" xml:space="preserve"> <value>Количество</value> </data>
+    <data name="transactionsOlapConfig_Amount.In" xml:space="preserve"> <value>Приход (кол-во)</value> </data>
+    <data name="transactionsOlapConfig_Amount.Out" xml:space="preserve"> <value>Расход (кол-во)</value> </data>
+    <data name="transactionsOlapConfig_Conception" xml:space="preserve"> <value>Концепция</value> </data>
+    <data name="transactionsOlapConfig_Conception.Code" xml:space="preserve"> <value>Код концепции</value> </data>
+    <data name="transactionsOlapConfig_Contr-Account.Code" xml:space="preserve"> <value>Код корр.счета</value> </data>
+    <data name="transactionsOlapConfig_Contr-Account.Group" xml:space="preserve"> <value>Группа корр.счета</value> </data>
+    <data name="transactionsOlapConfig_Contr-Account.Name" xml:space="preserve"> <value>Корр.Счет/Склад</value> </data>
+    <data name="transactionsOlapConfig_Contr-Account.Type" xml:space="preserve"> <value>Тип корр.счета</value> </data>
+    <data name="transactionsOlapConfig_Contr-Amount" xml:space="preserve"> <value>Корр.количество</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.AccountingCategory" xml:space="preserve"> <value>Корр.Бухгалтерская категория</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Category" xml:space="preserve"> <value>Корр.Категория номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Category.Id" xml:space="preserve"> <value>Корр.ID категории номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.CookingPlaceType" xml:space="preserve"> <value>Корр.Тип места приготовления</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Hierarchy" xml:space="preserve"> <value>Корр.Иерархия номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Tags.NamesCombo" xml:space="preserve"> <value>Корр.Свойства (комб.)</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Tags.IdsCombo" xml:space="preserve"> <value>Корр.ID свойств (комб.)</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Id" xml:space="preserve"> <value>Корр.ID эл.номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.MeasureUnit" xml:space="preserve"> <value>Корр.Единица измерения</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Num" xml:space="preserve"> <value>Корр.Артикул элемента номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Type" xml:space="preserve"> <value>Корр.Тип элемента номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.Name" xml:space="preserve"> <value>Корр.Элемент номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.AlcoholClass" xml:space="preserve"> <value>Класс алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.AlcoholClass.Code" xml:space="preserve"> <value>Код класса алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.AlcoholClass.Group" xml:space="preserve"> <value>Группа алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.AlcoholClass.Type" xml:space="preserve"> <value>Тип алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.SecondParent" xml:space="preserve"> <value>Корр.Группа номенклатуры 2-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.ThirdParent" xml:space="preserve"> <value>Корр.Группа номенклатуры 3-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Contr-Product.TopParent" xml:space="preserve"> <value>Корр.Группа номенклатуры 1-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Counteragent.Id" xml:space="preserve"> <value>ID контрагента</value> </data>
+    <data name="transactionsOlapConfig_Counteragent.Name" xml:space="preserve"> <value>Контрагент</value> </data>
+    <data name="transactionsOlapConfig_DateSecondary.DateTimeTyped" xml:space="preserve"> <value>Дата и время проводки</value> </data>
+    <data name="transactionsOlapConfig_DateSecondary.DateTyped" xml:space="preserve"> <value>Дата проводки</value> </data>
+    <data name="transactionsOlapConfig_DateTime" xml:space="preserve"> <value>Дата и время</value> </data>
+    <data name="transactionsOlapConfig_DateTime.OperDayFilter" xml:space="preserve"> <value>Учетный день</value> </data>
+    <data name="transactionsOlapConfig_DateTime.Typed" xml:space="preserve"> <value>Дата и время</value> </data>
+    <data name="transactionsOlapConfig_DateTime.Date" xml:space="preserve"> <value>Учетный день</value> </data>
+    <data name="transactionsOlapConfig_DateTime.DateTyped" xml:space="preserve"> <value>Учетный день</value> </data>
+    <data name="transactionsOlapConfig_DateTime.DayOfWeak" xml:space="preserve"> <value>День недели</value> </data>
+    <data name="transactionsOlapConfig_DateTime.Hour" xml:space="preserve"> <value>Час</value> </data>
+    <data name="transactionsOlapConfig_DateTime.WeekInMonth" xml:space="preserve"> <value>Неделя месяца</value> </data>
+    <data name="transactionsOlapConfig_DateTime.WeekInYear" xml:space="preserve"> <value>Неделя года</value> </data>
+    <data name="transactionsOlapConfig_DateTime.Month" xml:space="preserve"> <value>Месяц</value> </data>
+    <data name="transactionsOlapConfig_DateTime.Quarter" xml:space="preserve"> <value>Квартал</value> </data>
+    <data name="transactionsOlapConfig_DateTime.Year" xml:space="preserve"> <value>Год</value> </data>
+    <data name="transactionsOlapConfig_Department" xml:space="preserve"> <value>Торговое предприятие</value> </data>
+    <data name="transactionsOlapConfig_Department.Category1" xml:space="preserve"> <value>Категория 1</value> </data>
+    <data name="transactionsOlapConfig_Department.Category2" xml:space="preserve"> <value>Категория 2</value> </data>
+    <data name="transactionsOlapConfig_Department.Category3" xml:space="preserve"> <value>Категория 3</value> </data>
+    <data name="transactionsOlapConfig_Department.Category4" xml:space="preserve"> <value>Категория 4</value> </data>
+    <data name="transactionsOlapConfig_Department.Category5" xml:space="preserve"> <value>Категория 5</value> </data>
+    <data name="transactionsOlapConfig_Department.Code" xml:space="preserve"> <value>Код подразделения</value> </data>
+    <data name="transactionsOlapConfig_Department.JurPerson" xml:space="preserve"> <value>Юридическое лицо</value> </data>
+    <data name="transactionsOlapConfig_Document" xml:space="preserve"> <value>Номер документа</value> </data>
+    <data name="transactionsOlapConfig_FinalBalance.Amount" xml:space="preserve"> <value>Конечный остаток товара</value> </data>
+    <data name="transactionsOlapConfig_FinalBalance.Money" xml:space="preserve"> <value>Конечный денежный остаток</value> </data>
+    <data name="transactionsOlapConfig_OrderId" xml:space="preserve"> <value>ID заказа</value> </data>
+    <data name="transactionsOlapConfig_OrderNum" xml:space="preserve"> <value>Номер заказа</value> </data>
+    <data name="transactionsOlapConfig_PercentOfSummary.ByCol" xml:space="preserve"> <value>% по столбцу</value> </data>
+    <data name="transactionsOlapConfig_PercentOfSummary.ByRow" xml:space="preserve"> <value>% по строке</value> </data>
+    <data name="transactionsOlapConfig_Product.AccountingCategory" xml:space="preserve"> <value>Бухгалтерская категория</value> </data>
+    <data name="transactionsOlapConfig_Product.AvgSum" xml:space="preserve"> <value>Средняя цена</value> </data>
+    <data name="transactionsOlapConfig_Product.Category" xml:space="preserve"> <value>Категория номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.Category.Id" xml:space="preserve"> <value>ID категории номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.CookingPlaceType" xml:space="preserve"> <value>Тип места приготовления</value> </data>
+    <data name="transactionsOlapConfig_Product.Hierarchy" xml:space="preserve"> <value>Иерархия номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.Tags.NamesCombo" xml:space="preserve"> <value>Свойства (комб.)</value> </data>
+    <data name="transactionsOlapConfig_Product.Tags.IdsCombo" xml:space="preserve"> <value>ID свойств (комб.)</value> </data>
+    <data name="transactionsOlapConfig_Product.Id" xml:space="preserve"> <value>ID элемента номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.MeasureUnit" xml:space="preserve"> <value>Единица измерения</value> </data>
+    <data name="transactionsOlapConfig_Product.Num" xml:space="preserve"> <value>Артикул элемента номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.Type" xml:space="preserve"> <value>Тип элемента номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.Name" xml:space="preserve"> <value>Элемент номенклатуры</value> </data>
+    <data name="transactionsOlapConfig_Product.AlcoholClass" xml:space="preserve"> <value>Класс алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Product.AlcoholClass.Code" xml:space="preserve"> <value>Код класса алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Product.AlcoholClass.Group" xml:space="preserve"> <value>Группа алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Product.AlcoholClass.Type" xml:space="preserve"> <value>Тип алкогольной продукции</value> </data>
+    <data name="transactionsOlapConfig_Product.SecondParent" xml:space="preserve"> <value>Группа номенклатуры 2-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Product.ThirdParent" xml:space="preserve"> <value>Группа номенклатуры 3-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Product.TopParent" xml:space="preserve"> <value>Группа номенклатуры 1-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Session.CashRegister" xml:space="preserve"> <value>Касса</value> </data>
+    <data name="transactionsOlapConfig_Session.Group" xml:space="preserve"> <value>Группа</value> </data>
+    <data name="transactionsOlapConfig_Session.GroupId" xml:space="preserve"> <value>ID группы</value> </data>
+    <data name="transactionsOlapConfig_Session.RestaurantSection" xml:space="preserve"> <value>Отделение</value> </data>
+    <data name="transactionsOlapConfig_StartBalance.Amount" xml:space="preserve"> <value>Начальный остаток товара</value> </data>
+    <data name="transactionsOlapConfig_StartBalance.Money" xml:space="preserve"> <value>Начальный денежный остаток</value> </data>
+    <data name="transactionsOlapConfig_Store" xml:space="preserve"> <value>Склад</value> </data>
+    <data name="transactionsOlapConfig_Sum.Incoming" xml:space="preserve"> <value>Сумма прихода</value> </data>
+    <data name="transactionsOlapConfig_Sum.Outgoing" xml:space="preserve"> <value>Сумма расхода</value> </data>
+    <data name="transactionsOlapConfig_Sum.PartOfIncome" xml:space="preserve"> <value>% от выручки</value> </data>
+    <data name="transactionsOlapConfig_Sum.PartOfSummaryByCol" xml:space="preserve"> <value>% суммы от итога по столбцам</value> </data>
+    <data name="transactionsOlapConfig_Sum.PartOfSummaryByRow" xml:space="preserve"> <value>% суммы от итога по строкам</value> </data>
+    <data name="transactionsOlapConfig_Sum.PartOfTotalIncome" xml:space="preserve"> <value>% от общей выручки</value> </data>
+    <data name="transactionsOlapConfig_Sum.ResignedSum" xml:space="preserve"> <value>Сумма</value> </data>
+    <data name="transactionsOlapConfig_TransactionType" xml:space="preserve"> <value>Тип транзакции</value> </data>
+    <data name="transactionsOlapConfig_TransactionType.Code" xml:space="preserve"> <value>Код транзакции</value> </data>
+    <data name="transactionsOlapConfig_CashFlowCategory" xml:space="preserve"> <value>Статья ДДС</value> </data>
+    <data name="transactionsOlapConfig_CashFlowCategory.Type" xml:space="preserve"> <value>Тип статьи ДДС</value> </data>
+    <data name="transactionsOlapConfig_CashFlowCategory.Hierarchy" xml:space="preserve"> <value>Иерархия статей ДДС</value> </data>
+    <data name="transactionsOlapConfig_CashFlowCategory.HierarchyLevel1" xml:space="preserve"> <value>Статья ДДС 1-го уровня</value> </data>
+    <data name="transactionsOlapConfig_CashFlowCategory.HierarchyLevel2" xml:space="preserve"> <value>Статья ДДС 2-го уровня</value> </data>
+    <data name="transactionsOlapConfig_CashFlowCategory.HierarchyLevel3" xml:space="preserve"> <value>Статья ДДС 3-го уровня</value> </data>
+    <data name="transactionsOlapConfig_Comment" xml:space="preserve"> <value>Комментарий</value> </data>
+    <data name="transactionsOlapConfig_TransactionSide" xml:space="preserve"> <value>Дебет/Кредит</value> </data>
+
+    <data name="OlapTag_Cost" xml:space="preserve"> <value>Себестоимость</value> </data>
+    <data name="OlapTag_Guests" xml:space="preserve"> <value>Гости</value> </data>
+    <data name="OlapTag_Discounts" xml:space="preserve"> <value>Скидки/надбавки</value> </data>
+    <data name="OlapTag_Employees" xml:space="preserve"> <value>Сотрудники</value> </data>
+    <data name="OlapTag_Bonuses" xml:space="preserve"> <value>Бонусы</value> </data>
+    <data name="OlapTag_VAT" xml:space="preserve"> <value>НДС</value> </data>
+    <data name="OlapTag_Organization" xml:space="preserve"> <value>Организация</value> </data>
+    <data name="OlapTag_Time" xml:space="preserve"> <value>Время</value> </data>
+    <data name="OlapTag_Order" xml:space="preserve"> <value>Заказ</value> </data>
+    <data name="OlapTag_Payment" xml:space="preserve"> <value>Оплата</value> </data>
+    <data name="OlapTag_Dishes" xml:space="preserve"> <value>Блюда</value> </data>
+    <data name="OlapTag_CustomCatogories" xml:space="preserve"> <value>Пользовательские категории</value> </data>
+    <data name="OlapTag_Nomenclature" xml:space="preserve"> <value>Номенклатура</value> </data>
+    <data name="OlapTag_Accounts" xml:space="preserve"> <value>Счета</value> </data>
+    <data name="OlapTag_Corporation" xml:space="preserve"> <value>Корпорация</value> </data>
+    <data name="OlapTag_BalanceList" xml:space="preserve"> <value>ОСВ</value> </data>
+    <data name="OlapTag_PL" xml:space="preserve"> <value>P&amp;L</value> </data>
+    <data name="OlapTag_Transaction" xml:space="preserve"> <value>Транзакция</value> </data>
+    <data name="OlapTag_Correspondent" xml:space="preserve"> <value>Корреспондент</value> </data>
+    <data name="OlapTag_TransactionOrganization" xml:space="preserve"> <value>Организация</value> </data>
+    <data name="OlapTag_Finances" xml:space="preserve"> <value>Финансы</value> </data>
+    <data name="OlapTag_DateTime" xml:space="preserve"> <value>Дата и время</value> </data>
+    <data name="OlapTag_TransactionPayment" xml:space="preserve"> <value>Оплата</value> </data>
+    <data name="OlapTag_CashFlow" xml:space="preserve"> <value>Движение денежных средств</value> </data>
+    <data name="OlapTag_Delivery" xml:space="preserve"> <value>Доставка</value> </data>
+    <data name="OlapTag_Customer" xml:space="preserve"> <value>Клиент доставки</value> </data>
+    <data name="OlapTag_TimeIntervals" xml:space="preserve"> <value>Временные интервалы</value> </data>
+    <data name="OlapTag_Cooking" xml:space="preserve"> <value>Приготовление</value> </data>
+    <data name="OlapTag_Alcohol" xml:space="preserve"> <value>Алкоголь</value> </data>
+    <data name="OlapTag_Surveys" xml:space="preserve"> <value>Отзывы клиентов</value> </data>
+
+    <data name="OlapReportSettings_TransactionPayment" xml:space="preserve"> <value>Оплата</value> </data>
+    <data name="OlapReportSettings_TerminalDishSales" xml:space="preserve"> <value>Выручка за блюда по кассам</value> </data>
+    <data name="OlapReportSettings_HourRevenue" xml:space="preserve"> <value>Почасовая выручка</value> </data>
+    <data name="OlapReportSettings_DishCategories" xml:space="preserve"> <value>Выручка по категориям блюд</value> </data>
+    <data name="OlapReportSettings_DailyTerminalSales" xml:space="preserve"> <value>Выручка станций по дням</value> </data>
+    <data name="OlapReportSettings_DailyRevenue" xml:space="preserve"> <value>Выручка по дням</value> </data>
+    <data name="OlapReportSettings_WaitersRevenue" xml:space="preserve"> <value>Выручка по официантам</value> </data>
+    <data name="OlapReportSettings_PaymentTypes" xml:space="preserve"> <value>Выручка по типам оплат</value> </data>
+    <data name="OlapReportSettings_DepartmentsPnL" xml:space="preserve"> <value>P&amp;L по подразделениям</value> </data>
+    <data name="OlapReportSettings_StoresPnL" xml:space="preserve"> <value>P&amp;L по складам</value> </data>
+    <data name="OlapReportSettings_ChargedBonuses" xml:space="preserve"> <value>Начисленные бонусы</value> </data>
+    <data name="OlapReportSettings_CashFlowReport" xml:space="preserve"> <value>Отчет о движении денежных средств</value> </data>
+    <data name="OlapReportSettings_CashFlowReportByDepartments" xml:space="preserve"> <value>Отчет о движении денежных средств по подразделениям</value> </data>
+    <data name="OlapReportSettings_deliveriesCommon" xml:space="preserve"> <value>Общий отчет по доставкам</value> </data>
+    <data name="OlapReportSettings_deliveriesByDepartments" xml:space="preserve"> <value>Доставки по точкам</value> </data>
+    <data name="OlapReportSettings_deliveriesByCouriers" xml:space="preserve"> <value>Доставки по курьерам</value> </data>
+    <data name="OlapReportSettings_deliveriesByMarketingSource" xml:space="preserve"> <value>Доставки по рекламе</value> </data>
+    <data name="OlapReportSettings_customersByMarketingSource" xml:space="preserve"> <value>Клиенты по рекламе</value> </data>
+    <data name="OlapReportSettings_deliveriesByExternalSources" xml:space="preserve"> <value>Доставки по внешним источникам заказов</value> </data>
+    <data name="OlapReportSettings_deliveriesByHours" xml:space="preserve"> <value>Доставки по часам</value> </data>
+    <data name="OlapReportSettings_deliveriesByStreets" xml:space="preserve"> <value>Доставки по улицам</value> </data>
+    <data name="OlapReportSettings_deliveriesByDishes" xml:space="preserve"> <value>Доставки по блюдам</value> </data>
+    <data name="OlapReportSettings_deliveriesByCancelCauses" xml:space="preserve"> <value>Причины отмен доставок</value> </data>
+    <data name="OlapReportSettings_deliveriesByCustomers" xml:space="preserve"> <value>Доставки по гостям</value> </data>
+    <data name="OlapReportSettings_deliveriesByOperators" xml:space="preserve"> <value>Доставки по операторам</value> </data>
+    <data name="OlapReportSettings_deliveriesAvgOperatorMark" xml:space="preserve"> <value>Средняя оценка оператора доставки</value> </data>
+    <data name="OlapReportSettings_deliveriesAvgCourierMark" xml:space="preserve"> <value>Средняя оценка курьера доставки</value> </data>
+    <data name="OlapReportSettings_deliveriesAvgFoodMark" xml:space="preserve"> <value>Средняя оценка кухни в доставке</value> </data>
+    <data name="OlapReportSettings_deliveriesMarks" xml:space="preserve"> <value>Оценки по доставкам</value> </data>
+    <data name="OlapReportSettings_deliveriesMarksByCustomer" xml:space="preserve"> <value>Оценки клиентов</value> </data>
+    <data name="OlapReportSettings_deliveriesMarksByDeliveryTerminal" xml:space="preserve"> <value>Оценки по точкам</value> </data>
+
+    <data name="OlapReportValue_no_value" xml:space="preserve"> <value>(пусто)</value> </data>
+    <data name="OlapReportValue_no_payment" xml:space="preserve"> <value>(без оплаты)</value> </data>
+    <!-- Это значение добавлено для CardNumber и соседнего с ним CardTypeName. CardNumber по ошибке долгое время оставалось нелокализованным,
+    поэтому менять его текст рискованно. Для других полей лучше использовать более популярный текст SalesOlapConfig_NoCard (без карты) -->
+    <data name="OlapReportValue_no_card" xml:space="preserve"> <value>(нет карты)</value> </data>
+    <data name="OlapReportValue_delivery_order" xml:space="preserve"> <value>Доставка</value> </data>
+    <data name="OlapReportValue_delivery_pickup" xml:space="preserve"> <value>Самовывоз</value> </data>
+
+    <data name="OlapCommon_Yes" xml:space="preserve"> <value>Да</value> </data>
+    <data name="OlapConfig_No" xml:space="preserve"> <value>Нет</value> </data>
+
+    <!-- Контроль срока хранения -->
+    <data name="stockOlapConfig_EventDate" xml:space="preserve"> <value>Дата</value> </data>
+    <data name="stockOlapConfig_EventCookingDate" xml:space="preserve"> <value>Дата и время приготовления</value> </data>
+    <data name="stockOlapConfig_Amount" xml:space="preserve"> <value>Количество</value> </data>
+    <data name="stockOlapConfig_ProductId" xml:space="preserve"> <value>ID блюда</value> </data>
+    <data name="stockOlapConfig_ProductName" xml:space="preserve"> <value>Блюдо</value> </data>
+    <data name="stockOlapConfig_ProductNum" xml:space="preserve"> <value>Артикул</value> </data>
+    <data name="stockOlapConfig_ProductMeasureUnit" xml:space="preserve"> <value>Единицы измерения</value> </data>
+    <data name="stockOlapConfig_ProductCategory" xml:space="preserve"> <value>Категория блюда</value> </data>
+    <data name="stockOlapConfig_ProductAccountingCategory" xml:space="preserve"> <value>Бухгалтерская категория блюда</value> </data>
+    <data name="stockOlapConfig_StoreFrom" xml:space="preserve"> <value>Склад</value> </data>
+    <data name="stockOlapConfig_AccountTo" xml:space="preserve"> <value>Счет</value> </data>
+    <data name="stockOlapConfig_User" xml:space="preserve"> <value>Сотрудник</value> </data>
+    <data name="stockOlapConfig_User.Id" xml:space="preserve"> <value>ID сотрудника</value> </data>
+    <data name="stockOlapConfig_Department" xml:space="preserve"> <value>Торговое предприятие</value> </data>
+    <data name="stockOlapConfig_Department.Code" xml:space="preserve"> <value>Код подразделения</value> </data>
+    <data name="stockOlapConfig_Department.Id" xml:space="preserve"> <value>ID подразделения</value> </data>
+    <data name="stockOlapConfig_ProductCostBase.ProductCost" xml:space="preserve"> <value>Себестоимость</value> </data>
+    <data name="stockOlapConfig_ProductCostBase.OneItem" xml:space="preserve"> <value>Себестоимость единицы</value> </data>
+    <data name="stockOlapConfig_ProductExpirationDuration" xml:space="preserve"> <value>Просрочка на момент продажи</value> </data>
+    <data name="stockOlapConfig_Event.Type" xml:space="preserve"> <value>Тип события</value> </data>
+</root>

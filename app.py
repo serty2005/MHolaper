@@ -15,15 +15,15 @@ from models import db, User, UserConfig
 
 
 app = Flask(__name__)
-app.secret_key = app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-replace-in-prod')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
+app.secret_key = os.environ.get('SECRET_KEY', '994525')
+DATA_DIR = os.environ.get('DATA_DIR', '/app/data')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f'sqlite:///{DATA_DIR}/app.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
 
-USER_UPLOADS_DIR = "user_uploads"
-os.makedirs(USER_UPLOADS_DIR, exist_ok=True)
+os.makedirs(DATA_DIR, exist_ok=True)
 
 # --- Flask-Login Configuration ---
 login_manager = LoginManager()
@@ -33,7 +33,7 @@ login_manager.login_view = 'login' # Redirect to 'login' view if user tries to a
 @login_manager.user_loader
 def load_user(user_id):
     """Loads user from DB for session management."""
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 # --- Logging Configuration ---
 logger = logging.getLogger()
@@ -58,7 +58,7 @@ def get_user_upload_path(filename=""):
     """Gets the upload path for the current user."""
     if not current_user.is_authenticated:
         return None # Or raise an error
-    user_dir = os.path.join(USER_UPLOADS_DIR, str(current_user.id))
+    user_dir = os.path.join(DATA_DIR, str(current_user.id))
     os.makedirs(user_dir, exist_ok=True)
     return os.path.join(user_dir, secure_filename(filename))
 
@@ -103,7 +103,7 @@ def login():
         flash('Login successful!', 'success')
         next_page = request.args.get('next')
         return redirect(next_page or url_for('index'))
-    return render_template('login.html') # Create this template
+    return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -136,7 +136,7 @@ def register():
              flash('An error occurred during registration. Please try again.', 'error')
              return redirect(url_for('register'))
 
-    return render_template('register.html') # Create this template
+    return render_template('register.html')
 
 @app.route('/logout')
 @login_required
@@ -176,7 +176,7 @@ def configure_rms():
 
         # Проверяем, что все поля заполнены
         if not host or not login or not password:
-            flash('Все поля RMS должны быть заполнены', 'error')
+            flash('All RMS fields must be filled.', 'error')
             return redirect(url_for('index'))
 
         # Авторизация на RMS-сервере
@@ -192,15 +192,15 @@ def configure_rms():
             config.presets = presets_data
 
             db.session.commit()
-            flash(f"Успешная авторизация на RMS-сервере. Получено {len(presets_data)} пресетов", 'success')
+            flash(f"Successfully authorized on RMS server. Received {len(presets_data)} presets.", 'success')
             logger.info(f"User {current_user.id}: RMS config updated successfully.")
         else:
-            flash('Ошибка авторизации на RMS-сервере', 'error')
+            flash('Authorization error on RMS server.', 'error')
 
     except Exception as e:
         db.session.rollback()
         logger.error(f"User {current_user.id}: Ошибка при настройке RMS: {str(e)}")
-        flash(f'Ошибка при настройке RMS: {str(e)}', 'error')
+        flash(f'Error configuring RMS: {str(e)}', 'error')
 
     return redirect(url_for('index'))
 
@@ -212,13 +212,13 @@ def upload_credentials():
     if 'cred_file' in request.files:
         cred_file = request.files['cred_file']
         if cred_file.filename != '':
-            # Ensure filename is safe and save to user-specific directory
+            
             filename = secure_filename(cred_file.filename)
             user_cred_path = get_user_upload_path(filename)
 
             try:
                 # Save the file temporarily first to read it
-                temp_path = os.path.join("uploads", f"temp_{current_user.id}_{filename}") # Temp generic uploads dir
+                temp_path = os.path.join("data", f"temp_{current_user.id}_{filename}") # Temp generic uploads dir
                 cred_file.save(temp_path)
 
                 # Извлекаем client_email из JSON-файла
@@ -228,7 +228,7 @@ def upload_credentials():
                     client_email = cred_data.get('client_email')
 
                 if not client_email:
-                     flash('Не удалось найти client_email в файле credentials.', 'error')
+                     flash('Could not find client_email in the credentials file.', 'error')
                      os.remove(temp_path) # Clean up temp file
                      return redirect(url_for('index'))
 
@@ -244,22 +244,22 @@ def upload_credentials():
                 # config.mappings = {}
 
                 db.session.commit()
-                flash(f'Файл credentials успешно загружен и сохранен для пользователя. Email: {client_email}', 'success')
+                flash(f'Credentials file successfully uploaded and saved. Email: {client_email}', 'success')
                 logger.info(f"User {current_user.id}: Credentials file uploaded to {user_cred_path}")
 
             except json.JSONDecodeError:
-                 flash('Ошибка: Загруженный файл не является валидным JSON.', 'error')
+                 flash('Error: Uploaded file is not a valid JSON.', 'error')
                  if os.path.exists(temp_path): os.remove(temp_path) # Clean up temp file
                  logger.warning(f"User {current_user.id}: Uploaded invalid JSON credentials file.")
             except Exception as e:
                 db.session.rollback()
                 logger.error(f"User {current_user.id}: Ошибка при загрузке credentials: {str(e)}")
-                flash(f'Ошибка при загрузке/обработке credentials: {str(e)}', 'error')
+                flash(f'Error processing credentials: {str(e)}', 'error')
                 if os.path.exists(temp_path): os.remove(temp_path) # Clean up temp file
         else:
-            flash('Файл не был выбран', 'error')
+            flash('No file was selected.', 'error')
     else:
-        flash('Ошибка: Файл credentials не найден в запросе', 'error')
+        flash('Error: Credentials file not found in request.', 'error')
 
     return redirect(url_for('index'))
 
@@ -273,13 +273,13 @@ def configure_google():
 
         sheet_url = request.form.get('sheet_url', '').strip()
         if not sheet_url:
-            flash('URL таблицы должен быть заполнен', 'error')
+            flash('Sheet URL must be provided.', 'error')
             return redirect(url_for('index'))
 
         # Check if credentials file path exists in config and on disk
         cred_path = config.google_cred_file_path
         if not cred_path or not os.path.isfile(cred_path):
-             flash('Сначала загрузите корректный файл credentials.', 'warning')
+             flash('Please upload a valid credentials file first.', 'warning')
              # Save the URL anyway? Or require creds first? Let's save URL.
              config.google_sheet_url = sheet_url
              config.sheets = [] # Clear sheets if creds are missing/invalid
@@ -302,14 +302,14 @@ def configure_google():
         # config.mappings = {}
 
         db.session.commit()
-        flash(f'Успешное подключение к Google Sheets. Найдено {len(sheets_data)} листов. Настройки сохранены.', 'success')
+        flash(f'Successfully connected to Google Sheets. Found {len(sheets_data)} sheets. Settings saved.', 'success')
         logger.info(f"User {current_user.id}: Google Sheets config updated. URL: {sheet_url}")
 
     except Exception as e:
         db.session.rollback()
         # Don't clear sheets list on temporary connection error
         logger.error(f"User {current_user.id}: Ошибка при настройке Google Sheets: {str(e)}")
-        flash(f'Ошибка при подключении к Google Sheets: {str(e)}. Проверьте URL и доступ сервисного аккаунта.', 'error')
+        flash(f'Error connecting to Google Sheets: {str(e)}. Check the URL and service account permissions.', 'error')
         # Still save the URL entered by the user
         config.google_sheet_url = sheet_url
         try:
@@ -344,12 +344,12 @@ def mapping_set():
         config.mappings = new_mappings # Use the setter
         db.session.commit()
 
-        flash('Сопоставления успешно обновлены', 'success')
+        flash('Mappings updated successfully.', 'success')
         logger.info(f"User {current_user.id}: Mappings updated: {new_mappings}")
     except Exception as e:
         db.session.rollback()
         logger.error(f"User {current_user.id}: Ошибка при обновлении сопоставлений: {str(e)}")
-        flash(f'Ошибка при обновлении сопоставлений: {str(e)}', 'error')
+        flash(f'Error updating mappings: {str(e)}', 'error')
 
     return redirect(url_for('index'))
 
@@ -371,7 +371,7 @@ def render_olap():
         # Получаем имя листа из кнопки
         sheet_title = next((key for key in request.form if key.startswith('render_')), '').replace('render_', '')
         if not sheet_title:
-            flash('Ошибка: Не удалось определить лист для отрисовки отчета', 'error')
+            flash('Error: Could not determine the sheet for rendering the report.', 'error')
             return redirect(url_for('index'))
 
         logger.info(f"User {current_user.id}: Attempting to render OLAP for sheet '{sheet_title}'")
@@ -387,24 +387,24 @@ def render_olap():
 
         # --- Проверки ---
         if not report_id:
-            flash(f"Ошибка: Нет сопоставленного отчета для листа '{sheet_title}'", 'error')
+            flash(f"Error: No report mapped for sheet '{sheet_title}'.", 'error')
             return redirect(url_for('index'))
         if not all([rms_host, rms_login, rms_password]):
-             flash('Ошибка: Конфигурация RMS не завершена.', 'error')
+             flash('Error: RMS configuration is incomplete.', 'error')
              return redirect(url_for('index'))
         if not cred_path or not sheet_url or not os.path.isfile(cred_path):
-             flash('Ошибка: Конфигурация Google Sheets не завершена или файл credentials недоступен.', 'error')
+             flash('Error: Google Sheets configuration is incomplete or credentials file is unavailable.', 'error')
              return redirect(url_for('index'))
 
         preset = next((p for p in all_presets if p['id'] == report_id), None)
         if not preset:
-             flash(f"Ошибка: Пресет с ID '{report_id}' не найден в сохраненной конфигурации.", 'error')
+             flash(f"Error: Preset with ID '{report_id}' not found in the saved configuration.", 'error')
              logger.warning(f"User {current_user.id}: Preset ID '{report_id}' not found in stored presets for sheet '{sheet_title}'")
              return redirect(url_for('index'))
 
         template = generate_temps(presets=[preset])
         if not template:
-            flash(f"Ошибка: Не удалось сгенерировать шаблон для отчета '{preset.get('name', report_id)}'", 'error')
+            flash(f"Error: Failed to generate template for report '{preset.get('name', report_id)}'.", 'error')
             return redirect(url_for('index'))
 
         context = {"from_date": from_date, "to_date": to_date}
@@ -447,39 +447,39 @@ def render_olap():
                         gs_client.clear_and_write_data(sheet_title, data_to_insert, start_cell="A1") # Указываем начальную ячейку
 
                         if len(data_to_insert) > 1 : # Проверяем, были ли записаны строки данных (кроме заголовка)
-                            flash(f"Данные отчета '{preset.get('name', report_id)}' успешно записаны на лист '{sheet_title}'", 'success')
+                            flash(f"Report data '{preset.get('name', report_id)}' successfully written to sheet '{sheet_title}'.", 'success')
                         else:
-                             flash(f"Отчет '{preset.get('name', report_id)}' не вернул данных для указанного периода. Лист '{sheet_title}' очищен.", 'warning')
+                             flash(f"Report '{preset.get('name', report_id)}' returned no data for the specified period. Sheet '{sheet_title}' cleared.", 'warning')
 
                     except Exception as gs_error: # Ловим ошибки конкретно от Google Sheets операции
                          logger.error(f"User {current_user.id}: Failed to write data to Google Sheet '{sheet_title}'. Error: {gs_error}", exc_info=True)
-                         flash(f"Ошибка при записи данных в Google Sheets на лист '{sheet_title}': {gs_error}", 'error')
+                         flash(f"User {current_user.id}: Failed to write data to Google Sheet '{sheet_title}'. Error: {gs_error}", 'error')
                          # Не перенаправляем здесь, чтобы пользователь видел ошибку, возможно, RMS данные были получены
 
                 else:
                      logger.error(f"User {current_user.id}: OLAP response format unexpected: {result}")
-                     flash(f"Ошибка: Неожиданный формат ответа от RMS для отчета '{preset.get('name', report_id)}'", 'error')
+                     flash(f"Error: Unexpected response format from RMS for report '{preset.get('name', report_id)}'.", 'error')
 
             # except gspread.exceptions.APIError as api_err: # Можно ловить специфичные ошибки Google API здесь
             #      logger.error(f"User {current_user.id}: Google API error during report processing: {api_err}", exc_info=True)
             #      flash(f"Ошибка Google API при обработке листа '{sheet_title}': {api_err}", 'error')
             except Exception as report_err: # Общий обработчик ошибок во время получения/записи отчета
                 logger.error(f"User {current_user.id}: Ошибка при получении/записи отчета {report_id}: {report_err}", exc_info=True)
-                flash(f"Ошибка при получении/записи отчета '{preset.get('name', report_id)}': {report_err}", 'error')
+                flash(f"Error fetching/writing report '{preset.get('name', report_id)}': {report_err}", 'error')
             finally:
                  # Убедимся, что выходим из сессии RMS, даже если была ошибка с Google Sheets
                  if req_module and req_module.token: # Проверяем, что req_module был создан и есть токен
                     req_module.logout()
         else:
-            flash('Ошибка авторизации на RMS-сервере при попытке получить отчет.', 'error')
+            flash('Authorization error on RMS server when trying to fetch the report.', 'error')
 
     except ValueError as ve: # Ошибка валидации дат
-        flash(f'Ошибка в датах: {str(ve)}', 'error')
+        flash(f'Date error: {str(ve)}', 'error')
         logger.warning(f"User {current_user.id}: Date validation error: {ve}")
     except Exception as e:
         # Ловим остальные непредвиденные ошибки (например, ошибки инициализации GoogleSheets, ReqModule, ошибки Jinja и т.д.)
         logger.error(f"User {current_user.id}: Общая ошибка в render_olap для листа '{sheet_title}': {str(e)}", exc_info=True)
-        flash(f"Произошла непредвиденная ошибка: {str(e)}", 'error')
+        flash(f"An unexpected error occurred: {str(e)}", 'error')
     finally:
          # Дополнительно разлогиниваемся, если ошибка произошла до блока finally внутри 'if req_module.login()'
          if req_module and req_module.token:
@@ -496,6 +496,7 @@ def render_olap():
 # Run 'flask db init' first time
 # Run 'flask db migrate -m "Some description"' after changing models
 # Run 'flask db upgrade' to apply migrations
+
 @app.cli.command('init-db')
 def init_db_command():
     """Creates the database tables."""
@@ -509,4 +510,4 @@ if __name__ == '__main__':
          db.create_all() # Create tables if they don't exist
     # Run Flask app
     # Set debug=False for production!
-    app.run(debug=True, host='0.0.0.0') # Listen on all interfaces if needed
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5005))) # Listen on all interfaces if needed
