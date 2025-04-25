@@ -1,7 +1,7 @@
 import json
 from flask import Flask, render_template, request, redirect, url_for, flash, g, session
+import gspread
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 import logging
@@ -422,10 +422,10 @@ def render_olap():
         context = {"from_date": from_date, "to_date": to_date}
         try:
             # Используем переименованную функцию
-            json_body = render_template(template, context)
+            json_body = render_temp(template, context)
         except Exception as e:
              flash(f"Ошибка подготовки запроса для отчета '{preset.get('name', report_id)}': {e}", 'error')
-             logger.error(f"User {current_user.id}: Ошибка render_template: {e}", exc_info=True)
+             logger.error(f"User {current_user.id}: Ошибка render_temp: {e}", exc_info=True)
              return redirect(url_for('index'))
 
 

@@ -120,7 +120,7 @@ def generate_template_from_preset(preset):
         raise # Перевыбрасываем ошибку
 
 
-def render_template(template_dict, context):
+def render_temp(template_dict, context):
     """
     Рендерит шаблон (представленный словарем) с использованием Jinja2.
 
