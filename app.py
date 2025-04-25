@@ -358,11 +358,11 @@ def mapping_set():
 def render_olap():
     """Отрисовка данных отчета на листе для текущего пользователя."""
     config = g.user_config
-    # Инициализируем переменные заранее
     sheet_title = None
     report_id = None
     preset = None
-    req_module = None # Для finally блока
+    req_module = None
+    gs_client = None # Инициализируем здесь для finally
 
     try:
         # Валидация дат
@@ -371,10 +371,10 @@ def render_olap():
         # Получаем имя листа из кнопки
         sheet_title = next((key for key in request.form if key.startswith('render_')), '').replace('render_', '')
         if not sheet_title:
-            flash('Error: Could not determine the sheet for rendering the report.', 'error')
+            flash('Ошибка: Не удалось определить лист для отрисовки отчета.', 'error')
             return redirect(url_for('index'))
 
-        logger.info(f"User {current_user.id}: Attempting to render OLAP for sheet '{sheet_title}'")
+        logger.info(f"User {current_user.id}: Попытка отрисовки OLAP для листа '{sheet_title}'")
 
         # --- Получаем данные из конфига пользователя ---
         report_id = config.mappings.get(sheet_title)
@@ -387,110 +387,130 @@ def render_olap():
 
         # --- Проверки ---
         if not report_id:
-            flash(f"Error: No report mapped for sheet '{sheet_title}'.", 'error')
+            flash(f"Ошибка: Для листа '{sheet_title}' не назначен отчет.", 'error')
             return redirect(url_for('index'))
         if not all([rms_host, rms_login, rms_password]):
-             flash('Error: RMS configuration is incomplete.', 'error')
+             flash('Ошибка: Конфигурация RMS не завершена.', 'error')
              return redirect(url_for('index'))
         if not cred_path or not sheet_url or not os.path.isfile(cred_path):
-             flash('Error: Google Sheets configuration is incomplete or credentials file is unavailable.', 'error')
+             flash('Ошибка: Конфигурация Google Sheets не завершена или файл credentials недоступен.', 'error')
              return redirect(url_for('index'))
 
-        preset = next((p for p in all_presets if p['id'] == report_id), None)
+        preset = next((p for p in all_presets if p.get('id') == report_id), None) # Безопасное получение id
         if not preset:
-             flash(f"Error: Preset with ID '{report_id}' not found in the saved configuration.", 'error')
-             logger.warning(f"User {current_user.id}: Preset ID '{report_id}' not found in stored presets for sheet '{sheet_title}'")
+             flash(f"Ошибка: Пресет с ID '{report_id}' не найден в сохраненной конфигурации.", 'error')
+             logger.warning(f"User {current_user.id}: Пресет ID '{report_id}' не найден в сохраненных пресетах для листа '{sheet_title}'")
              return redirect(url_for('index'))
 
-        template = generate_temps(presets=[preset])
-        if not template:
-            flash(f"Error: Failed to generate template for report '{preset.get('name', report_id)}'.", 'error')
+        # --- Генерируем шаблон из одного пресета ---
+        try:
+            # Передаем сам словарь пресета
+            template = generate_template_from_preset(preset)
+        except ValueError as e:
+             flash(f"Ошибка генерации шаблона для отчета '{preset.get('name', report_id)}': {e}", 'error')
+             return redirect(url_for('index'))
+        except Exception as e:
+             flash(f"Непредвиденная ошибка при генерации шаблона для отчета '{preset.get('name', report_id)}': {e}", 'error')
+             logger.error(f"User {current_user.id}: Ошибка generate_template_from_preset: {e}", exc_info=True)
+             return redirect(url_for('index'))
+
+        if not template: # Дополнительная проверка, хотя функция теперь вызывает exception
+            flash(f"Ошибка: Не удалось сгенерировать шаблон для отчета '{preset.get('name', report_id)}'.", 'error')
             return redirect(url_for('index'))
 
+        # --- Рендерим шаблон ---
         context = {"from_date": from_date, "to_date": to_date}
-        json_body = render_temps(template, context)
+        try:
+            # Используем переименованную функцию
+            json_body = render_template(template, context)
+        except Exception as e:
+             flash(f"Ошибка подготовки запроса для отчета '{preset.get('name', report_id)}': {e}", 'error')
+             logger.error(f"User {current_user.id}: Ошибка render_template: {e}", exc_info=True)
+             return redirect(url_for('index'))
+
 
         # --- Инициализация модулей ---
         req_module = ReqModule(rms_host, rms_login, rms_password)
-        # Инициализируем GoogleSheets *перед* блоком finally, чтобы иметь доступ в случае ошибки API
         gs_client = GoogleSheets(cred_path, sheet_url) # Обработка ошибок инициализации уже внутри __init__
 
         # --- Выполняем запросы ---
         if req_module.login():
             try:
-                logger.info(f"User {current_user.id}: Sending OLAP request for report {report_id} ({preset.get('name', '')})")
+                logger.info(f"User {current_user.id}: Отправка OLAP-запроса для отчета {report_id} ('{preset.get('name', '')}')")
                 result = req_module.take_olap(json_body)
-                logger.debug(f"User {current_user.id}: OLAP result received (first 50 chars): {str(result)[:50]}...")
+                # Уменьшим логирование полного результата, если он большой
+                logger.debug(f"User {current_user.id}: Получен OLAP-результат (наличие ключа data: {'data' in result}, тип: {type(result.get('data'))})")
 
                 # Обрабатываем данные
                 if 'data' in result and isinstance(result['data'], list):
-                    # Преобразуем данные: Заголовки + Строки
                     headers = []
-                    data_to_insert = [] # Итоговый список списков для Google Sheets
+                    data_to_insert = []
 
                     if result['data']:
-                        # Получаем заголовки из первого элемента, сохраняя порядок ключей Python 3.7+
+                        # Получаем заголовки из первого элемента
                         headers = list(result['data'][0].keys())
                         data_to_insert.append(headers) # Добавляем строку заголовков
 
                         for item in result['data']:
-                            # Формируем строку в соответствии с порядком заголовков
-                            row = [item.get(h, '') for h in headers] # Обрабатываем отсутствующие ключи
+                            row = [item.get(h, '') for h in headers]
                             data_to_insert.append(row)
+                        logger.info(f"User {current_user.id}: Подготовлено {len(data_to_insert) - 1} строк данных для записи в '{sheet_title}'.")
                     else:
-                         logger.warning(f"User {current_user.id}: OLAP report {report_id} returned no data.")
-                         # Данных нет, просто очистим лист и сообщим пользователю
+                         logger.warning(f"User {current_user.id}: OLAP-отчет {report_id} ('{preset.get('name', '')}') не вернул данных за период {from_date} - {to_date}.")
+                         # Если данных нет, data_to_insert будет содержать только заголовки (если они были) или будет пуст
 
-                    # --- ИСПОЛЬЗУЕМ НОВЫЙ МЕТОД ИЗ GOOGLE_SHEETS.PY ---
+                    # --- Запись в Google Sheets ---
                     try:
-                        # Метод сам очистит лист и запишет данные (или только очистит, если data_to_insert пуст после заголовков)
-                        gs_client.clear_and_write_data(sheet_title, data_to_insert, start_cell="A1") # Указываем начальную ячейку
+                        # Если данных нет (только заголовки или пустой список), метод очистит лист
+                        gs_client.clear_and_write_data(sheet_title, data_to_insert, start_cell="A1")
 
-                        if len(data_to_insert) > 1 : # Проверяем, были ли записаны строки данных (кроме заголовка)
-                            flash(f"Report data '{preset.get('name', report_id)}' successfully written to sheet '{sheet_title}'.", 'success')
-                        else:
-                             flash(f"Report '{preset.get('name', report_id)}' returned no data for the specified period. Sheet '{sheet_title}' cleared.", 'warning')
+                        if len(data_to_insert) > 1 : # Были записаны строки данных
+                            flash(f"Данные отчета '{preset.get('name', report_id)}' успешно записаны в лист '{sheet_title}'.", 'success')
+                        elif len(data_to_insert) == 1: # Был записан только заголовок
+                             flash(f"Отчет '{preset.get('name', report_id)}' не вернул данных за указанный период. Лист '{sheet_title}' очищен и записан заголовок.", 'warning')
+                        else: # Не было ни данных, ни заголовков (пустой result['data'])
+                             flash(f"Отчет '{preset.get('name', report_id)}' не вернул данных за указанный период. Лист '{sheet_title}' очищен.", 'warning')
 
-                    except Exception as gs_error: # Ловим ошибки конкретно от Google Sheets операции
-                         logger.error(f"User {current_user.id}: Failed to write data to Google Sheet '{sheet_title}'. Error: {gs_error}", exc_info=True)
-                         flash(f"User {current_user.id}: Failed to write data to Google Sheet '{sheet_title}'. Error: {gs_error}", 'error')
-                         # Не перенаправляем здесь, чтобы пользователь видел ошибку, возможно, RMS данные были получены
+                    except Exception as gs_error:
+                         logger.error(f"User {current_user.id}: Не удалось записать данные в Google Sheet '{sheet_title}'. Ошибка: {gs_error}", exc_info=True)
+                         # Не используем f-string в flash для потенциально длинных ошибок
+                         flash(f"Не удалось записать данные в Google Sheet '{sheet_title}'. Детали в логах.", 'error')
 
                 else:
-                     logger.error(f"User {current_user.id}: OLAP response format unexpected: {result}")
-                     flash(f"Error: Unexpected response format from RMS for report '{preset.get('name', report_id)}'.", 'error')
+                     logger.error(f"User {current_user.id}: Неожиданный формат ответа OLAP: ключи={list(result.keys()) if isinstance(result, dict) else 'Не словарь'}")
+                     flash(f"Ошибка: Неожиданный формат ответа от RMS для отчета '{preset.get('name', report_id)}'.", 'error')
 
-            # except gspread.exceptions.APIError as api_err: # Можно ловить специфичные ошибки Google API здесь
-            #      logger.error(f"User {current_user.id}: Google API error during report processing: {api_err}", exc_info=True)
-            #      flash(f"Ошибка Google API при обработке листа '{sheet_title}': {api_err}", 'error')
-            except Exception as report_err: # Общий обработчик ошибок во время получения/записи отчета
+            except Exception as report_err:
                 logger.error(f"User {current_user.id}: Ошибка при получении/записи отчета {report_id}: {report_err}", exc_info=True)
-                flash(f"Error fetching/writing report '{preset.get('name', report_id)}': {report_err}", 'error')
+                flash(f"Ошибка при получении/записи отчета '{preset.get('name', report_id)}'. Детали в логах.", 'error')
             finally:
-                 # Убедимся, что выходим из сессии RMS, даже если была ошибка с Google Sheets
-                 if req_module and req_module.token: # Проверяем, что req_module был создан и есть токен
-                    req_module.logout()
+                 if req_module and req_module.token:
+                    try:
+                        req_module.logout()
+                    except Exception as logout_err:
+                        logger.warning(f"User {current_user.id}: Ошибка при logout из RMS: {logout_err}")
         else:
-            flash('Authorization error on RMS server when trying to fetch the report.', 'error')
+            # Ошибка req_module.login() была залогирована внутри метода
+            flash('Ошибка авторизации на сервере RMS при попытке получить отчет.', 'error')
 
-    except ValueError as ve: # Ошибка валидации дат
-        flash(f'Date error: {str(ve)}', 'error')
-        logger.warning(f"User {current_user.id}: Date validation error: {ve}")
+    except ValueError as ve: # Ошибка валидации дат или генерации шаблона
+        flash(f'Ошибка данных: {str(ve)}', 'error')
+        logger.warning(f"User {current_user.id}: Ошибка ValueError в render_olap: {ve}")
+    except gspread.exceptions.APIError as api_err: # Ловим ошибки Google API отдельно
+         logger.error(f"User {current_user.id}: Ошибка Google API: {api_err}", exc_info=True)
+         flash(f"Ошибка Google API при доступе к таблице/листу '{sheet_title}'. Проверьте права доступа сервисного аккаунта.", 'error')
     except Exception as e:
-        # Ловим остальные непредвиденные ошибки (например, ошибки инициализации GoogleSheets, ReqModule, ошибки Jinja и т.д.)
         logger.error(f"User {current_user.id}: Общая ошибка в render_olap для листа '{sheet_title}': {str(e)}", exc_info=True)
-        flash(f"An unexpected error occurred: {str(e)}", 'error')
+        flash(f"Произошла непредвиденная ошибка: {str(e)}", 'error')
     finally:
-         # Дополнительно разлогиниваемся, если ошибка произошла до блока finally внутри 'if req_module.login()'
+         # Дополнительная проверка logout, если ошибка произошла до блока finally внутри 'if req_module.login()'
          if req_module and req_module.token:
              try:
                  req_module.logout()
              except Exception as logout_err:
-                 logger.warning(f"User {current_user.id}: Error during final logout attempt: {logout_err}")
-
+                 logger.warning(f"User {current_user.id}: Ошибка при финальной попытке logout из RMS: {logout_err}")
 
     return redirect(url_for('index'))
-
 
 # --- Command Line Interface for DB Management ---
 # Run 'flask db init' first time
