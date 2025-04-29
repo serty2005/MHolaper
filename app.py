@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, g, 
 import gspread
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_migrate import Migrate
+from flask_babel import gettext
 from collections import defaultdict
 import os, uuid
 import logging
@@ -91,12 +92,6 @@ def get_user_upload_path(filename=""):
     return os.path.join(user_dir, secure_filename(filename))
 
 
-rms_config = {}
-google_config = {}
-presets = []
-sheets = []
-mappings = []
-
 @app.before_request
 def load_user_specific_data():
     """Load user-specific data into Flask's 'g' object for the current request context."""
@@ -170,16 +165,60 @@ def logout():
 @login_required
 def index():
     """Главная страница."""
+    
     config = g.user_config
+    presets_list = config.presets or []
+    js_presets_list = []
+    translated_presets_for_template = [] # Для обычных селектов в HTML
+
+    if presets_list:
+        # Получаем все aggregateFields из всех пресетов для возможного перевода
+        all_agg_fields_original = set()
+        for p in presets_list:
+            all_agg_fields_original.update(p.get('aggregateFields', []))
+
+        # Создаем словарь переводов для полей (оптимизация, чтобы не вызывать gettext много раз)
+        field_translations = {orig: gettext(orig) for orig in all_agg_fields_original}
+
+        for p in presets_list:
+            original_fields = p.get('aggregateFields', [])
+            translated_fields_list = [field_translations.get(orig, orig) for orig in original_fields]
+
+            # Для JS (передаем обе версии полей)
+            js_preset_data = {
+                'id': p['id'],
+                'name': gettext(p.get('name', p['id'])), # Переводим имя пресета
+                'reportType': p.get('reportType'),
+                'originalAggregateFields': original_fields,
+                'translatedAggregateFields': translated_fields_list
+            }
+            js_presets_list.append(js_preset_data)
+
+            # Для HTML шаблона (достаточно переведенных имен)
+            translated_preset_for_template = {
+                'id': p['id'],
+                'name': gettext(p.get('name', p['id'])), # Переводим имя пресета
+                # Добавляем другие поля, если они нужны в HTML-селектах напрямую
+            }
+            translated_presets_for_template.append(translated_preset_for_template)
+
+
+    js_presets_json = json.dumps(js_presets_list, ensure_ascii=False)
+    # Загружаем сохраненные расчеты
+    saved_calculations_list = config.calculated_cells # Уже получаем список словарей
+
+    
     return render_template(
         'index.html',
         rms_config=config.get_rms_dict(),
         google_config=config.get_google_dict(),
-        presets=config.presets,
+        presets=translated_presets_for_template,
         sheets=config.sheets,
         mappings=config.mappings,
         client_email=config.google_client_email,
-        calculated_cells=config.calculated_cells
+        calculated_cells=config.calculated_cells,
+        js_olap_presets_data=js_presets_json,
+        saved_calculations_data=json.dumps(saved_calculations_list, ensure_ascii=False)
     )
 
 @app.route('/configure_rms', methods=['POST'])

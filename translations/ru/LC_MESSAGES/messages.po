@@ -1,0 +1,1451 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MyHoreca OLAPer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-30 00:00+\n"
+"PO-Revision-Date: 2025-04-30 00:00+\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Language-Team: RU <your.email@example.com>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "salesOlapConfig_AuthUser.Id"
+msgstr "ID авторизовавшего"
+
+msgid "salesOlapConfig_AuthUser"
+msgstr "Авторизовал"
+
+msgid "salesOlapConfig_Banquet"
+msgstr "Банкет"
+
+msgid "salesOlapConfig_Bonus.CardNumber"
+msgstr "Номер бонусной карты"
+
+msgid "salesOlapConfig_Bonus.Sum"
+msgstr "Сумма бонуса"
+
+msgid "salesOlapConfig_Bonus.Type"
+msgstr "Тип бонуса"
+
+msgid "salesOlapConfig_Card"
+msgstr "Карта авторизации"
+
+msgid "salesOlapConfig_CardNumber"
+msgstr "Номер карты оплаты"
+
+msgid "salesOlapConfig_CardOwner"
+msgstr "Владелец карты гостя"
+
+msgid "salesOlapConfig_CardType"
+msgstr "Кредитная карта"
+
+msgid "salesOlapConfig_CardTypeName"
+msgstr "Тип карты"
+
+msgid "salesOlapConfig_CashLocation"
+msgstr "Расположение кассы"
+
+msgid "salesOlapConfig_CashRegisterName"
+msgstr "Касса"
+
+msgid "salesOlapConfig_CashRegisterName.Number"
+msgstr "Номер кассы"
+
+msgid "salesOlapConfig_CashRegisterName.CashRegisterSerialNumber"
+msgstr "Серийный номер ФР"
+
+msgid "salesOlapConfig_Cashier.Id"
+msgstr "ID кассира"
+
+msgid "salesOlapConfig_Cashier"
+msgstr "Кассир"
+
+msgid "salesOlapConfig_Cashier.Code"
+msgstr "Табельный номер кассира"
+
+msgid "salesOlapConfig_CloseTime"
+msgstr "Время закрытия"
+
+msgid "salesOlapConfig_CloseTime.Minutes15"
+msgstr "15-минутный интервал закрытия"
+
+msgid "salesOlapConfig_Conception"
+msgstr "Концепция"
+
+msgid "salesOlapConfig_Conception.Code"
+msgstr "Код концепции"
+
+msgid "salesOlapConfig_CookingPlace"
+msgstr "Место приготовления"
+
+msgid "salesOlapConfig_CookingPlace.Id"
+msgstr "ID места приготовления"
+
+msgid "salesOlapConfig_CookingPlaceType"
+msgstr "Тип места приготовления"
+
+msgid "salesOlapConfig_Counteragent.Name"
+msgstr "Контрагент"
+
+msgid "salesOlapConfig_CreditUser"
+msgstr "В кредит на..."
+
+msgid "salesOlapConfig_CreditUser.Company"
+msgstr "Компания-контрагент"
+
+msgid "salesOlapConfig_Currencies.Currency"
+msgstr "Валюта оплаты"
+
+msgid "salesOlapConfig_Currencies.CurrencyRate"
+msgstr "Курс валюты оплаты"
+
+msgid "salesOlapConfig_Currencies.SumInCurrency"
+msgstr "Сумма в валюте оплаты / заказ"
+
+msgid "salesOlapConfig_DayOfWeekOpen"
+msgstr "День недели"
+
+msgid "salesOlapConfig_DeletedWithWriteoff"
+msgstr "Блюдо удалено"
+
+msgid "salesOlapConfig_Department"
+msgstr "Торговое предприятие"
+
+msgid "salesOlapConfig_Department.Code"
+msgstr "Код подразделения"
+
+msgid "salesOlapConfig_Department.Id"
+msgstr "ID подразделения"
+
+msgid "salesOlapConfig_Department.Category1"
+msgstr "Категория 1"
+
+msgid "salesOlapConfig_Department.Category2"
+msgstr "Категория 2"
+
+msgid "salesOlapConfig_Department.Category3"
+msgstr "Категория 3"
+
+msgid "salesOlapConfig_Department.Category4"
+msgstr "Категория 4"
+
+msgid "salesOlapConfig_Department.Category5"
+msgstr "Категория 5"
+
+msgid "salesOlapConfig_DishTaxCategory.Name"
+msgstr "Налоговая категория"
+
+msgid "salesOlapConfig_DishTaxCategory.Id"
+msgstr "ID налоговой категории"
+
+msgid "salesOlapConfig_Department.JurPerson"
+msgstr "Юридическое лицо"
+
+msgid "salesOlapConfig_DiscountPercent"
+msgstr "Процент скидки"
+
+msgid "salesOlapConfig_DiscountPercent.DiscountType"
+msgstr "Процент скидки"
+
+msgid "salesOlapConfig_DiscountSum"
+msgstr "Сумма скидки"
+
+msgid "salesOlapConfig_discountWithoutVAT"
+msgstr "Сумма скидки без НДС не включенного в стоимость"
+
+msgid "salesOlapConfig_fullSum"
+msgstr "Сумма без НДС не включенного в стоимость"
+
+msgid "salesOlapConfig_sumAfterDiscountWithoutVAT"
+msgstr "Сумма со скидкой без НДС не включенного в стоимость"
+
+msgid "salesOlapConfig_DishAmountInt"
+msgstr "Количество блюд"
+
+msgid "salesOlapConfig_DishAmountInt.PerOrder"
+msgstr "Ср. количество блюд на чек"
+
+msgid "salesOlapConfig_DishCategory"
+msgstr "Категория блюда"
+
+msgid "salesOlapConfig_DishCategory.Id"
+msgstr "ID категории блюда"
+
+msgid "salesOlapConfig_DishCategory.Accounting"
+msgstr "Бухгалтерская категория блюда"
+
+msgid "salesOlapConfig_DishCategory.Accounting.Id"
+msgstr "ID бухгалтерской категории блюда"
+
+msgid "salesOlapConfig_DishCode"
+msgstr "Код блюда"
+
+msgid "salesOlapConfig_DishCode.Quick"
+msgstr "Код быстрого набора блюда"
+
+msgid "salesOlapConfig_DishDiscountSumInt"
+msgstr "Сумма со скидкой"
+
+msgid "salesOlapConfig_DishDiscountSumInt.average"
+msgstr "Средняя сумма заказа"
+
+msgid "salesOlapConfig_DishDiscountSumInt.averageWithoutVAT"
+msgstr "Средняя сумма заказа без НДС"
+
+msgid "salesOlapConfig_DishDiscountSumInt.averageByGuest"
+msgstr "Средняя выручка с гостя"
+
+msgid "salesOlapConfig_DishDiscountSumInt.averagePrice"
+msgstr "Средняя цена без НДС"
+
+msgid "salesOlapConfig_DishDiscountSumInt.averagePriceWithVAT"
+msgstr "Средняя цена"
+
+msgid "salesOlapConfig_DishDiscountSumInt.withoutVAT"
+msgstr "Сумма со скидкой без НДС"
+
+msgid "salesOlapConfig_DishGroup"
+msgstr "Группа блюда"
+
+msgid "salesOlapConfig_DishGroup.Id"
+msgstr "ID группы блюда"
+
+msgid "salesOlapConfig_DishGroup.Num"
+msgstr "Код группы блюда"
+
+msgid "salesOlapConfig_DishGroup.Hierarchy"
+msgstr "Иерархия блюда"
+
+msgid "salesOlapConfig_DishGroup.SecondParent"
+msgstr "Группа блюда 2-го уровня"
+
+msgid "salesOlapConfig_DishGroup.ThirdParent"
+msgstr "Группа блюда 3-го уровня"
+
+msgid "salesOlapConfig_DishGroup.TopParent"
+msgstr "Группа блюда 1-го уровня"
+
+msgid "salesOlapConfig_DishId"
+msgstr "ID блюда"
+
+msgid "salesOlapConfig_DishMeasureUnit"
+msgstr "Единица измерения"
+
+msgid "salesOlapConfig_DishName"
+msgstr "Блюдо"
+
+msgid "salesOlapConfig_DishForeignName"
+msgstr "Наименование блюда на иностранном языке"
+
+msgid "salesOlapConfig_DishFullName"
+msgstr "Полное наименование блюда"
+
+msgid "salesOlapConfig_DishSize.Id"
+msgstr "ID размера блюда"
+
+msgid "salesOlapConfig_DishSize.Name"
+msgstr "Размер блюда"
+
+msgid "salesOlapConfig_DishSize.ShortName"
+msgstr "Код размера блюда"
+
+msgid "salesOlapConfig_DishSize.Priority"
+msgstr "Порядковый номер размера блюда"
+
+msgid "salesOlapConfig_DishSize.Scale.Id"
+msgstr "ID шкалы размеров блюда"
+
+msgid "salesOlapConfig_DishSize.Scale.Name"
+msgstr "Шкала размеров блюда"
+
+msgid "salesOlapConfig_SoldWithDish"
+msgstr "Продано с блюдом"
+
+msgid "salesOlapConfig_SoldWithDish.Id"
+msgstr "ID основного блюда"
+
+msgid "salesOlapConfig_SoldWithItem.Id"
+msgstr "ID позиции заказа основного блюда"
+
+msgid "salesOlapConfig_DishTags.NamesCombo"
+msgstr "Свойства (комб.)"
+
+msgid "salesOlapConfig_DishTags.IdsCombo"
+msgstr "ID свойств (комб.)"
+
+msgid "salesOlapConfig_DishType"
+msgstr "Тип товара"
+
+msgid "salesOlapConfig_DishReturnSum"
+msgstr "Сумма возврата"
+
+msgid "salesOlapConfig_DishReturnSum.withoutVAT"
+msgstr "Сумма возврата без НДС"
+
+msgid "salesOlapConfig_DishSumInt"
+msgstr "Сумма без скидки"
+
+msgid "salesOlapConfig_DishSumInt.averagePriceWithVAT"
+msgstr "Средняя цена без скидки"
+
+msgid "salesOlapConfig_OrderDiscount.GuestCard"
+msgstr "Гостевая карта"
+
+msgid "salesOlapConfig_OrderDiscount.Type"
+msgstr "Тип скидки"
+
+msgid "salesOlapConfig_OrderDiscount.Type.IDs"
+msgstr "ID типов скидок"
+
+msgid "salesOlapConfig_OrderIncrease.Type"
+msgstr "Тип надбавки"
+
+msgid "salesOlapConfig_OrderIncrease.Type.IDs"
+msgstr "ID типов надбавок"
+
+msgid "salesOlapConfig_GuestNum"
+msgstr "Количество гостей"
+
+msgid "salesOlapConfig_GuestNum.Avg"
+msgstr "Ср.кол-во гостей на чек"
+
+msgid "salesOlapConfig_HourClose"
+msgstr "Час закрытия"
+
+msgid "salesOlapConfig_HourOpen"
+msgstr "Час открытия"
+
+msgid "salesOlapConfig_IncreasePercent"
+msgstr "Процент надбавки"
+
+msgid "salesOlapConfig_IncreaseSum"
+msgstr "Сумма надбавки"
+
+msgid "salesOlapConfig_IncentiveSumBase.Sum"
+msgstr "Мотивационный бонус"
+
+msgid "salesOlapConfig_ItemDiscountOrIncrease.Detalization.ById"
+msgstr "Детализация скидок и надбавок по id"
+
+msgid "salesOlapConfig_ItemSaleEvent.Id"
+msgstr "ID позиции заказа"
+
+msgid "salesOlapConfig_ItemSaleEventDiscountType"
+msgstr "Наименование скидки, надбавки"
+
+msgid "salesOlapConfig_ItemSaleEventDiscountType.ComboAmount"
+msgstr "Количество комбо-скидок"
+
+msgid "salesOlapConfig_ItemSaleEventDiscountType.DiscountAmount"
+msgstr "Колич. блюд со скидкой"
+
+msgid "salesOlapConfig_JurName"
+msgstr "Юридическое лицо"
+
+msgid "salesOlapConfig_Mounth"
+msgstr "Месяц"
+
+msgid "salesOlapConfig_NonCashPaymentType"
+msgstr "Безналичный тип оплаты"
+
+msgid "salesOlapConfig_NonCashPaymentType.DocumentType"
+msgstr "Тип документа списания"
+
+msgid "salesOlapConfig_SessionID"
+msgstr "ID кассовой смены"
+
+msgid "salesOlapConfig_OpenDate"
+msgstr "Учетный день"
+
+msgid "salesOlapConfig_OpenDate.Typed"
+msgstr "Учетный день"
+
+msgid "salesOlapConfig_OpenTime"
+msgstr "Время открытия"
+
+msgid "salesOlapConfig_OpenTime.Minutes15"
+msgstr "15-минутный интервал открытия"
+
+msgid "salesOlapConfig_OperationType"
+msgstr "Операция"
+
+msgid "salesOlapConfig_OrderItems"
+msgstr "Позиций чека"
+
+msgid "salesOlapConfig_OrderNum"
+msgstr "Номер чека"
+
+msgid "salesOlapConfig_FiscalChequeNumber"
+msgstr "Номер фиск. чека"
+
+msgid "salesOlapConfig_OrderTime.AverageOrderTime"
+msgstr "Ср.время обсл.(мин)"
+
+msgid "salesOlapConfig_OrderTime.AveragePrechequeTime"
+msgstr "Ср.время в пречеке (мин)"
+
+msgid "salesOlapConfig_OrderTime.OrderLength"
+msgstr "Время обслуживания (мин)"
+
+msgid "salesOlapConfig_OrderTime.OrderLengthSum"
+msgstr "Время обсл.сумм.(мин)"
+
+msgid "salesOlapConfig_OrderTime.PrechequeLength"
+msgstr "Время в пречеке (мин)"
+
+msgid "salesOlapConfig_ExternalNumber"
+msgstr "Внешний номер заказа"
+
+msgid "salesOlapConfig_OrderType"
+msgstr "Тип заказа"
+
+msgid "salesOlapConfig_OrderType.Id"
+msgstr "ID типа заказа"
+
+msgid "salesOlapConfig_OrderServiceType"
+msgstr "Режим обслуживания"
+
+msgid "salesOlapConfig_OriginName"
+msgstr "Источник заказа"
+
+msgid "salesOlapConfig_OrderComment"
+msgstr "Комментарий заказа"
+
+msgid "salesOlapConfig_PaymentTransaction.Id"
+msgstr "ID проводки оплаты"
+
+msgid "salesOlapConfig_PaymentTransaction.Ids"
+msgstr "ID проводок оплат (комб.)"
+
+msgid "salesOlapConfig_PayTypes"
+msgstr "Тип оплаты"
+
+msgid "salesOlapConfig_PayTypes.Combo"
+msgstr "Тип оплаты (комб.)"
+
+msgid "salesOlapConfig_PayTypes.Group"
+msgstr "Группа оплаты"
+
+msgid "salesOlapConfig_PayTypes.GUID"
+msgstr "ID типа оплаты"
+
+msgid "salesOlapConfig_PayTypes.IsPrintCheque"
+msgstr "Фиск. тип оплаты"
+
+msgid "salesOlapConfig_PayTypes.VoucherNum"
+msgstr "Количество ваучеров"
+
+msgid "salesOlapConfig_PercentOfSummary.ByCol"
+msgstr "% по столбцу"
+
+msgid "salesOlapConfig_PercentOfSummary.ByRow"
+msgstr "% по строке"
+
+msgid "salesOlapConfig_PriceCategory"
+msgstr "Ценовая категория клиента"
+
+msgid "salesOlapConfig_PriceCategoryCard"
+msgstr "ЦК номер карты"
+
+msgid "salesOlapConfig_PriceCategoryDiscountCardOwner"
+msgstr "ЦК владелец карты"
+
+msgid "salesOlapConfig_PriceCategoryUserCardOwner"
+msgstr "ЦК контрагент"
+
+msgid "salesOlapConfig_PrechequeTime"
+msgstr "Время пречека"
+
+msgid "salesOlapConfig_ProductCostBase.ProductCost"
+msgstr "Себестоимость"
+
+msgid "salesOlapConfig_ProductCostBase.MarkUp"
+msgstr "Наценка(%)"
+
+msgid "salesOlapConfig_ProductCostBase.OneItem"
+msgstr "Себестоимость единицы"
+
+msgid "salesOlapConfig_ProductCostBase.Percent"
+msgstr "Себестоимость(%)"
+
+msgid "salesOlapConfig_ProductCostBase.PercentWithoutVAT"
+msgstr "Себестоимость без НДС(%)"
+
+msgid "salesOlapConfig_ProductCostBase.Profit"
+msgstr "Наценка"
+
+msgid "salesOlapConfig_PublicExternalData"
+msgstr "Публичные данные плагинов"
+
+msgid "salesOlapConfig_PublicExternalData.Xml"
+msgstr "Публичные данные плагинов (xml)"
+
+msgid "salesOlapConfig_QuarterOpen"
+msgstr "Квартал"
+
+msgid "salesOlapConfig_RemovalType"
+msgstr "Причина удаления блюда"
+
+msgid "salesOlapConfig_RestaurantSection"
+msgstr "Отделение"
+
+msgid "salesOlapConfig_RestaurantSection.Id"
+msgstr "ID отделения"
+
+msgid "salesOlapConfig_RestorauntGroup"
+msgstr "Группа"
+
+msgid "salesOlapConfig_RestorauntGroup.Id"
+msgstr "ID группы"
+
+msgid "salesOlapConfig_SessionNum"
+msgstr "Номер смены"
+
+msgid "salesOlapConfig_Store"
+msgstr "Склад списания"
+
+msgid "salesOlapConfig_Store.Id"
+msgstr "ID склада"
+
+msgid "salesOlapConfig_Store.Name"
+msgstr "Со склада"
+
+msgid "salesOlapConfig_StoreTo"
+msgstr "На склад"
+
+msgid "salesOlapConfig_Storned"
+msgstr "Возврат чека"
+
+msgid "salesOlapConfig_OrderDeleted"
+msgstr "Заказ удален"
+
+msgid "salesOlapConfig_TableNumInt"
+msgstr "Номер стола"
+
+msgid "salesOlapConfig_TableNum"
+msgstr "Номер стола"
+
+msgid "salesOlapConfig_UniqOrderId"
+msgstr "Чеков"
+
+msgid "salesOlapConfig_UniqOrderId.Id"
+msgstr "ID заказа"
+
+msgid "salesOlapConfig_UniqOrderId.OrdersCount"
+msgstr "Заказов"
+
+msgid "salesOlapConfig_VAT.Percent"
+msgstr "НДС(%)"
+
+msgid "salesOlapConfig_VAT.Sum"
+msgstr "НДС по чекам(Сумма)"
+
+msgid "salesOlapConfig_WaiterName"
+msgstr "Официант блюда"
+
+msgid "salesOlapConfig_WaiterName.ID"
+msgstr "ID официанта блюда"
+
+msgid "salesOlapConfig_OrderWaiter.Id"
+msgstr "ID официанта заказа"
+
+msgid "salesOlapConfig_OrderWaiter.Name"
+msgstr "Официант заказа"
+
+msgid "salesOlapConfig_WaiterTeam.Id"
+msgstr "ID бригады официантов"
+
+msgid "salesOlapConfig_WaiterTeam.Name"
+msgstr "Бригада официантов"
+
+msgid "salesOlapConfig_WeekInYearOpen"
+msgstr "Неделя года"
+
+msgid "salesOlapConfig_WeekInMonthOpen"
+msgstr "Неделя месяца"
+
+msgid "salesOlapConfig_WriteoffReason"
+msgstr "Причина списания"
+
+msgid "salesOlapConfig_WriteoffUser"
+msgstr "Списано на сотрудника"
+
+msgid "salesOlapConfig_DeletionComment"
+msgstr "Комментарий к удалению блюда"
+
+msgid "salesOlapConfig_YearOpen"
+msgstr "Год"
+
+msgid "salesOlapConfig_DishServicePrintTime"
+msgstr "Сервисная печать блюда"
+
+msgid "salesOlapConfig_DishServicePrintTime.Max"
+msgstr "Сервисная печать последнего блюда"
+
+msgid "salesOlapConfig_DishServicePrintTime.OpenToLastPrintDuration"
+msgstr "Длит: откр.-посл.серв.печать"
+
+msgid "salesOlapConfig_Comment"
+msgstr "Комментарий к блюду"
+
+msgid "salesOlapConfig_Cooking.ServeNumber"
+msgstr "Номер подачи"
+
+msgid "salesOlapConfig_Cooking.GuestWaitTime.Avg"
+msgstr "Продолжительность ожидания гостя (средняя)"
+
+msgid "salesOlapConfig_Cooking.KitchenTime.Avg"
+msgstr "Продолжительность работы кухни (средняя)"
+
+msgid "salesOlapConfig_Cooking.StartDelayTime.Avg"
+msgstr "Задержка начала приготовления (средняя)"
+
+msgid "salesOlapConfig_Cooking.CookingDuration.Avg"
+msgstr "Продолжительность приготовления (средняя)"
+
+msgid "salesOlapConfig_Cooking.Cooking1Duration.Avg"
+msgstr "Продолжительность приготовления 1 (средняя)"
+
+msgid "salesOlapConfig_Cooking.Cooking2Duration.Avg"
+msgstr "Продолжительность приготовления 2 (средняя)"
+
+msgid "salesOlapConfig_Cooking.Cooking3Duration.Avg"
+msgstr "Продолжительность приготовления 3 (средняя)"
+
+msgid "salesOlapConfig_Cooking.Cooking4Duration.Avg"
+msgstr "Продолжительность приготовления 4 (средняя)"
+
+msgid "salesOlapConfig_Cooking.ServeTime.Avg"
+msgstr "Продолжительность подачи гостю (средняя)"
+
+msgid "salesOlapConfig_Cooking.CookingLateTime.Avg"
+msgstr "Опоздание приготовления (средняя)"
+
+msgid "salesOlapConfig_Cooking.FeedLateTime.Avg"
+msgstr "Опоздание подачи (средняя)"
+
+msgid "salesOlapConfig_Delivery.Id"
+msgstr "ID доставки"
+
+msgid "salesOlapConfig_Delivery.IsDelivery"
+msgstr "Доставка"
+
+msgid "salesOlapConfig_Delivery.Number"
+msgstr "Номер доставки"
+
+msgid "salesOlapConfig_Delivery.Address"
+msgstr "Адрес"
+
+msgid "salesOlapConfig_Delivery.City"
+msgstr "Город"
+
+msgid "salesOlapConfig_Delivery.Street"
+msgstr "Улица"
+
+msgid "salesOlapConfig_Delivery.Index"
+msgstr "Индекс адреса"
+
+msgid "salesOlapConfig_Delivery.House"
+msgstr "Дом"
+
+msgid "salesOlapConfig_Delivery.Building"
+msgstr "Корпус"
+
+msgid "salesOlapConfig_Delivery.Flat"
+msgstr "Квартира"
+
+msgid "salesOlapConfig_Delivery.Entrance"
+msgstr "Подъезд"
+
+msgid "salesOlapConfig_Delivery.Floor"
+msgstr "Этаж"
+
+msgid "salesOlapConfig_Delivery.Doorphone"
+msgstr "Домофон"
+
+msgid "salesOlapConfig_Delivery.ExternalCartographyId"
+msgstr "Идентификатор адреса"
+
+msgid "salesOlapConfig_Delivery.Region"
+msgstr "Район"
+
+msgid "salesOlapConfig_Delivery.Zone"
+msgstr "Зона доставки"
+
+msgid "salesOlapConfig_Delivery.MarketingSource"
+msgstr "Реклама"
+
+msgid "salesOlapConfig_Delivery.CustomerMarketingSource"
+msgstr "Реклама клиента"
+
+msgid "salesOlapConfig_Delivery.CustomerPhone"
+msgstr "Телефон клиента"
+
+msgid "salesOlapConfig_Delivery.AddressAdditionalInfo"
+msgstr "Примечание адреса"
+
+msgid "salesOlapConfig_Delivery.CustomerName"
+msgstr "ФИО клиента"
+
+msgid "salesOlapConfig_Delivery.CustomerNick"
+msgstr "Ник клиента"
+
+msgid "salesOlapConfig_Delivery.CustomerCreatedDate"
+msgstr "Дата создания клиента"
+
+msgid "salesOlapConfig_Delivery.CustomerCreatedDateTyped"
+msgstr "Дата создания клиента"
+
+msgid "salesOlapConfig_Delivery.Phone"
+msgstr "Телефон доставки"
+
+msgid "salesOlapConfig_Delivery.Email"
+msgstr "e-mail доставки"
+
+msgid "salesOlapConfig_Delivery.CustomerCardNumber"
+msgstr "Номер карты клиента"
+
+msgid "salesOlapConfig_Delivery.CustomerCardType"
+msgstr "Тип карты клиента"
+
+msgid "salesOlapConfig_Delivery.Courier"
+msgstr "Курьер"
+
+msgid "salesOlapConfig_Delivery.Courier.Id"
+msgstr "ID курьера"
+
+msgid "salesOlapConfig_Delivery.EcsCourierName"
+msgstr "Имя курьера курьерской службы"
+
+msgid "salesOlapConfig_Delivery.EcsService"
+msgstr "Курьерская служба"
+
+msgid "salesOlapConfig_Delivery.ExpectedTime"
+msgstr "Планируемое время доставки"
+
+msgid "salesOlapConfig_Delivery.PrintTime"
+msgstr "Время печати доставки"
+
+msgid "salesOlapConfig_Delivery.BillTime"
+msgstr "Время печати накладной"
+
+msgid "salesOlapConfig_Delivery.SendTime"
+msgstr "Время отправки доставки"
+
+msgid "salesOlapConfig_Delivery.ActualTime"
+msgstr "Фактическое время доставки"
+
+msgid "salesOlapConfig_Delivery.CloseTime"
+msgstr "Время закрытия доставки"
+
+msgid "salesOlapConfig_Delivery.WayDuration"
+msgstr "Время в пути(мин)"
+
+msgid "salesOlapConfig_Delivery.WayDurationSum"
+msgstr "Сумм.время в пути(мин)"
+
+msgid "salesOlapConfig_Delivery.WayDurationAvg"
+msgstr "Ср.время в пути(мин)"
+
+msgid "salesOlapConfig_Delivery.Delay"
+msgstr "Опоздание доставки(мин)"
+
+msgid "salesOlapConfig_Delivery.DelaySum"
+msgstr "Сумм.опоздание доставки(мин)"
+
+msgid "salesOlapConfig_Delivery.DelayAvg"
+msgstr "Ср.опоздание доставки(мин)"
+
+msgid "salesOlapConfig_Delivery.CancelCause"
+msgstr "Причина отмены доставки"
+
+msgid "salesOlapConfig_Delivery.CancelComment"
+msgstr "Комментарий к отмене доставки"
+
+msgid "salesOlapConfig_Delivery.CookingToSendDuration"
+msgstr "Длит: посл.серв.печать-отправка"
+
+msgid "salesOlapConfig_Delivery.SourceKey"
+msgstr "Источник доставки"
+
+msgid "salesOlapConfig_Delivery.DeliveryOperator"
+msgstr "Оператор доставки"
+
+msgid "salesOlapConfig_Delivery.DeliveryOperator.Id"
+msgstr "ID оператора доставки"
+
+msgid "salesOlapConfig_Delivery.ServiceType"
+msgstr "Тип доставки"
+
+msgid "salesOlapConfig_Delivery.ServiceTypeSelf"
+msgstr "Самовывоз"
+
+msgid "salesOlapConfig_Delivery.ServiceTypeCourier"
+msgstr "Курьером"
+
+msgid "salesOlapConfig_Delivery.DeliveryComment"
+msgstr "Комментарий к доставке"
+
+msgid "salesOlapConfig_Delivery.CustomerComment"
+msgstr "Комментарий к клиенту"
+
+msgid "salesOlapConfig_Delivery.CustomerOpinionComment"
+msgstr "Отзыв клиента"
+
+msgid "salesOlapConfig_Delivery.AvgMark"
+msgstr "Оценка доставки, %"
+
+msgid "salesOlapConfig_Delivery.AvgCourierMark"
+msgstr "Оценка курьера, %"
+
+msgid "salesOlapConfig_Delivery.AvgOperatorMark"
+msgstr "Оценка оператора, %"
+
+msgid "salesOlapConfig_Delivery.AvgFoodMark"
+msgstr "Оценка кухни, %"
+
+msgid "salesOlapConfig_Delivery.AggregatedAvgMark"
+msgstr "Средняя оценка доставки, %"
+
+msgid "salesOlapConfig_Delivery.AggregatedAvgOperatorMark"
+msgstr "Средняя оценка оператора, %"
+
+msgid "salesOlapConfig_Delivery.AggregatedAvgCourierMark"
+msgstr "Средняя оценка курьера, %"
+
+msgid "salesOlapConfig_Delivery.PredictedDeliveryTime"
+msgstr "Прогнозируемое время доставки"
+
+msgid "salesOlapConfig_Delivery.PredictedCookingCompleteTime"
+msgstr "Прогнозируемое время окончания готовки заказа"
+
+msgid ""
+"salesOlapConfig_Delivery.DiffBetweenActualDeliveryTimeAndPredictedDeliveryTime"
+msgstr "Отклонение от сроков доставки, фактическое от прогнозируемого (мин)"
+
+msgid "salesOlapConfig_Delivery.AggregatedAvgFoodMark"
+msgstr "Средняя оценка кухни, %"
+
+msgid "salesOlapConfig_Delivery.CookingFinishTime"
+msgstr "Время окончания приготовления"
+
+msgid "transactionsOlapConfig_Account.AccountHierarchyFull"
+msgstr "Иерархия счета"
+
+msgid "transactionsOlapConfig_Account.AccountHierarchySecond"
+msgstr "Счет 2-го уровня"
+
+msgid "transactionsOlapConfig_Account.AccountHierarchyThird"
+msgstr "Счет 3-го уровня"
+
+msgid "transactionsOlapConfig_Account.AccountHierarchyTop"
+msgstr "Счет 1-го уровня"
+
+msgid "transactionsOlapConfig_Account.Code"
+msgstr "Код счета"
+
+msgid "transactionsOlapConfig_Account.CounteragentType"
+msgstr "Тип контрагента"
+
+msgid "transactionsOlapConfig_Account.Group"
+msgstr "Группа счета"
+
+msgid "transactionsOlapConfig_Account.Id"
+msgstr "ID счета"
+
+msgid "transactionsOlapConfig_Account.IsCashFlowAccount"
+msgstr "Участвует ли счет в ДДС"
+
+msgid "transactionsOlapConfig_Account.Name"
+msgstr "Счет"
+
+msgid "transactionsOlapConfig_Account.StoreOrAccount"
+msgstr "Склад/счет"
+
+msgid "transactionsOlapConfig_Account.Type"
+msgstr "Тип счета"
+
+msgid "transactionsOlapConfig_Amount.StoreInOut"
+msgstr "Оборот эл.номенклатуры"
+
+msgid "transactionsOlapConfig_Amount.StoreInOutTyped"
+msgstr "Оборот эл.номенклатуры"
+
+msgid "transactionsOlapConfig_Amount"
+msgstr "Количество"
+
+msgid "transactionsOlapConfig_Amount.In"
+msgstr "Приход (кол-во)"
+
+msgid "transactionsOlapConfig_Amount.Out"
+msgstr "Расход (кол-во)"
+
+msgid "transactionsOlapConfig_Conception"
+msgstr "Концепция"
+
+msgid "transactionsOlapConfig_Conception.Code"
+msgstr "Код концепции"
+
+msgid "transactionsOlapConfig_Contr-Account.Code"
+msgstr "Код корр.счета"
+
+msgid "transactionsOlapConfig_Contr-Account.Group"
+msgstr "Группа корр.счета"
+
+msgid "transactionsOlapConfig_Contr-Account.Name"
+msgstr "Корр.Счет/Склад"
+
+msgid "transactionsOlapConfig_Contr-Account.Type"
+msgstr "Тип корр.счета"
+
+msgid "transactionsOlapConfig_Contr-Amount"
+msgstr "Корр.количество"
+
+msgid "transactionsOlapConfig_Contr-Product.AccountingCategory"
+msgstr "Корр.Бухгалтерская категория"
+
+msgid "transactionsOlapConfig_Contr-Product.Category"
+msgstr "Корр.Категория номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.Category.Id"
+msgstr "Корр.ID категории номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.CookingPlaceType"
+msgstr "Корр.Тип места приготовления"
+
+msgid "transactionsOlapConfig_Contr-Product.Hierarchy"
+msgstr "Корр.Иерархия номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.Tags.NamesCombo"
+msgstr "Корр.Свойства (комб.)"
+
+msgid "transactionsOlapConfig_Contr-Product.Tags.IdsCombo"
+msgstr "Корр.ID свойств (комб.)"
+
+msgid "transactionsOlapConfig_Contr-Product.Id"
+msgstr "Корр.ID эл.номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.MeasureUnit"
+msgstr "Корр.Единица измерения"
+
+msgid "transactionsOlapConfig_Contr-Product.Num"
+msgstr "Корр.Артикул элемента номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.Type"
+msgstr "Корр.Тип элемента номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.Name"
+msgstr "Корр.Элемент номенклатуры"
+
+msgid "transactionsOlapConfig_Contr-Product.AlcoholClass"
+msgstr "Класс алкогольной продукции"
+
+msgid "transactionsOlapConfig_Contr-Product.AlcoholClass.Code"
+msgstr "Код класса алкогольной продукции"
+
+msgid "transactionsOlapConfig_Contr-Product.AlcoholClass.Group"
+msgstr "Группа алкогольной продукции"
+
+msgid "transactionsOlapConfig_Contr-Product.AlcoholClass.Type"
+msgstr "Тип алкогольной продукции"
+
+msgid "transactionsOlapConfig_Contr-Product.SecondParent"
+msgstr "Корр.Группа номенклатуры 2-го уровня"
+
+msgid "transactionsOlapConfig_Contr-Product.ThirdParent"
+msgstr "Корр.Группа номенклатуры 3-го уровня"
+
+msgid "transactionsOlapConfig_Contr-Product.TopParent"
+msgstr "Корр.Группа номенклатуры 1-го уровня"
+
+msgid "transactionsOlapConfig_Counteragent.Id"
+msgstr "ID контрагента"
+
+msgid "transactionsOlapConfig_Counteragent.Name"
+msgstr "Контрагент"
+
+msgid "transactionsOlapConfig_DateSecondary.DateTimeTyped"
+msgstr "Дата и время проводки"
+
+msgid "transactionsOlapConfig_DateSecondary.DateTyped"
+msgstr "Дата проводки"
+
+msgid "transactionsOlapConfig_DateTime"
+msgstr "Дата и время"
+
+msgid "transactionsOlapConfig_DateTime.OperDayFilter"
+msgstr "Учетный день"
+
+msgid "transactionsOlapConfig_DateTime.Typed"
+msgstr "Дата и время"
+
+msgid "transactionsOlapConfig_DateTime.Date"
+msgstr "Учетный день"
+
+msgid "transactionsOlapConfig_DateTime.DateTyped"
+msgstr "Учетный день"
+
+msgid "transactionsOlapConfig_DateTime.DayOfWeak"
+msgstr "День недели"
+
+msgid "transactionsOlapConfig_DateTime.Hour"
+msgstr "Час"
+
+msgid "transactionsOlapConfig_DateTime.WeekInMonth"
+msgstr "Неделя месяца"
+
+msgid "transactionsOlapConfig_DateTime.WeekInYear"
+msgstr "Неделя года"
+
+msgid "transactionsOlapConfig_DateTime.Month"
+msgstr "Месяц"
+
+msgid "transactionsOlapConfig_DateTime.Quarter"
+msgstr "Квартал"
+
+msgid "transactionsOlapConfig_DateTime.Year"
+msgstr "Год"
+
+msgid "transactionsOlapConfig_Department"
+msgstr "Торговое предприятие"
+
+msgid "transactionsOlapConfig_Department.Category1"
+msgstr "Категория 1"
+
+msgid "transactionsOlapConfig_Department.Category2"
+msgstr "Категория 2"
+
+msgid "transactionsOlapConfig_Department.Category3"
+msgstr "Категория 3"
+
+msgid "transactionsOlapConfig_Department.Category4"
+msgstr "Категория 4"
+
+msgid "transactionsOlapConfig_Department.Category5"
+msgstr "Категория 5"
+
+msgid "transactionsOlapConfig_Department.Code"
+msgstr "Код подразделения"
+
+msgid "transactionsOlapConfig_Department.JurPerson"
+msgstr "Юридическое лицо"
+
+msgid "transactionsOlapConfig_Document"
+msgstr "Номер документа"
+
+msgid "transactionsOlapConfig_FinalBalance.Amount"
+msgstr "Конечный остаток товара"
+
+msgid "transactionsOlapConfig_FinalBalance.Money"
+msgstr "Конечный денежный остаток"
+
+msgid "transactionsOlapConfig_OrderId"
+msgstr "ID заказа"
+
+msgid "transactionsOlapConfig_OrderNum"
+msgstr "Номер заказа"
+
+msgid "transactionsOlapConfig_PercentOfSummary.ByCol"
+msgstr "% по столбцу"
+
+msgid "transactionsOlapConfig_PercentOfSummary.ByRow"
+msgstr "% по строке"
+
+msgid "transactionsOlapConfig_Product.AccountingCategory"
+msgstr "Бухгалтерская категория"
+
+msgid "transactionsOlapConfig_Product.AvgSum"
+msgstr "Средняя цена"
+
+msgid "transactionsOlapConfig_Product.Category"
+msgstr "Категория номенклатуры"
+
+msgid "transactionsOlapConfig_Product.Category.Id"
+msgstr "ID категории номенклатуры"
+
+msgid "transactionsOlapConfig_Product.CookingPlaceType"
+msgstr "Тип места приготовления"
+
+msgid "transactionsOlapConfig_Product.Hierarchy"
+msgstr "Иерархия номенклатуры"
+
+msgid "transactionsOlapConfig_Product.Tags.NamesCombo"
+msgstr "Свойства (комб.)"
+
+msgid "transactionsOlapConfig_Product.Tags.IdsCombo"
+msgstr "ID свойств (комб.)"
+
+msgid "transactionsOlapConfig_Product.Id"
+msgstr "ID элемента номенклатуры"
+
+msgid "transactionsOlapConfig_Product.MeasureUnit"
+msgstr "Единица измерения"
+
+msgid "transactionsOlapConfig_Product.Num"
+msgstr "Артикул элемента номенклатуры"
+
+msgid "transactionsOlapConfig_Product.Type"
+msgstr "Тип элемента номенклатуры"
+
+msgid "transactionsOlapConfig_Product.Name"
+msgstr "Элемент номенклатуры"
+
+msgid "transactionsOlapConfig_Product.AlcoholClass"
+msgstr "Класс алкогольной продукции"
+
+msgid "transactionsOlapConfig_Product.AlcoholClass.Code"
+msgstr "Код класса алкогольной продукции"
+
+msgid "transactionsOlapConfig_Product.AlcoholClass.Group"
+msgstr "Группа алкогольной продукции"
+
+msgid "transactionsOlapConfig_Product.AlcoholClass.Type"
+msgstr "Тип алкогольной продукции"
+
+msgid "transactionsOlapConfig_Product.SecondParent"
+msgstr "Группа номенклатуры 2-го уровня"
+
+msgid "transactionsOlapConfig_Product.ThirdParent"
+msgstr "Группа номенклатуры 3-го уровня"
+
+msgid "transactionsOlapConfig_Product.TopParent"
+msgstr "Группа номенклатуры 1-го уровня"
+
+msgid "transactionsOlapConfig_Session.CashRegister"
+msgstr "Касса"
+
+msgid "transactionsOlapConfig_Session.Group"
+msgstr "Группа"
+
+msgid "transactionsOlapConfig_Session.GroupId"
+msgstr "ID группы"
+
+msgid "transactionsOlapConfig_Session.RestaurantSection"
+msgstr "Отделение"
+
+msgid "transactionsOlapConfig_StartBalance.Amount"
+msgstr "Начальный остаток товара"
+
+msgid "transactionsOlapConfig_StartBalance.Money"
+msgstr "Начальный денежный остаток"
+
+msgid "transactionsOlapConfig_Store"
+msgstr "Склад"
+
+msgid "transactionsOlapConfig_Sum.Incoming"
+msgstr "Сумма прихода"
+
+msgid "transactionsOlapConfig_Sum.Outgoing"
+msgstr "Сумма расхода"
+
+msgid "transactionsOlapConfig_Sum.PartOfIncome"
+msgstr "% от выручки"
+
+msgid "transactionsOlapConfig_Sum.PartOfSummaryByCol"
+msgstr "% суммы от итога по столбцам"
+
+msgid "transactionsOlapConfig_Sum.PartOfSummaryByRow"
+msgstr "% суммы от итога по строкам"
+
+msgid "transactionsOlapConfig_Sum.PartOfTotalIncome"
+msgstr "% от общей выручки"
+
+msgid "transactionsOlapConfig_Sum.ResignedSum"
+msgstr "Сумма"
+
+msgid "transactionsOlapConfig_TransactionType"
+msgstr "Тип транзакции"
+
+msgid "transactionsOlapConfig_TransactionType.Code"
+msgstr "Код транзакции"
+
+msgid "transactionsOlapConfig_CashFlowCategory"
+msgstr "Статья ДДС"
+
+msgid "transactionsOlapConfig_CashFlowCategory.Type"
+msgstr "Тип статьи ДДС"
+
+msgid "transactionsOlapConfig_CashFlowCategory.Hierarchy"
+msgstr "Иерархия статей ДДС"
+
+msgid "transactionsOlapConfig_CashFlowCategory.HierarchyLevel1"
+msgstr "Статья ДДС 1-го уровня"
+
+msgid "transactionsOlapConfig_CashFlowCategory.HierarchyLevel2"
+msgstr "Статья ДДС 2-го уровня"
+
+msgid "transactionsOlapConfig_CashFlowCategory.HierarchyLevel3"
+msgstr "Статья ДДС 3-го уровня"
+
+msgid "transactionsOlapConfig_Comment"
+msgstr "Комментарий"
+
+msgid "transactionsOlapConfig_TransactionSide"
+msgstr "Дебет/Кредит"
+
+msgid "OlapTag_Cost"
+msgstr "Себестоимость"
+
+msgid "OlapTag_Guests"
+msgstr "Гости"
+
+msgid "OlapTag_Discounts"
+msgstr "Скидки/надбавки"
+
+msgid "OlapTag_Employees"
+msgstr "Сотрудники"
+
+msgid "OlapTag_Bonuses"
+msgstr "Бонусы"
+
+msgid "OlapTag_VAT"
+msgstr "НДС"
+
+msgid "OlapTag_Organization"
+msgstr "Организация"
+
+msgid "OlapTag_Time"
+msgstr "Время"
+
+msgid "OlapTag_Order"
+msgstr "Заказ"
+
+msgid "OlapTag_Payment"
+msgstr "Оплата"
+
+msgid "OlapTag_Dishes"
+msgstr "Блюда"
+
+msgid "OlapTag_CustomCatogories"
+msgstr "Пользовательские категории"
+
+msgid "OlapTag_Nomenclature"
+msgstr "Номенклатура"
+
+msgid "OlapTag_Accounts"
+msgstr "Счета"
+
+msgid "OlapTag_Corporation"
+msgstr "Корпорация"
+
+msgid "OlapTag_BalanceList"
+msgstr "ОСВ"
+
+msgid "OlapTag_PL"
+msgstr "P&L"
+
+msgid "OlapTag_Transaction"
+msgstr "Транзакция"
+
+msgid "OlapTag_Correspondent"
+msgstr "Корреспондент"
+
+msgid "OlapTag_TransactionOrganization"
+msgstr "Организация"
+
+msgid "OlapTag_Finances"
+msgstr "Финансы"
+
+msgid "OlapTag_DateTime"
+msgstr "Дата и время"
+
+msgid "OlapTag_TransactionPayment"
+msgstr "Оплата"
+
+msgid "OlapTag_CashFlow"
+msgstr "Движение денежных средств"
+
+msgid "OlapTag_Delivery"
+msgstr "Доставка"
+
+msgid "OlapTag_Customer"
+msgstr "Клиент доставки"
+
+msgid "OlapTag_TimeIntervals"
+msgstr "Временные интервалы"
+
+msgid "OlapTag_Cooking"
+msgstr "Приготовление"
+
+msgid "OlapTag_Alcohol"
+msgstr "Алкоголь"
+
+msgid "OlapTag_Surveys"
+msgstr "Отзывы клиентов"
+
+msgid "OlapReportSettings_TransactionPayment"
+msgstr "Оплата"
+
+msgid "OlapReportSettings_TerminalDishSales"
+msgstr "Выручка за блюда по кассам"
+
+msgid "OlapReportSettings_HourRevenue"
+msgstr "Почасовая выручка"
+
+msgid "OlapReportSettings_DishCategories"
+msgstr "Выручка по категориям блюд"
+
+msgid "OlapReportSettings_DailyTerminalSales"
+msgstr "Выручка станций по дням"
+
+msgid "OlapReportSettings_DailyRevenue"
+msgstr "Выручка по дням"
+
+msgid "OlapReportSettings_WaitersRevenue"
+msgstr "Выручка по официантам"
+
+msgid "OlapReportSettings_PaymentTypes"
+msgstr "Выручка по типам оплат"
+
+msgid "OlapReportSettings_DepartmentsPnL"
+msgstr "P&L по подразделениям"
+
+msgid "OlapReportSettings_StoresPnL"
+msgstr "P&L по складам"
+
+msgid "OlapReportSettings_ChargedBonuses"
+msgstr "Начисленные бонусы"
+
+msgid "OlapReportSettings_CashFlowReport"
+msgstr "Отчет о движении денежных средств"
+
+msgid "OlapReportSettings_CashFlowReportByDepartments"
+msgstr "Отчет о движении денежных средств по подразделениям"
+
+msgid "OlapReportSettings_deliveriesCommon"
+msgstr "Общий отчет по доставкам"
+
+msgid "OlapReportSettings_deliveriesByDepartments"
+msgstr "Доставки по точкам"
+
+msgid "OlapReportSettings_deliveriesByCouriers"
+msgstr "Доставки по курьерам"
+
+msgid "OlapReportSettings_deliveriesByMarketingSource"
+msgstr "Доставки по рекламе"
+
+msgid "OlapReportSettings_customersByMarketingSource"
+msgstr "Клиенты по рекламе"
+
+msgid "OlapReportSettings_deliveriesByExternalSources"
+msgstr "Доставки по внешним источникам заказов"
+
+msgid "OlapReportSettings_deliveriesByHours"
+msgstr "Доставки по часам"
+
+msgid "OlapReportSettings_deliveriesByStreets"
+msgstr "Доставки по улицам"
+
+msgid "OlapReportSettings_deliveriesByDishes"
+msgstr "Доставки по блюдам"
+
+msgid "OlapReportSettings_deliveriesByCancelCauses"
+msgstr "Причины отмен доставок"
+
+msgid "OlapReportSettings_deliveriesByCustomers"
+msgstr "Доставки по гостям"
+
+msgid "OlapReportSettings_deliveriesByOperators"
+msgstr "Доставки по операторам"
+
+msgid "OlapReportSettings_deliveriesAvgOperatorMark"
+msgstr "Средняя оценка оператора доставки"
+
+msgid "OlapReportSettings_deliveriesAvgCourierMark"
+msgstr "Средняя оценка курьера доставки"
+
+msgid "OlapReportSettings_deliveriesAvgFoodMark"
+msgstr "Средняя оценка кухни в доставке"
+
+msgid "OlapReportSettings_deliveriesMarks"
+msgstr "Оценки по доставкам"
+
+msgid "OlapReportSettings_deliveriesMarksByCustomer"
+msgstr "Оценки клиентов"
+
+msgid "OlapReportSettings_deliveriesMarksByDeliveryTerminal"
+msgstr "Оценки по точкам"
+
+msgid "OlapReportValue_no_value"
+msgstr "(пусто)"
+
+msgid "OlapReportValue_no_payment"
+msgstr "(без оплаты)"
+
+msgid "OlapReportValue_no_card"
+msgstr "(нет карты)"
+
+msgid "OlapReportValue_delivery_order"
+msgstr "Доставка"
+
+msgid "OlapReportValue_delivery_pickup"
+msgstr "Самовывоз"
+
+msgid "OlapCommon_Yes"
+msgstr "Да"
+
+msgid "OlapConfig_No"
+msgstr "Нет"
+
+msgid "stockOlapConfig_EventDate"
+msgstr "Дата"
+
+msgid "stockOlapConfig_EventCookingDate"
+msgstr "Дата и время приготовления"
+
+msgid "stockOlapConfig_Amount"
+msgstr "Количество"
+
+msgid "stockOlapConfig_ProductId"
+msgstr "ID блюда"
+
+msgid "stockOlapConfig_ProductName"
+msgstr "Блюдо"
+
+msgid "stockOlapConfig_ProductNum"
+msgstr "Артикул"
+
+msgid "stockOlapConfig_ProductMeasureUnit"
+msgstr "Единицы измерения"
+
+msgid "stockOlapConfig_ProductCategory"
+msgstr "Категория блюда"
+
+msgid "stockOlapConfig_ProductAccountingCategory"
+msgstr "Бухгалтерская категория блюда"
+
+msgid "stockOlapConfig_StoreFrom"
+msgstr "Склад"
+
+msgid "stockOlapConfig_AccountTo"
+msgstr "Счет"
+
+msgid "stockOlapConfig_User"
+msgstr "Сотрудник"
+
+msgid "stockOlapConfig_User.Id"
+msgstr "ID сотрудника"
+
+msgid "stockOlapConfig_Department"
+msgstr "Торговое предприятие"
+
+msgid "stockOlapConfig_Department.Code"
+msgstr "Код подразделения"
+
+msgid "stockOlapConfig_Department.Id"
+msgstr "ID подразделения"
+
+msgid "stockOlapConfig_ProductCostBase.ProductCost"
+msgstr "Себестоимость"
+
+msgid "stockOlapConfig_ProductCostBase.OneItem"
+msgstr "Себестоимость единицы"
+
+msgid "stockOlapConfig_ProductExpirationDuration"
+msgstr "Просрочка на момент продажи"
+
+msgid "stockOlapConfig_Event.Type"
+msgstr "Тип события"

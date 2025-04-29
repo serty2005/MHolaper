@@ -1,7 +1,8 @@
 // static/js/calculations.js
 document.addEventListener('DOMContentLoaded', function() {
     const presetsById = {};
-    olapPresets.forEach(p => {
+
+    olapPresetsRaw.forEach(p => {
         presetsById[p.id] = p;
     });
 
@@ -16,27 +17,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для заполнения полей отчета (только aggregateFields)
     function populateFieldSelect(reportSelect, fieldSelect) {
         const reportId = reportSelect.value;
-        fieldSelect.innerHTML = '<option value="" selected disabled>Выберите поле...</option>'; // Очистка
+        fieldSelect.innerHTML = '<option value="" selected disabled>{{ _("Choose field...") }}</option>'; // Очистка
         fieldSelect.disabled = true;
 
         if (reportId && presetsById[reportId]) {
             const preset = presetsById[reportId];
-            // Используем ТОЛЬКО aggregateFields для вычислений
-            const fields = preset.aggregateFields || [];
-
-            if (fields.length > 0) {
-                fields.forEach(field => {
+            const originalFields = preset.originalAggregateFields || [];
+            const translatedFields = preset.translatedAggregateFields || []; // Ожидаем это поле из Python
+    
+            if (originalFields.length > 0 && originalFields.length === translatedFields.length) {
+                originalFields.forEach((origField, index) => {
                     const option = document.createElement('option');
-                    option.value = field;
-                    option.textContent = field; // Отображаем техническое имя
+                    option.value = origField; // Техническое имя
+                    option.textContent = translatedFields[index]; // Переведенное имя
                     fieldSelect.appendChild(option);
                 });
                 fieldSelect.disabled = false;
             } else {
-                 fieldSelect.innerHTML = '<option value="" selected disabled>Нет аггрег. полей</option>';
+                 // Используйте переведенную строку
+                 fieldSelect.innerHTML = `<option value="" selected disabled>{{ _("No aggregate fields") }}</option>`;
+                 console.warn("Mismatch or missing fields for preset:", reportId);
             }
         }
     }
+
 
     // Функция создания новой строки конструктора
     function createCalculationRow(data = {}) {
@@ -44,12 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const rowElement = clone.querySelector('.calculation-row');
 
         // Заполняем селекты отчетов
-        const reportSelects = clone.querySelectorAll('.calc-report-select');
         reportSelects.forEach(select => {
-            olapPresets.forEach(preset => {
+            olapPresetsRaw.forEach(preset => { // Используем данные, переданные из Flask
                 const option = document.createElement('option');
                 option.value = preset.id;
-                option.textContent = preset.name || preset.id; // Отображаем имя пресета
+                option.textContent = preset.name; // Используем переведенное имя из Flask
                 select.appendChild(option);
             });
         });
@@ -67,8 +70,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Устанавливаем значения из данных (если загружаем сохраненные)
         idInput.value = data.id || ''; // Устанавливаем ID, если он есть
         report1Select.value = data.operand1_report_id || '';
+        if (data.operand1_report_id) {
+            // populateFieldSelect сама найдет нужные поля и заполнит options
+            populateFieldSelect(report1Select, field1Select);
+            // Устанавливаем сохраненное *оригинальное* имя поля
+            field1Select.value = data.operand1_field_name || '';
+        }
         operationSelect.value = data.operation || '+';
         report2Select.value = data.operand2_report_id || '';
+        if (data.operand2_report_id) {
+            // populateFieldSelect сама найдет нужные поля и заполнит options
+            populateFieldSelect(report2Select, field2Select);
+            // Устанавливаем сохраненное *оригинальное* имя поля
+            field2Select.value = data.operand2_field_name || '';
+        }
         targetCellInput.value = data.target_cell || '';
 
         // Заполняем поля для выбранных отчетов (если они есть)
@@ -93,10 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Инициализация ---
 
     // Загружаем сохраненные определения при загрузке страницы
-    if (savedCalculations && savedCalculations.length > 0) {
-        savedCalculations.forEach(calcData => createCalculationRow(calcData));
+    if (savedCalculationsRaw && savedCalculationsRaw.length > 0) {
+        savedCalculationsRaw.forEach(calcData => createCalculationRow(calcData));
     } else {
-        // Добавляем одну пустую строку, если нет сохраненных
         createCalculationRow();
     }
 

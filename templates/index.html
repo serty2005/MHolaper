@@ -287,9 +287,12 @@
              document.getElementById('google-collapsible-button').click();
           } // Add more logic here based on passed config state
        });
-       const olapPresets = "{{presets | tojson | safe}}";
-       const savedCalculations = "{{ calculated_cells | tojson | safe }}";
     </script>
+    <script>
+      const olapPresetsRaw = JSON.parse('{{ js_olap_presets_data | safe }}');
+      const savedCalculationsRaw = JSON.parse('{{ saved_calculations_data | safe }}');
+  </script>
+  <script src="{{ url_for('static', filename='js/calculations.js') }}"></script>
      <!-- <script src="{{ url_for('static', filename='js/calculations.js') }}"></script> -->
     {% else %}
       <p style="text-align: center; margin-top: 50px;">Please, <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a></p>
