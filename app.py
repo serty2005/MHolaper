@@ -14,17 +14,50 @@ from request_module import ReqModule
 from utils import *
 from models import db, User, UserConfig
 
+# --- Logging Configuration --- (Убедитесь, что логирование настроено ДО этого блока)
+logger = logging.getLogger()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# --- Base Directory ---
+# Получаем абсолютный путь к директории, где находится этот скрипт
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# --- Flask App Initialization ---
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', '994525')
-DATA_DIR = os.environ.get('DATA_DIR', '/app/data')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f'sqlite:///{DATA_DIR}/app.db')
+
+# --- Database Path Configuration ---
+# По умолчанию папка 'data' будет создана рядом со скриптом app.py
+DEFAULT_DATA_DIR = os.path.join(basedir, 'data')
+# Используем переменную окружения DATA_DIR, если она задана, иначе используем путь по умолчанию
+DATA_DIR = os.environ.get('DATA_DIR', DEFAULT_DATA_DIR)
+
+# Убедимся, что директория данных существует ДО настройки SQLAlchemy
+try:
+    os.makedirs(DATA_DIR, exist_ok=True)
+    logger.debug(f"Директория данных успешно проверена/создана: {DATA_DIR}")
+except OSError as e:
+    logger.error(f"Не удалось создать директорию данных {DATA_DIR}: {e}", exc_info=True)
+    # В критических случаях можно прервать выполнение:
+    # raise RuntimeError(f"Необходимая директория данных не может быть создана: {DATA_DIR}") from e
+
+# Строим абсолютный путь к файлу БД
+db_path = os.path.join(DATA_DIR, 'app.db')
+# Создаем URI для SQLite с абсолютным путем (sqlite:///...)
+# Важно: SQLAlchemy ожидает 'sqlite:///<absolute_path>' для абсолютных путей в Unix-подобных системах
+# и 'sqlite:///C:/path/to/db' для Windows. os.path.join обеспечит правильные разделители.
+db_uri = f'sqlite:///{db_path}'
+
+# Используем DATABASE_URL из окружения, если задано, иначе наш построенный URI
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', db_uri)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Логируем используемый URI для отладки
+logger.debug(f"Используемый URI базы данных: {app.config['SQLALCHEMY_DATABASE_URI']}")
+
+# --- Initialize Extensions ---
 db.init_app(app)
 migrate = Migrate(app, db)
-
-os.makedirs(DATA_DIR, exist_ok=True)
 
 # --- Flask-Login Configuration ---
 login_manager = LoginManager()
@@ -36,29 +69,23 @@ def load_user(user_id):
     """Loads user from DB for session management."""
     return db.session.get(User, int(user_id))
 
-# --- Logging Configuration ---
-logger = logging.getLogger()
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
-# --- Helper Functions ---
 def get_user_config():
-    """Gets the config for the currently logged-in user, creating if it doesn't exist."""
+    """Получаем конфиг пользователя из current_user для авторизованого. Создаём, если не было"""
     if not current_user.is_authenticated:
-        return None # Or return a default empty config object if preferred for anonymous users
+        return None
     config = UserConfig.query.filter_by(user_id=current_user.id).first()
     if not config:
         config = UserConfig(user_id=current_user.id)
         db.session.add(config)
         # Commit immediately or defer, depending on workflow
-        # db.session.commit() # Let's commit when saving changes
+        db.session.commit() # Let's commit when saving changes
         logger.info(f"Created new UserConfig for user {current_user.id}")
     return config
 
 def get_user_upload_path(filename=""):
     """Gets the upload path for the current user."""
     if not current_user.is_authenticated:
-        return None # Or raise an error
+        return None
     user_dir = os.path.join(DATA_DIR, str(current_user.id))
     os.makedirs(user_dir, exist_ok=True)
     return os.path.join(user_dir, secure_filename(filename))
@@ -76,19 +103,11 @@ def load_user_specific_data():
     g.user_config = None
     if current_user.is_authenticated:
         g.user_config = get_user_config()
-        # You could preload other user-specific things here if needed
-        # g.presets = g.user_config.presets # Example
-        # g.sheets = g.user_config.sheets # Example
-        # g.mappings = g.user_config.mappings # Example
     else:
-        # Define defaults for anonymous users if necessary
-        # g.presets = []
-        # g.sheets = []
-        # g.mappings = {}
         pass
 
-# --- Authentication Routes ---
 
+# --- Authentication Routes ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -184,7 +203,8 @@ def configure_rms():
         # Авторизация на RMS-сервере
         req_module = ReqModule(host, login, password)
         if req_module.login():
-            presets_data = req_module.take_presets()  # Сохраняем пресеты в g
+            # Если токен выдан, получаем пресеты и освобождаем лицензию
+            presets_data = req_module.take_presets()
             req_module.logout()
 
             # Обновляем конфигурацию RMS-сервера
@@ -242,8 +262,7 @@ def upload_credentials():
                 config.google_client_email = client_email
                 # Clear existing sheets list if creds change
                 config.sheets = []
-                # Optionally clear mappings too?
-                # config.mappings = {}
+                config.mappings = {}
 
                 db.session.commit()
                 flash(f'Credentials file successfully uploaded and saved. Email: {client_email}', 'success')
@@ -251,7 +270,7 @@ def upload_credentials():
 
             except json.JSONDecodeError:
                  flash('Error: Uploaded file is not a valid JSON.', 'error')
-                 if os.path.exists(temp_path): os.remove(temp_path) # Clean up temp file
+                 # if os.path.exists(temp_path): os.remove(temp_path) # Clean up temp file
                  logger.warning(f"User {current_user.id}: Uploaded invalid JSON credentials file.")
             except Exception as e:
                 db.session.rollback()
@@ -282,11 +301,9 @@ def configure_google():
         cred_path = config.google_cred_file_path
         if not cred_path or not os.path.isfile(cred_path):
              flash('Please upload a valid credentials file first.', 'warning')
-             # Save the URL anyway? Or require creds first? Let's save URL.
-             config.google_sheet_url = sheet_url
-             config.sheets = [] # Clear sheets if creds are missing/invalid
-             # Optionally clear mappings
-             # config.mappings = {}
+             
+             config.sheets = []
+             config.mappings = {}
              db.session.commit()
              return redirect(url_for('index'))
 
@@ -301,7 +318,7 @@ def configure_google():
         config.sheets = sheets_data
 
         # Optionally clear mappings when sheet URL or creds change?
-        # config.mappings = {}
+        config.mappings = {}
 
         db.session.commit()
         flash(f'Successfully connected to Google Sheets. Found {len(sheets_data)} sheets. Settings saved.', 'success')

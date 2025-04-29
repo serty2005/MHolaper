@@ -290,7 +290,7 @@
        const olapPresets = "{{presets | tojson | safe}}";
        const savedCalculations = "{{ calculated_cells | tojson | safe }}";
     </script>
-    <script src="{{ url_for('static', filename='js/calculations.js') }}"></script>
+     <!-- <script src="{{ url_for('static', filename='js/calculations.js') }}"></script> -->
     {% else %}
       <p style="text-align: center; margin-top: 50px;">Please, <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a></p>
     {% endif %}

@@ -8,13 +8,12 @@ logger = logging.getLogger(__name__)
 # Уровень логирования уже должен быть настроен в app.py или основном модуле
 # logger.setLevel(logging.DEBUG) # Можно убрать, если настраивается глобально
 
-# Функция load_temps удалена, так как пресеты загружаются из API RMS
 
 
 def generate_template_from_preset(preset):
     """
     Генерирует один шаблон запроса OLAP на основе пресета,
-    подставляя плейсхолдеры для дат в соответствующий фильтр.
+    правит фильтр даты в соотв. https://ru.iiko.help/articles/api-documentations/olap-2/a/h3__951638809.
 
     Args:
         preset (dict): Словарь с пресетом OLAP-отчета из API RMS.
@@ -75,9 +74,9 @@ def generate_template_from_preset(preset):
             }
             date_filter_found_and_modified = True # Считаем, что мы успешно добавили нужный фильтр
 
-        elif report_type == "TRANSACTIONS":
+        else:
             # Для отчетов по проводкам (TRANSACTIONS) используем "DateTime.DateTyped"
-            # См. комментарий пользователя и общие практики iiko API
+            # См. https://ru.iiko.help/articles/api-documentations/olap-2/a/h3__951638809
             date_filter_key = "DateTime.DateTyped"
             logger.debug(f"Для отчета {report_type} ({preset.get('id', 'N/A')}) будет использован фильтр '{date_filter_key}'.")
             current_filters[date_filter_key] = {
@@ -89,20 +88,6 @@ def generate_template_from_preset(preset):
             }
             date_filter_found_and_modified = True # Считаем, что мы успешно добавили нужный фильтр
 
-        else:
-            # Для ВСЕХ ОСТАЛЬНЫХ типов отчетов:
-            # Пытаемся найти *любой* ключ, который может содержать дату (логика по умолчанию).
-            # Это менее надежно, чем явное указание ключей для SALES/DELIVERIES/TRANSACTIONS.
-            # Если в пресете для других типов отчетов нет стандартного поля даты,
-            # или оно называется иначе, этот блок может не сработать корректно.
-            # Мы уже удалили все DateRange фильтры. Если для этого типа отчета
-            # нужен был какой-то специфический DateRange фильтр, он был удален.
-            # Это потенциальная проблема, если неизвестные типы отчетов полагаются
-            # на предопределенные DateRange фильтры с другими ключами.
-            # Пока оставляем так: если тип отчета неизвестен, DateRange фильтр не добавляется.
-            logger.warning(f"Для неизвестного типа отчета '{report_type}' ({preset.get('id', 'N/A')}) не удалось автоматически определить стандартный ключ фильтра даты. "
-                           f"Фильтр по дате не будет добавлен автоматически. Если он нужен, пресет должен содержать его с другим filterType или его нужно добавить вручную.")
-            # В этом случае date_filter_found_and_modified останется False
 
         # Обновляем фильтры в шаблоне
         template["filters"] = current_filters
