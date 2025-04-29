@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, g, 
 import gspread
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_migrate import Migrate
-from flask_babel import gettext
+from flask_babel import Babel, gettext, lazy_gettext as _l
 from collections import defaultdict
 import os, uuid
 import logging
@@ -26,6 +26,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # --- Flask App Initialization ---
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', '994525')
+
+app.config['BABEL_DEFAULT_LOCALE'] = 'ru' # Язык по умолчанию
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations' # Путь к вашим переводам
+babel = Babel(app)
+
 
 # --- Database Path Configuration ---
 # По умолчанию папка 'data' будет создана рядом со скриптом app.py
@@ -100,6 +105,24 @@ def load_user_specific_data():
         g.user_config = get_user_config()
     else:
         pass
+
+
+@babel.localeselector
+def get_locale():
+    # Если пользователь выбрал язык, используем его
+    if 'language' in session:
+        return session.get('language')
+    # Иначе пытаемся определить по заголовкам браузера
+    # return request.accept_languages.best_match(['en', 'ru']) # Пример
+    # Или просто используем язык по умолчанию
+    return app.config['BABEL_DEFAULT_LOCALE']
+
+# Добавить маршрут для смены языка (например)
+@app.route('/set_language/<language>')
+def set_language(language=None):
+    session['language'] = language
+    # Редирект на предыдущую страницу или на главную
+    return redirect(request.referrer or url_for('index'))
 
 
 # --- Authentication Routes ---
