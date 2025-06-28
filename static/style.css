@@ -1,20 +1,259 @@
-body { font-family: Arial, sans-serif; margin: 20px; }
-      h1, h2 { color: #333; text-align: center; }
-      form { margin-bottom: 20px; }
-      label { display: block; margin-top: 10px; }
-      input, select, button { margin-top: 5px; padding: 8px; width: 100%; max-width: 400px; box-sizing: border-box; }
-      button { background-color: #4caf50; color: white; border: none; cursor: pointer; transition: background-color 0.3s ease; }
-      button:hover { background-color: #45a049; }
-      .flash-message { padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; background-color: #f9f9f9; color: #333; text-align: center; }
-      .flash-success { border-color: #4caf50; background-color: #e8f5e9; }
-      .flash-error { border-color: #f44336; background-color: #ffebee; }
-      .flash-warning { border-color: #ff9800; background-color: #fff3e0; }
-      .container { display: flex; flex-direction: column; align-items: center; }
-      .collapsible { background-color: #f1f1f1; color: #333; cursor: pointer; padding: 10px; width: 100%; max-width: 500px; border: none; text-align: center; outline: none; font-size: 16px; transition: background-color 0.3s ease; margin-top: 10px; }
-      .collapsible:hover { background-color: #ddd; }
-      .collapsible.active { background-color: #ccc; }
-      .content { padding: 10px 18px; display: none; overflow: hidden; background-color: #f9f9f9; width: 100%; max-width: 500px; margin: 0 auto; box-sizing: border-box; border: 1px solid #eee; }
-      table { width: 100%; border-collapse: collapse; margin-top: 15px;}
-      th, td { border: 1px solid #ddd; padding: 8px; text-align: left;}
-      th { background-color: #f2f2f2;}
-      .user-info { text-align: right; margin-bottom: 15px; padding-right: 20px; }
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4; /* Light grey background */
+    color: #333;
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px; /* Limit container width */
+    margin: 0 auto; /* Center container */
+    background-color: #fff; /* White background for container */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 8px; /* Rounded corners */
+}
+
+form {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input, select, button {
+    margin-top: 5px;
+    padding: 10px;
+    width: calc(100% - 22px); /* Adjust width for padding and border */
+    max-width: 400px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff; /* Primary blue button */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 10px 15px; /* Add horizontal padding */
+    width: auto; /* Auto width for buttons */
+    display: inline-block; /* Allow buttons to be side-by-side if needed */
+    margin-right: 10px; /* Space between buttons */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.flash-message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid transparent; /* Use border-color for specific types */
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.flash-success { border-color: #28a745; background-color: #d4edda; color: #155724; }
+.flash-error { border-color: #dc3545; background-color: #f8d7da; color: #721c24; }
+.flash-warning { border-color: #ffc107; background-color: #fff3cd; color: #856404; }
+
+.collapsible {
+    background-color: #e9ecef; /* Light grey button */
+    color: #495057; /* Dark text */
+    cursor: pointer;
+    padding: 12px;
+    width: 100%;
+    max-width: 500px;
+    border: none;
+    text-align: left; /* Align text left */
+    outline: none;
+    font-size: 18px; /* Larger font */
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.collapsible:hover {
+    background-color: #d3d9df;
+}
+
+.collapsible.active {
+    background-color: #ced4da;
+}
+
+.content {
+    padding: 15px;
+    display: none;
+    overflow: hidden;
+    background-color: #fefefe; /* Very light background */
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    border: 1px solid #eee;
+    border-top: none; /* No top border to connect visually with collapsible */
+    border-radius: 0 0 8px 8px; /* Rounded corners only at the bottom */
+}
+
+.content h3 { /* Style for internal content headings */
+    margin-top: 0;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.content p { /* Style for instruction paragraphs */
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) { /* Zebra striping */
+    background-color: #f8f8f8;
+}
+
+.user-info {
+    text-align: right;
+    margin-bottom: 15px;
+    padding-right: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.user-info a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.user-info a:hover {
+    text-decoration: underline;
+}
+
+hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+small {
+    color: #666;
+}
+
+/* Add this block to your style.css */
+.auth-container {
+    max-width: 400px; /* Максимальная ширина блока */
+    margin: 50px auto; /* Центрирование по горизонтали и отступ сверху */
+    padding: 20px;
+    background-color: #fff; /* Белый фон */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    border-radius: 8px; /* Скругленные углы */
+    text-align: center; /* Выравнивание содержимого по центру */
+}
+
+.auth-container h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.auth-container form {
+    padding: 0; /* Убираем внутренние отступы формы, т.к. они есть у контейнера */
+    border: none; /* Убираем рамку формы */
+    background-color: transparent; /* Прозрачный фон формы */
+}
+
+.auth-container label {
+    text-align: left; /* Выравниваем метки по левому краю внутри центрированного блока */
+    display: block; /* Метка занимает всю ширину */
+    margin-bottom: 5px; /* Отступ снизу метки */
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+     width: 100%; /* Поля ввода занимают всю ширину контейнера */
+     max-width: none; /* Отменяем ограничение ширины из общих правил input */
+     margin-bottom: 15px; /* Отступ снизу поля ввода */
+     box-sizing: border-box; /* Учитываем padding и border в ширине */
+}
+
+.auth-container button {
+    width: 100%; /* Кнопка занимает всю ширину */
+    max-width: none; /* Отменяем ограничение ширины */
+    margin-top: 10px;
+}
+
+.auth-container p {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Дополнительно стилизуем флеш-сообщения внутри контейнера */
+.auth-container .flash-message {
+     margin-left: auto;
+     margin-right: auto;
+     max-width: 350px; /* Ограничиваем ширину флеш-сообщений */
+     margin-bottom: 15px; /* Отступ снизу */
+}
+
+/* Корректировка для чекбокса "Remember Me" */
+.auth-container label[for="remember"] {
+    display: inline-block; /* Делаем метку строчно-блочным элементом */
+    text-align: left; /* Выравнивание текста метки */
+    margin-top: 5px;
+    margin-bottom: 15px; /* Отступ снизу */
+    font-weight: normal; /* Убираем жирность метки чекбокса */
+    width: auto; /* Ширина по содержимому */
+}
+
+.auth-container input[type="checkbox"] {
+    width: auto; /* Чекбокс не должен занимать всю ширину */
+    margin-right: 5px; /* Отступ справа от чекбокса до текста */
+    vertical-align: middle; /* Выравнивание по вертикали */
+    box-shadow: none; /* Убираем тень, если есть */
+}

@@ -36,54 +36,96 @@
       <!-- Секция RMS-сервера -->
       <button type="button" class="collapsible">1. Connection to RMS-server</button>
       <div class="content">
+        <h3>RMS Server Configuration</h3>
+        <p>
+          Enter the details for your RMS server API. This information is used to connect,
+          authenticate, and retrieve the list of available OLAP report presets.
+        </p>
         <form action="{{ url_for('configure_rms') }}" method="post">
-          <label for="host">RMS-host:</label>
+          <label for="host">RMS-host (e.g., http://your-rms-api.com/resto):</label>
           <input type="text" id="host" name="host" value="{{ rms_config.get('host', '') }}" required /><br />
 
-          <label for="login">Login:</label>
+          <label for="login">API Login:</label>
           <input type="text" id="login" name="login" value="{{ rms_config.get('login', '') }}" required /><br />
 
-          <label for="password">Password (enter if you want to change):</label>
+          <label for="password">API Password (enter if you want to change):</label>
           <input type="password" id="password" name="password" value="" {% if not rms_config.get('password') %}required{% endif %} /><br />
           {% if rms_config.get('password') %}
-             <small>Password will be hidden.</small><br/>
+             <small>Password is saved and will be used. Enter only if you need to change it.</small><br/>
+          {% else %}
+             <small>Enter the API password for your RMS server.</small><br/>
           {% endif %}
 
           <button type="submit">Check and Save RMS-config</button>
-          <p><small>Will be used to connect and fetch OLAP presets.</small></p>
         </form>
+         {% if presets %}
+             <p><strong>Status:</strong> Successfully connected to RMS. Found {{ presets|length }} OLAP presets.</p>
+         {% elif rms_config.get('host') %}
+             <p><strong>Status:</strong> RMS configuration saved. Presets not yet loaded or connection failed.</p>
+         {% endif %}
       </div>
 
       <!-- Секция Google-таблиц -->
-      <button type="button" class="collapsible">2. Google Sheets Configuration</button>
+      <button type="button" class="collapsible" {% if not rms_config.get('host') %}disabled title="Configure RMS first"{% endif %}>
+          2. Google Sheets Configuration
+      </button>
       <div class="content">
+        <h3>Google Sheets Configuration</h3>
+        <p>
+          To allow the application to write to your Google Sheet, you need to provide
+          credentials for a Google Service Account. This account will act on behalf
+          of the application.
+        </p>
+        <p>
+           <strong>How to get credentials:</strong>
+           <br>1. Go to Google Cloud Console.
+           <br>2. Create a new project or select an existing one.
+           <br>3. Enable the "Google Sheets API" and "Google Drive API" for the project.
+           <br>4. Go to "Credentials", click "Create Credentials", choose "Service Account".
+           <br>5. Give it a name, grant it necessary permissions (e.g., Editor role for simplicity, or more granular roles for Sheets/Drive).
+           <br>6. Create a JSON key for the service account. Download this file.
+           <br>7. Share your target Google Sheet with the service account's email address (found in the downloaded JSON file, key `client_email`).
+        </p>
         <form action="{{ url_for('upload_credentials') }}" method="post" enctype="multipart/form-data">
-          <label for="cred_file">Service Account Credentials (JSON):</label>
+          <label for="cred_file">Service Account Credentials (JSON file):</label>
           <input type="file" id="cred_file" name="cred_file" accept=".json" {% if not google_config.get('cred_file') %}required{% endif %} /><br />
            {% if client_email %}
-             <p><strong>Service Account Email:</strong> {{ client_email }}</p>
-             <small>Upload if you want to change.</small><br/>
+             <p><strong>Current Service Account Email:</strong> <code>{{ client_email }}</code></p>
+             <small>Upload a new file only if you need to change credentials.</small><br/>
            {% else %}
-             <small>Upload JSON, from Google Cloud Console.</small><br/>
+             <small>Upload the JSON file downloaded from Google Cloud Console.</small><br/>
            {% endif %}
           <button type="submit">Upload Credentials</button>
         </form>
         <hr>
+        <p>
+            Enter the URL of the Google Sheet you want to use. The service account email
+            (shown above after uploading credentials) must have edit access to this sheet.
+        </p>
         <form action="{{ url_for('configure_google') }}" method="post">
-            <label for="sheet_url">URL Google Sheet:</label>
-            <input type="text" id="sheet_url" name="sheet_url" value="{{ google_config.get('sheet_url', '') }}" required placeholder="https://docs.google.com/spreadsheets/d/..."/><br />
-            <button type="submit" {% if not client_email %}disabled title="Upload Service Account Credentials"{% endif %}>
-              Connect Google
+            <label for="sheet_url">Google Sheet URL:</label>
+            <input type="text" id="sheet_url" name="sheet_url" value="{{ google_config.get('sheet_url', '') }}" required placeholder="https://docs.google.com/spreadsheets/d/..."/>
+            <button type="submit" {% if not client_email %}disabled title="Upload Service Account Credentials first"{% endif %}>
+              Connect Google Sheets
             </button>
-             <p><small>Will be used to fetch Google Sheets.</small></p>
+             {% if sheets %}
+                 <p><strong>Status:</strong> Successfully connected to Google Sheet. Found {{ sheets|length }} worksheets.</p>
+             {% elif google_config.get('sheet_url') %}
+                 <p><strong>Status:</strong> Google Sheet URL saved. Worksheets not yet loaded or connection failed.</p>
+             {% endif %}
         </form>
       </div>
 
       <!-- Секция сопоставления листов-отчетов -->
-      <button type="button" class="collapsible" {% if not sheets %}disabled title="Сначала настройте Google Sheets"{% endif %}>
+      <button type="button" class="collapsible" {% if not sheets or not presets %}disabled title="Configure RMS and Google Sheets first"{% endif %}>
           3. Mapping Sheets to OLAP Reports
       </button>
       <div class="content">
+        <h3>Map Worksheets to OLAP Reports</h3>
+        <p>
+          Select which OLAP report from RMS should be rendered into each specific worksheet
+          (tab) in your Google Sheet.
+        </p>
         {% if sheets and presets %}
           <form action="{{ url_for('mapping_set') }}" method="post">
             <table>
@@ -114,6 +156,8 @@
             </table>
             <button type="submit">Save Mappings</button>
           </form>
+        {% elif not sheets and not presets %}
+            <p>Worksheets and OLAP presets are not loaded. Please configure RMS and Google Sheets first.</p>
         {% elif not sheets %}
             <p>Worksheets are not loaded. Check Google Sheets configuration.</p>
         {% elif not presets %}
@@ -122,48 +166,65 @@
       </div>
 
       <!-- Секция отрисовки отчетов на листах -->
-       <button type="button" class="collapsible" {% if not mappings %}disabled title="Сначала настройте сопоставления Лист-Отчет"{% endif %}>
+       <button type="button" class="collapsible" {% if not mappings or mappings|length == 0 %}disabled title="Configure Mappings first"{% endif %}>
           4. Render Reports to Sheets
       </button>
       <div class="content">
-       {% if mappings %}
+        <h3>Render Reports</h3>
+        <p>
+          Select the date range and click "Render to sheet" for each mapping you wish to execute.
+          The application will retrieve the OLAP data from RMS for the selected report and period,
+          clear the corresponding worksheet in Google Sheets, and write the new data.
+        </p>
+       {% if mappings and mappings|length > 0 %}
         <form action="{{ url_for('render_olap') }}" method="post">
-          <label for="start_date">From:</label>
+          <label for="start_date">From Date:</label>
           <input type="date" id="start_date" name="start_date" required /><br />
 
-          <label for="end_date">To:</label>
+          <label for="end_date">To Date:</label>
           <input type="date" id="end_date" name="end_date" required /><br />
 
           <table>
              <thead>
                 <tr>
                   <th>Worksheet</th>
-                  <th>Mapping OLAP</th>
-                  <th>Go</th>
+                  <th>Mapped OLAP Report</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {% for sheet_title, report_id in mappings.items() %}
-                  {% set preset_name = '' %}
-                  {% for p in presets %}{% if p['id'] == report_id %}{% set preset_name = p['name'] %}{% endif %}{% endfor %}
-                  {% if report_id %} {# Only display rows with a valid mapping #}
-                  <tr>
-                    <td>{{ sheet_title }}</td>
-                    <td>{{ preset_name or 'ID: ' + report_id }}</td>
-                    <td>
-                      <button type="submit" name="render_{{ sheet_title }}">
-                        Render to sheet
-                      </button>
-                    </td>
-                  </tr>
-                  {% endif %}
+                {# Iterate through sheets loaded from Google, check for mapping #}
+                {% for sheet in sheets %}
+                    {% set report_id = mappings.get(sheet.title) %}
+                    {% if report_id %} {# Only display rows with a valid mapping #}
+                        {# Find the preset name by ID using Jinja filters #}
+                        {# Find the preset dictionary where 'id' attribute equals report_id #}
+                        {% set matching_presets = presets | selectattr('id', 'equalto', report_id) | list %}
+                        {% set preset_name = 'ID: ' + report_id %} {# Default display if preset not found or unnamed #}
+
+                        {# If a matching preset was found, get its name #}
+                        {% if matching_presets %}
+                            {% set preset = matching_presets[0] %}
+                            {% set preset_name = preset.get('name', 'Unnamed Preset') %}
+                        {% endif %}
+
+                        <tr>
+                            <td>{{ sheet.title }}</td>
+                            <td>{{ preset_name }}</td>
+                            <td>
+                              <button type="submit" name="render_{{ sheet.title }}">
+                                Render to sheet
+                              </button>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
              </tbody>
           </table>
         </form>
        {% else %}
-        <p>Config mappings first.</p>
-        <p><small>Check mapping section.</small></p>
+        <p>No mappings configured yet.</p>
+        <p><small>Please go to the "Mapping Sheets to OLAP Reports" section (Step 3) to set up mappings.</small></p>
        {% endif %}
       </div>
 
@@ -188,12 +249,39 @@
       }
 
       // Optional: Auto-expand sections based on config state?
-      // Example: Expand Google section if RMS is configured but Google creds are not
-      window.addEventListener('load', () => {
-          if (rmsIsConfigured && !googleCredsExist) {
-             document.getElementById('google-collapsible-button').click();
-          } // Add more logic here based on passed config state
-       });
+      // This requires passing more state from the Flask app to the template.
+      // For now, keep it simple with manual expansion.
+      // window.addEventListener('load', () => {
+      //     // Example logic: if RMS configured but Google not, open Google section
+      //     const rmsConfigured = '{{ rms_config.get("host") }}' !== '';
+      //     const googleCredsExist = '{{ client_email }}' !== '';
+      //     const googleSheetUrlSet = '{{ google_config.get("sheet_url") }}' !== '';
+      //     // Corrected lines:
+      //     const presetsLoaded = {{ (presets|length > 0) | lower }};
+      //     const sheetsLoaded = {{ (sheets|length > 0) | lower }};
+      //     const mappingsExist = {{ (mappings|length > 0) | lower }};
+
+      //     const collapsibles = document.getElementsByClassName("collapsible");
+
+      //     if (rmsConfigured && !googleCredsExist) {
+      //         // Find and click Google Sheets collapsible
+      //         for (let i = 0; i < collapsibles.length; i++) {
+      //             if (collapsibles[i].innerText.includes("Google Sheets Configuration")) {
+      //                 collapsibles[i].click();
+      //                 break;
+      //             }
+      //         }
+      //     } else if (rmsConfigured && googleCredsExist && googleSheetUrlSet && presetsLoaded && sheetsLoaded && !mappingsExist) {
+      //          // Find and click Mapping collapsible
+      //          for (let i = 0; i in collapsibles.length; i++) { // <-- Potential typo here, should be <
+      //             if (collapsibles[i].innerText.includes("Mapping Sheets to OLAP Reports")) {
+      //                 collapsibles[i].click();
+      //                 break;
+      //             }
+      //          }
+      //     }
+      //     // Add more conditions as needed
+      //  });
     </script>
     {% else %}
       <p style="text-align: center; margin-top: 50px;">Please, <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a></p>
